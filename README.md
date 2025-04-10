@@ -1,2 +1,2 @@
 # wad
-zzz
+a 3arc .wad linker/unlinker 
