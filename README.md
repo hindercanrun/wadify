@@ -1,19 +1,14 @@
 
+<h1 align="center">a linker/unlinker for Treyarch's online .wad container files.</h3>
 
-# wad
-### a linker/unlinker for Treyarch's online .wad container files.
-
----
-
-## usage
-1. cd the tool with cmd.
-2. enter any command.
-3. done!
+# Usage
+1) cd the tool with cmd.
+2) enter any command.
+3) done!
 
 ---
 
-## command line arguments
-
+# command line arguments
 - ```-unlink```, ```-u```
 - unlink's the inputted .wad
 - ```-link```, ```-l```
