@@ -1,9 +1,10 @@
+<h2 align="left">a linker/unlinker for Treyarch's online .wad container files.</h1>
 
-<h1 align="center">a linker/unlinker for Treyarch's online .wad container files.</h3>
+___
 
 # Usage
 1) cd the tool with cmd.
-2) enter any command.
+2) if you want to unlink, type `unlink <input.wad>`. if you want to link then type `link <input folder>`.
 3) done!
 
 ---
