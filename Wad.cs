@@ -29,7 +29,6 @@ namespace Wad
             try
             {
                 List<WADEntry> WADEntries = ProcessOnlineWAD(File.ReadAllBytes(FileName));
-                //can't be null!
                 if (WADEntries != null)
                 {
                     string OutputDirectory = Path.Combine(".", Path.GetFileNameWithoutExtension(GetFilename(FileName)));
