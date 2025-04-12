@@ -282,38 +282,5 @@ namespace Utils
         {
             return Path.GetFileName(FileName);
         }
-
-        //
-        // swaps the endian of a byte array
-        //
-        public static void SwapEndian(byte[] FileData)
-        {
-            byte[] TargetSequence = new byte[] // no little endian for now, sorry!
-            {
-                0x54, 0x33, 0x77, 0xAB // T3w«
-            };
-
-            for (int Index = 0; Index <= FileData.Length - TargetSequence.Length; Index++)
-            {
-                //check if it's a match
-                if (IsMatching(FileData, TargetSequence, Index))
-                {
-                    //now swap the endian
-                    Array.Reverse(FileData, Index, TargetSequence.Length);
-                    Index += TargetSequence.Length - 1; //skip past this sequence
-                }
-            }
-        }
-
-        //
-        // checks if a sequence of bytes matches another sequence
-        //
-        public static bool IsMatching(byte[] FileData, byte[] TargetSequence, int StartIndex)
-        {
-            for (int Index = 0; Index < TargetSequence.Length; Index++)
-                if (FileData[StartIndex + Index] != TargetSequence[Index])
-                    return false;
-            return true;
-        }
     }
 }
