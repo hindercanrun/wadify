@@ -10,13 +10,13 @@ ___
 ---
 
 # command line arguments
-- ```-unlink```, ```-u```
+- ```--unlink```, ```-u```
 - unlink's the inputted .wad
-- ```-link```, ```-l```
+- ```--link```, ```-l```
 - link's the inputted folder into a .wad
-- ```-help```, ```-h```
+- ```--help```, ```-h```
 - print's helpful information for commands
-- ```-about```, ```-a```
+- ```--about```, ```-a```
 - tool information
 
 ---
