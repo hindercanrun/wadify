@@ -4,7 +4,7 @@ ___
 
 # Usage
 1) cd the tool with cmd.
-2) if you want to unlink, type `unlink <input.wad>`. if you want to link then type `link <input folder>`.
+2) if you want to unlink, type `--unlink <input.wad>`. if you want to link then type `--link <input folder>`.
 3) done!
 
 ---
