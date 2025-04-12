@@ -1,13 +1,20 @@
 # wad documentation
-just some basic information that I learnt while reversing this type.
+i have spent the last month reversing and researching this file type, i originally wasn't going to publicize this but i changed my mind because why not, better to be out there.
+anyways maybe you'll learn something from this, because i sure did. don't confuse yourself with doom wad's, they are completely different to cod wad's.
 
-name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called.
-
-description/usage: a wad is a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc. in short: no wad found? no online play for you.
+wad information:
+- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called.
+- description/usage: a wad is a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc. in short: no wad found? no online play for you.
 
 now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's all in the "raw/main".
 
 I have used `online_tu0_mp_english.wad` from `T6_greenlight_mp` build for this document.
+
+to start of, we have the header magic.
+
+I am not entirely sure what `T3w` stands for, `w` likely stands for `wad` so `T3wad`. `T3` might stand for `Treyarch3` and we know that `Treyarch3` is `Call of Duty: 3`, if this is true then they must've used wad's in CoD3.
+
+anyways time to get into the actual file information..
 
 ```
 magic
