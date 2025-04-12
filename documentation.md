@@ -66,4 +66,6 @@ things to note:
 - 3arc used a linker that pulled from a zone_source type folder to link together the assets
 - if your wad is at all invalid, then you cannot play online at all
 
+side note: if anybody happened to have a ps3/wii u .wad file, please send it over so I could confirm this tool works with it, it would help in the long run.
+
 the end!
