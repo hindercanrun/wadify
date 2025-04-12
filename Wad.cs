@@ -1,4 +1,6 @@
 ﻿// this tool was made for T6_greenlight_mp, but it supports all versions of T5 and T6.
+// it also only support's xbox 360 (ps3 and wii u are untested), pc is unsupported
+// you *can* unlink pc wad's, you just have to swap around the magic's bytes
 //
 
 using System;
@@ -13,10 +15,6 @@ namespace Wad
 {
     class Wad
     {
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // COMMANDS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         static void UnlinkWAD(string FileName)
         {
             // tell the user what .wad we are unlinking
@@ -80,9 +78,9 @@ namespace Wad
 
         static void Unlink(string[] Arguments)
         {
-            if (Arguments.Length <= 1)
+            if (Arguments.Length < 2)
             {
-                Console.WriteLine("USAGE :: -unlink <input.wad>");
+                Console.WriteLine("USAGE :: --unlink <input.wad>");
                 return;
             }
 
@@ -104,9 +102,9 @@ namespace Wad
 
         static void Link(string[] Arguments)
         {
-            if (Arguments.Length <= 1)
+            if (Arguments.Length < 2)
             {
-                Console.WriteLine("USAGE :: -link <input folder>");
+                Console.WriteLine("USAGE :: --link <input folder>");
                 return;
             }
 
@@ -128,32 +126,25 @@ namespace Wad
         {
             // just general help for the tool
 
-            Console.WriteLine("command help:");
-            Console.WriteLine("-unlink   <input.wad>    ::  unlinks the inputted .wad file.");
-            Console.WriteLine(" shortcut                :: -u");
-            Console.WriteLine("-link     <input folder> ::  links the inputted folder into a .wad file.");
-            Console.WriteLine(" shortcut                :: -l");
-            Console.WriteLine("-help                    ::  displays help for various commands.");
-            Console.WriteLine(" shortcut                :: -h");
-            Console.WriteLine("-about                   ::  displays information about this tool.");
-            Console.WriteLine(" shortcut                :: -a");
+            Console.WriteLine("command usages:");
+            Console.WriteLine("--unlink   <input.wad>    ::  unlinks the inputted .wad file.");
+            Console.WriteLine("  shortcut                :: -u");
+            Console.WriteLine("--link     <input folder> ::  links the inputted folder into a .wad file.");
+            Console.WriteLine("  shortcut                :: -l");
+            Console.WriteLine("--help                    ::  displays help for various commands.");
+            Console.WriteLine("  shortcut                :: -h");
+            Console.WriteLine("--about                   ::  displays information about this tool.");
+            Console.WriteLine("  shortcut                :: -a");
         }
 
         static void About()
         {
-            Console.WriteLine("about the tool:");
+            Console.WriteLine("tool information:");
             Console.WriteLine("wad.exe :: a .wad linker, unlinker and converter tool for Black Ops/Black Ops II");
             Console.WriteLine("        :: made by ymes_zzz");
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // END COMMANDS
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // START MAIN
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////////////
 
         static void Main(string[] Arguments)
         {
@@ -168,20 +159,20 @@ namespace Wad
 
             switch (Arguments[0])
             {
-                case "-l":
-                case "-unlink":
+                case "-u":
+                case "--unlink":
                     Unlink(Arguments);
                     break;
-                case "-u":
-                case "-link":
+                case "-l":
+                case "--link":
                     Link(Arguments);
                     break;
                 case "-h":
-                case "-help":
+                case "--help":
                     Help();
                     break;
                 case "-a":
-                case "-about":
+                case "--about":
                     About();
                     break;
                 default:
@@ -189,9 +180,5 @@ namespace Wad
                     return;
             }
         }
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // END MAIN
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
