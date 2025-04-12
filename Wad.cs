@@ -1,7 +1,11 @@
-﻿// this tool was made for T6_greenlight_mp, but it supports all versions of T5 and T6.
-// it also only support's xbox 360 (ps3 and wii u are untested), pc is unsupported
-// you *can* unlink pc wad's, you just have to swap around the magic's bytes
-//
+﻿/*/
+ *
+ * this tool was made for T6_greenlight_mp, but it supports all versions of T5 and T6.
+ * it also only support's xbox 360 (ps3 and wii u are untested but should work for them)
+ * pc is unsupported however you *can* unlink pc wad's, you just have to swap around the magic's bytes
+ * i will need to get my hands on a ps3 and wii u wad to properly confirm... not likely though
+ *
+/*/
 
 using System;
 using System.IO;
