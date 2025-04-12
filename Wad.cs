@@ -82,16 +82,17 @@ namespace Wad
             }
         }
 
-        static void Unlink(string[] Arguments)
+        static void Unlink(string[] Parameters)
         {
-            if (Arguments.Length < 2)
+            // first check if there are any parameters
+            if (Parameters.Length < 2)
             {
                 Console.WriteLine("USAGE :: --unlink <input.wad>");
                 return;
             }
 
             // small check to see if the .wad is already unlinked
-            if (!Arguments[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
+            if (!Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
                 Console.WriteLine(
                     "WARNING :: trying to unlink a non .wad file!");
@@ -103,19 +104,20 @@ namespace Wad
             }
 
             // okay all good, unlink it now
-            UnlinkWAD(Arguments[1]);
+            UnlinkWAD(Parameters[1]);
         }
 
-        static void Link(string[] Arguments)
+        static void Link(string[] Parameters)
         {
-            if (Arguments.Length < 2)
+            // first check if there are any parameters
+            if (Parameters.Length < 2)
             {
                 Console.WriteLine("USAGE :: --link <input folder>");
                 return;
             }
 
             // small check to see if the .wad is already linked
-            if (Arguments[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
+            if (Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
                 Console.WriteLine(
                     "WARNING :: trying to link an already linked .wad file!");
@@ -125,7 +127,7 @@ namespace Wad
             }
 
             // okay all good, link it now
-            LinkWAD(Arguments[1]);
+            LinkWAD(Parameters[1]);
         }
 
         static void Help()
@@ -154,10 +156,10 @@ namespace Wad
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         /*/
 
-        static void Main(string[] Arguments)
+        static void Main(string[] Parameters)
         {
-            // first check if there are any arguments
-            if (Arguments.Length <= 0)
+            // first check if there are any parameters
+            if (Parameters.Length <= 0)
             {
                 Console.WriteLine("USAGE :: wad.exe <command>");
                 return;
@@ -165,15 +167,15 @@ namespace Wad
 
             // now check what the user wants to do
 
-            switch (Arguments[0])
+            switch (Parameters[0])
             {
                 case "-u":
                 case "--unlink":
-                    Unlink(Arguments);
+                    Unlink(Parameters);
                     break;
                 case "-l":
                 case "--link":
-                    Link(Arguments);
+                    Link(Parameters);
                     break;
                 case "-h":
                 case "--help":
