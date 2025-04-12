@@ -31,7 +31,8 @@ namespace Wad
                 List<WADEntry> WADEntries = ProcessOnlineWAD(File.ReadAllBytes(FileName));
                 if (WADEntries != null)
                 {
-                    string OutputDirectory = Path.Combine(".", Path.GetFileNameWithoutExtension(GetFilename(FileName)));
+                    string OutputDirectory = Path.Combine(
+                        ".", Path.GetFileNameWithoutExtension(GetFilename(FileName)));
                     // check if the output directory exists
                     CreateOutputDirectory(OutputDirectory);
 
@@ -66,7 +67,8 @@ namespace Wad
                     WriteCompressedData(Writer, WADFile.entries);
 
                     // okay let's save the file now
-                    File.WriteAllBytes(Path.GetFileName(FolderName) + ".wad", Stream.ToArray());
+                    File.WriteAllBytes(
+                        Path.GetFileName(FolderName) + ".wad", Stream.ToArray());
 
                     //all good!
                     Console.WriteLine("\nDone!");
