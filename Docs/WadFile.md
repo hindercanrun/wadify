@@ -2,6 +2,9 @@
 i have spent the last month reversing and researching this file type, i originally wasn't going to publicize this but i changed my mind because why not, better to be out there.
 anyways maybe you'll learn something from this, because i sure did. don't confuse yourself with doom wad's, they are completely different to cod wad's.
 
+i will likely be going after ipak's next, i am not sure if i will release that one like i did with this one however, only time will tell.
+anyways enough sidetracking.
+
 wad information:
 - name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called.
 - description/usage: a wad is a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc. in short: no wad found? no online play for you.
