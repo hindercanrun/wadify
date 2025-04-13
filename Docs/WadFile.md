@@ -1,13 +1,12 @@
-# wad documentation
 i have spent the last month reversing and researching this file type, i originally wasn't going to publicize this but i changed my mind because why not, better to be out there.
 anyways maybe you'll learn something from this, because i sure did. don't confuse yourself with doom wad's, they are completely different to cod wad's.
 
-i will likely be going after ipak's next, i am not sure if i will release that one like i did with this one however, only time will tell.
+i will likely be going after ipak's next, i am not sure if i will release that one like i did with this one however, only time will tell i guess.
 anyways enough sidetracking.
 
 wad information:
-- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called.
-- description/usage: a wad is a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc. in short: no wad found? no online play for you.
+- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data".
+- description/usage: a wad is bascially a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc.
 
 now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's all in the "raw/main".
 
@@ -38,7 +37,7 @@ now we have the number of entries.
 
 ![image](https://github.com/user-attachments/assets/a1cb9920-208b-4d0e-87f1-dd0a2627dbb9)
 
-which was three from this wad. remember each wad can have a different timestamp and number of entries
+which was three from this wad. remember each wad can have a different timestamp and number of entries.
 
 ![image](https://github.com/user-attachments/assets/aa8256ad-afe5-46f6-b266-19c327952d4c)
 
@@ -65,9 +64,9 @@ the rest is pointless to go through as it's just compressed with basic zlib, not
 and just like that, you've learnt pretty much this entire format, atleast the basics of it.
 
 things to note:
-- endianness impacts the file
-- 3arc used a linker that pulled from a zone_source type folder to link together the assets
-- if your wad is at all invalid, then you cannot play online at all
+- endianness impacts the file (not a shocker).
+- 3arc used a linker that pulled from a zone_source type folder to link together the assets.
+- if your wad is at all invalid, then you cannot play online at all. you can experience this by making the game read from local storage instead of publisher storage.
 
 side note: if anybody happened to have a ps3/wii u .wad file, please send it over so I could confirm this tool works with it, it would help in the long run.
 
