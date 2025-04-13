@@ -4,11 +4,11 @@ using System.IO;
 using System.Text;
 
 using static Utils.Structs;
-using static Utils.EndianessReader;
+using static Utils.EndiannessReader;
 
 namespace Utils
 {
-    class EndianessReader : BinaryReader
+    class EndiannessReader : BinaryReader
     {
         public enum Endianness
         {
@@ -18,26 +18,26 @@ namespace Utils
 
         private Endianness _Endianness = Endianness.Little;
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input)
             : base(Input)
         {
         }
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input, Encoding Encoding)
             : base(Input, Encoding)
         {
         }
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input, Encoding Encoding,
             bool LeaveOpen)
             : base(Input, Encoding, LeaveOpen)
         {
         }
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input,
             Endianness Endianness)
             : base(Input)
@@ -45,7 +45,7 @@ namespace Utils
             _Endianness = Endianness;
         }
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input, Encoding Encoding,
             Endianness Endianness)
             : base(Input, Encoding)
@@ -53,7 +53,7 @@ namespace Utils
             _Endianness = Endianness;
         }
 
-        public EndianessReader(
+        public EndiannessReader(
             Stream Input, Encoding Encoding, bool LeaveOpen,
             Endianness Endianness)
             : base(Input, Encoding, LeaveOpen)
@@ -182,7 +182,7 @@ namespace Utils
     {
         private const int WADMagic = 0x543377AB; // T3w«
 
-        private static EndianessReader _Reader;
+        private static EndiannessReader _Reader;
 
         //
         // processes the inputted .wad file
@@ -190,7 +190,7 @@ namespace Utils
         public static List<WADEntry> ProcessOnlineWAD(byte[] WADBytes)
         {
             using (var Stream = new MemoryStream(WADBytes))
-            using (_Reader = new EndianessReader(Stream, Endianness.Big))
+            using (_Reader = new EndiannessReader(Stream, Endianness.Big))
             {
                 WADHeader Header = ReadWADHeader();
                 // check the magic
@@ -211,7 +211,7 @@ namespace Utils
                 Console.WriteLine($"WAD Information:");
                 Console.WriteLine($"Magic: 0x{Header.magic:X8}");
                 Console.WriteLine($"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
-                Console.WriteLine($"Number of Entries: {Header.numEntries}");
+                Console.WriteLine($"Entries Number: {Header.numEntries}");
                 Console.WriteLine($"FFOTD Version: {Header.ffotdVersion}");
 
                 Console.WriteLine($"\nExtracting files..\n");

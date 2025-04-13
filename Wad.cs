@@ -44,7 +44,6 @@ namespace Wad
             }
             catch (Exception MSG)
             {
-                //bad!
                 Console.WriteLine($"Failed to unlink: {FileName}!");
                 Console.WriteLine($"Reason: {MSG.Message}");
                 return;
@@ -76,7 +75,6 @@ namespace Wad
             }
             catch (Exception MSG)
             {
-                //bad!
                 Console.WriteLine($"Failed to link: {FolderName}!");
                 Console.WriteLine($"Reason: {MSG.Message}");
                 return;
@@ -136,7 +134,7 @@ namespace Wad
             // just general help for the tool
 
             Console.WriteLine("command usages:");
-            Console.WriteLine("--unlink   <input.wad>    ::  unlinks the inputted .wad file.");
+            Console.WriteLine("--unlink   <input .wad>   ::  unlinks the inputted .wad file.");
             Console.WriteLine("  shortcut                :: -u");
             Console.WriteLine("--link     <input folder> ::  links the inputted folder into a .wad file.");
             Console.WriteLine("  shortcut                :: -l");

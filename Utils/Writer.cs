@@ -1,11 +1,11 @@
-﻿using Ionic.Zlib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Ionic.Zlib;
 
 using static Utils.Structs;
-using static Utils.EndianessReader;
+using static Utils.EndiannessReader;
 
 namespace Utils
 {
