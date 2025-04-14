@@ -96,7 +96,7 @@ namespace Utils
         }
 
         //
-        // writes the header to the file
+        // writes the full header
         //
         public static void WriteWADHeader(BinaryWriter Writer, WADHeader Header)
         {
