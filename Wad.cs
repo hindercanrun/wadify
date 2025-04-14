@@ -174,7 +174,7 @@ namespace Wad
             if (Parameters.Length < 1)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"USAGE :: wad.exe <command>");
+                Console.WriteLine("USAGE :: wad.exe <command>");
                 Console.ResetColor();
                 return;
             }
