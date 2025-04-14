@@ -1,10 +1,13 @@
 <div align="center">
 
+https://discord.gg/qTYx5StapU
+
 # a linker / unlinker for Treyarch's .wad container files.
 
-![latest release](https://img.shields.io/github/v/tag/hindercanrun/wad?filter=!v*-pre&style=flat-square&label=Latest%20release&labelColor=F3F8FF&color=F88379)
-![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20date&labelColor=F3F8FF&color=F88379)
-![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20downloads&labelColor=F3F8FF&color=F88379)
+![latest release](https://img.shields.io/github/v/tag/hindercanrun/wad?filter=!v*-pre&style=flat-square&label=Latest%20Release&labelColor=F3F8FF&color=F88379)
+![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20Date&labelColor=F3F8FF&color=F88379)
+![size](https://img.shields.io/github/languages/code-size/hindercanrun/wad?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
+![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
 </div>
 
 ---
