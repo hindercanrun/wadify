@@ -4,3 +4,7 @@
 # Build results
 bin
 obj
+
+# File types
+*.pdb
+*.xml
