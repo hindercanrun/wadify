@@ -8,13 +8,13 @@ wad information:
 - name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data".
 - description/usage: a wad is bascially a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc.
 
-now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's all in the "raw/main".
+now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's basically all in the "`root/main`", in other words there *are* directories before it gets linked, but not after it gets linked, they are all put into the "`root`" folder. i am not sure how 3arc linked them, but it might've been similar to `zone`'s, which has a `zone_source`, for wad's maybe `wad_source`?. to back this up, in my tool when you link a wad, the entries list is done in "alphabetical order"/the order that you are shown in `File Explorer`, 3arc's wad's on the other hand are not in "alphabetical order" which really can only mean they had the assets in a `.csv` then linked each asset like that, similar to zone's.
 
-I have used `online_tu0_mp_english.wad` from `T6_greenlight_mp` build for this document.
+i have used `online_tu0_mp_english.wad` from `T6_greenlight_mp` build for this document.
 
 to start of, we have the header magic.
 
-I am not entirely sure what `T3w` stands for, `w` likely stands for `wad` so `T3wad`. `T3` might stand for `Treyarch3` and we know that `Treyarch3` is `Call of Duty: 3`, if this is true then they must've used wad's in CoD3.
+i am not entirely sure what `T3w«` stands for, `w` likely stands for `wad` so `T3wad`. `T3` might stand for `Treyarch3` and we know that `Treyarch3` is `Call of Duty: 3`, if this is true then they must've used wad's in CoD3. last but not least, there's `«` which i have no clue what could be for other than maybe an identifier? but i'm not sure.
 
 anyways time to get into the actual file information..
 
