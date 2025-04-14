@@ -180,24 +180,22 @@ namespace Utils
 
     class Reader
     {
-        private const int WADMagic = 0x543377AB; // T3w«
-
         private static EndiannessReader _Reader;
 
         //
         // processes the inputted .wad file
         //
-        public static List<WADEntry> ProcessOnlineWAD(byte[] WADBytes)
+        public static List<WADEntry> ProcessOnlineWAD(byte[] Bytes)
         {
-            using (var Stream = new MemoryStream(WADBytes))
+            using (var Stream = new MemoryStream(Bytes))
             using (_Reader = new EndiannessReader(Stream, Endianness.Big))
             {
                 WADHeader Header = ReadWADHeader();
                 // check the magic
-                if (Header.magic != WADMagic)
+                if (Header.magic != 0x543377AB) // T3w«
                 {
                     Console.WriteLine(
-                        $"WAD has incorrect magic! Expecting: 0x{WADMagic:X8}, got: 0x{Header.magic:X8}!");
+                        $"WAD has incorrect magic! Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
                     return null;
                 }
 
@@ -219,7 +217,7 @@ namespace Utils
                 //time to read the entries
                 List<WADEntry> Entries = new List<WADEntry>();
                 for (int Index = 0; Index < Header.numEntries; Index++)
-                    Entries.Add(ReadWADEntry(WADBytes, Index));
+                    Entries.Add(ReadWADEntry(Bytes, Index));
 
                 return Entries;
             }
@@ -244,12 +242,12 @@ namespace Utils
         //
         // reads the .wad entries
         //
-        public static WADEntry ReadWADEntry(byte[] WADBytes, int Index)
+        public static WADEntry ReadWADEntry(byte[] Bytes, int Index)
         {
             const int EntryDataSize = 44;// WADEntry struct size
 
             byte[] Data = new byte[EntryDataSize];
-            Array.Copy(WADBytes, 16 + (EntryDataSize * Index), Data, 0, Data.Length);
+            Array.Copy(Bytes, 16 + (EntryDataSize * Index), Data, 0, Data.Length);
 
             using (MemoryStream _Stream = new MemoryStream(Data))
             using (BinaryReader _Reader = new BinaryReader(_Stream))

@@ -15,25 +15,26 @@ namespace Utils
         //
         // unlinks the entries inside a .wad file
         //
-        public static void UnlinkEntries(List<WADEntry> WADEntries, byte[] Bytes, string OutputDirectory)
+        public static void UnlinkEntries(List<WADEntry> Entries, byte[] Bytes, string OutputDirectory)
         {
-            foreach (WADEntry WADEntry in WADEntries)
+            foreach (WADEntry Entry in Entries)
             {
                 // tell the user what we are extracting..
-                Console.WriteLine($"Extracting: {WADEntry.name}..");
+                Console.WriteLine($"Extracting: {Entry.name}..");
 
                 try
                 {
-                    byte[] CompressedData = new byte[WADEntry.compressedSize];
-                    Array.Copy(Bytes, WADEntry.offset, CompressedData, 0, WADEntry.compressedSize);
+                    byte[] CompressedData = new byte[Entry.compressedSize];
+                    Array.Copy(Bytes, Entry.offset, CompressedData, 0, Entry.compressedSize);
 
-                    byte[] decompressedData = Decompress(CompressedData);
-                    File.WriteAllBytes(Path.Combine(OutputDirectory, WADEntry.name), decompressedData);
+                    byte[] DecompressedData = Decompress(CompressedData);
+                    File.WriteAllBytes(
+                        Path.Combine(OutputDirectory, Entry.name), DecompressedData);
                 }
                 catch (Exception MSG)
                 {
                     //bad!
-                    Console.WriteLine($"{WADEntry.name} failed to extract!");
+                    Console.WriteLine($"{Entry.name} failed to extract!");
                     Console.WriteLine($"Reason: {MSG.Message}");
                     return;
                 }
@@ -77,17 +78,17 @@ namespace Utils
         //
         // creates a WAD entry
         //
-        public static WADEntry CreateWADEntry(string Path, string fileNameOnly, uint offset)
+        public static WADEntry CreateWADEntry(string Path, string FileNameOnly, uint Offset)
         {
             byte[] DecompressedBuf = File.ReadAllBytes(Path);
             byte[] CompressedBuf = Compress(DecompressedBuf);
 
             return new WADEntry
             {
-                name = fileNameOnly,
+                name = FileNameOnly,
                 compressedBuf = CompressedBuf,
                 compressedSize = (uint)CompressedBuf.Length,
-                offset = offset,
+                offset = Offset,
                 size = (uint)DecompressedBuf.Length
             };
         }
@@ -124,9 +125,9 @@ namespace Utils
         //
         // writes compressed data to the file
         //
-        public static void WriteCompressedData(BinaryWriter Writer, List<WADEntry> WADEntries)
+        public static void WriteCompressedData(BinaryWriter Writer, List<WADEntry> Entries)
         {
-            foreach (WADEntry Entry in WADEntries)
+            foreach (WADEntry Entry in Entries)
                 Writer.Write(Entry.compressedBuf);
         }
 
@@ -159,6 +160,7 @@ namespace Utils
                     Deflate.Write(FileName, 0, FileName.Length);
                     Deflate.Finish();
                 }
+
                 return OutputStream.ToArray();
             }
         }

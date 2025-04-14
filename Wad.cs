@@ -28,15 +28,15 @@ namespace Wad
 
             try
             {
-                List<WADEntry> WADEntries = ProcessOnlineWAD(File.ReadAllBytes(FileName));
-                if (WADEntries != null)
+                List<WADEntry> Entries = ProcessOnlineWAD(File.ReadAllBytes(FileName));
+                if (Entries != null)
                 {
                     string OutputDirectory = Path.Combine(
                         ".", Path.GetFileNameWithoutExtension(GetFilename(FileName)));
                     // check if the output directory exists
                     CreateOutputDirectory(OutputDirectory);
 
-                    UnlinkEntries(WADEntries, File.ReadAllBytes(FileName), OutputDirectory);
+                    UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
 
                     //all good!
                     Console.WriteLine("\nDone!");
