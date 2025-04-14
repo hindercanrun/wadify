@@ -84,6 +84,12 @@ namespace Utils
         public override ulong ReadUInt64()
             => ReadUInt64(_Endianness);
 
+        public ushort ReadUShort()
+            => ReadUShort(_Endianness);
+
+        public ulong ReadULong()
+            => ReadULong(_Endianness);
+
         public override bool ReadBoolean()
             => ReadBoolean(_Endianness);
 
@@ -101,6 +107,12 @@ namespace Utils
 
         public override double ReadDouble()
             => ReadDouble(_Endianness);
+
+        public short ReadShort()
+            => ReadShort(_Endianness);
+
+        public long ReadLong()
+            => ReadLong(_Endianness);
 
         public short ReadInt16(Endianness Endianness)
             => BitConverter.ToInt16(
@@ -132,6 +144,16 @@ namespace Utils
                 ReadForEndianness(sizeof(ulong),
                 Endianness), 0);
 
+        public ushort ReadUShort(Endianness Endianness)
+            => BitConverter.ToUInt16(
+                ReadForEndianness(sizeof(ushort),
+                Endianness), 0);
+
+        public ulong ReadULong(Endianness Endianness)
+            => BitConverter.ToUInt64(
+                ReadForEndianness(sizeof(ulong),
+                Endianness), 0);
+
         public bool ReadBoolean(Endianness Endianness)
             => BitConverter.ToBoolean(
                 ReadForEndianness(sizeof(bool),
@@ -155,6 +177,16 @@ namespace Utils
         public double ReadDouble(Endianness Endianness)
             => BitConverter.ToDouble(
                 ReadForEndianness(sizeof(double),
+                Endianness), 0);
+
+        public short ReadShort(Endianness Endianness)
+            => BitConverter.ToInt16(
+                ReadForEndianness(sizeof(short),
+                Endianness), 0);
+
+        public long ReadLong(Endianness Endianness)
+            => BitConverter.ToInt64(
+                ReadForEndianness(sizeof(long),
                 Endianness), 0);
 
         private byte[] ReadForEndianness(int BytesToRead, Endianness Endianness)
