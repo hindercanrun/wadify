@@ -3,8 +3,8 @@
 # a linker / unlinker for Treyarch's .wad container files.
 
 ![latest release](https://img.shields.io/github/v/tag/hindercanrun/wad?filter=!v*-pre&style=flat-square&label=Latest%20release&labelColor=F3F8FF&color=1E90FF)
-![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20date&labelColor=F3F8FF&color=E26EE5)
-![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20downloads&labelColor=F3F8FF&color=1E90FF)
+![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20date&labelColor=F3F8FF&color=008080)
+![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20downloads&labelColor=F3F8FF&color=DA70D6)
 </div>
 
 ---
