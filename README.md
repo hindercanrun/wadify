@@ -48,5 +48,11 @@ For anyone interested in learning about the file type, I have put some documenta
 
 ---
 
+> [!NOTE]
+> ### Contributing:
+> I really don't care, just send me stuff and I'll probably look into it.
+
+---
+
 > [!IMPORTANT]
 > **This tool has been created purely for the purposes of research.**
