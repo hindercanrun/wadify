@@ -38,12 +38,12 @@ namespace Wad
 
                     UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
 
-                    //all good!
                     Console.WriteLine("\nDone!");
                 }
             }
             catch (Exception MSG)
             {
+                Console.WriteLine("\nFATAL ERROR:");
                 Console.WriteLine($"Failed to unlink: {FileName}!");
                 Console.WriteLine($"Reason: {MSG.Message}");
                 return;
@@ -69,12 +69,12 @@ namespace Wad
                     File.WriteAllBytes(
                         Path.GetFileName(FolderName) + ".wad", Stream.ToArray());
 
-                    //all good!
                     Console.WriteLine("\nDone!");
                 }
             }
             catch (Exception MSG)
             {
+                Console.WriteLine("\nFATAL ERROR:");
                 Console.WriteLine($"Failed to link: {FolderName}!");
                 Console.WriteLine($"Reason: {MSG.Message}");
                 return;

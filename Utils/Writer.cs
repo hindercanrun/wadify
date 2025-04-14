@@ -33,7 +33,7 @@ namespace Utils
                 }
                 catch (Exception MSG)
                 {
-                    //bad!
+                    Console.WriteLine("\nFATAL ERROR:");
                     Console.WriteLine($"{Entry.name} failed to extract!");
                     Console.WriteLine($"Reason: {MSG.Message}");
                     return;
