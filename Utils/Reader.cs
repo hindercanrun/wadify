@@ -302,13 +302,13 @@ namespace Utils
         //
         // reads a 32-bit integer from the reader
         //
-        public static string ReadEntryName(BinaryReader _Reader)
+        public static string ReadEntryName(BinaryReader Reader)
         {
-            return Encoding.ASCII.GetString(_Reader.ReadBytes(32)).Trim('\0');
+            return Encoding.ASCII.GetString(Reader.ReadBytes(32)).Trim('\0');
         }
 
         //
-        // gets the filename from the specified path
+        // grabs the specified file name
         //
         public static string GetFilename(string FileName)
         {
