@@ -47,6 +47,7 @@ namespace Utils
         //
         public static WAD WriteOnlineWAD(string[] FileNames)
         {
+            // TODO: maybe make this another function
             WADHeader Header = new WADHeader
             {
                 magic = 0x543377AB,
