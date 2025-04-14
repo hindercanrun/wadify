@@ -226,8 +226,10 @@ namespace Utils
                 // check the magic
                 if (Header.magic != 0x543377AB) // T3w«
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(
                         $"WAD has incorrect magic! Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
+                    Console.ResetColor();
                     return null;
                 }
 

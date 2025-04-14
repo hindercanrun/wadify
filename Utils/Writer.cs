@@ -33,9 +33,10 @@ namespace Utils
                 }
                 catch (Exception MSG)
                 {
-                    Console.WriteLine("\nFATAL ERROR:");
-                    Console.WriteLine($"{Entry.name} failed to extract!");
-                    Console.WriteLine($"Reason: {MSG.Message}");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"ERROR  :: Failed to extract: {Entry.name}!");
+                    Console.WriteLine($"REASON :: {MSG.Message}");
+                    Console.ResetColor();
                     return;
                 }
             }

@@ -43,9 +43,10 @@ namespace Wad
             }
             catch (Exception MSG)
             {
-                Console.WriteLine("\nFATAL ERROR:");
-                Console.WriteLine($"Failed to unlink: {FileName}!");
-                Console.WriteLine($"Reason: {MSG.Message}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"ERROR  :: Failed to unlink: {FileName}!");
+                Console.WriteLine($"REASON :: {MSG.Message}");
+                Console.ResetColor();
                 return;
             }
         }
@@ -74,9 +75,10 @@ namespace Wad
             }
             catch (Exception MSG)
             {
-                Console.WriteLine("\nFATAL ERROR:");
-                Console.WriteLine($"Failed to link: {FolderName}!");
-                Console.WriteLine($"Reason: {MSG.Message}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"ERROR  :: Failed to link: {FolderName}!");
+                Console.WriteLine($"REASON :: {MSG.Message}");
+                Console.ResetColor();
                 return;
             }
         }
@@ -90,15 +92,17 @@ namespace Wad
                 return;
             }
 
-            // small check to see if the .wad is already unlinked
+            // small check to see if it's actually a .wad file
             if (!Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(
-                    "WARNING :: trying to unlink a non .wad file!");
+                    "WARNING :: tried to unlink a non .wad file!");
                 Console.WriteLine(
                     "        :: you might be trying to unlink an already unlinked .wad.");
                 Console.WriteLine(
                     "        :: if not, add .wad extension to your command or check your file name.");
+                Console.ResetColor();
                 return;
             }
 
@@ -115,13 +119,14 @@ namespace Wad
                 return;
             }
 
-            // small check to see if the .wad is already linked
             if (Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(
                     "WARNING :: trying to link an already linked .wad file!");
                 Console.WriteLine(
                     "        :: if not, remove the .wad extension from your command or check your file name.");
+                Console.ResetColor();
                 return;
             }
 
@@ -185,7 +190,9 @@ namespace Wad
                     About();
                     break;
                 default:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR :: unknown command!");
+                    Console.ResetColor();
                     return;
             }
         }
