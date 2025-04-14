@@ -15,8 +15,8 @@
 2. Drag and drop it to your folder of choice.
 3. Open up Command Prompt and type in `cd <your folder of choice>`.
 4. Type `wad` and now your command of choice.
-   - `--unlink` if you want to unlink a wad.
-   - `--link` if you want to link a wad.
+   - `--unlink <wad>` if you want to unlink a wad.
+   - `--link <folder>` if you want to link a wad.
    - If you need any help, type `--help` for all the commands.
 5. Done.
 
