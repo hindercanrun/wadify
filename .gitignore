@@ -13,8 +13,8 @@
 .vs/
 
 # Build results
-bin
-obj
+bin/
+obj/
 
 # File types
 *.pdb
