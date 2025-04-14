@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System.Text;
-using Ionic.Zlib;
 
 using static Utils.Structs;
 using static Utils.EndiannessReader;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace Utils
 {
@@ -23,13 +25,11 @@ namespace Utils
 
                 try
                 {
-                    //extract the compressed data
                     byte[] CompressedData = new byte[WADEntry.compressedSize];
-
-                    //okay copy it then write it
                     Array.Copy(Bytes, WADEntry.offset, CompressedData, 0, WADEntry.compressedSize);
-                    File.WriteAllBytes(Path.Combine(OutputDirectory, WADEntry.name),
-                        ZlibStream.UncompressBuffer(CompressedData));
+
+                    byte[] decompressedData = Decompress(CompressedData);
+                    File.WriteAllBytes(Path.Combine(OutputDirectory, WADEntry.name), decompressedData);
                 }
                 catch (Exception MSG)
                 {
@@ -81,7 +81,7 @@ namespace Utils
         public static WADEntry CreateWADEntry(string Path, string fileNameOnly, uint offset)
         {
             byte[] DecompressedBuf = File.ReadAllBytes(Path);
-            byte[] CompressedBuf = ZlibStream.CompressBuffer(DecompressedBuf);
+            byte[] CompressedBuf = Compress(DecompressedBuf);
 
             return new WADEntry
             {
@@ -148,6 +148,31 @@ namespace Utils
         {
             if (!Directory.Exists(FolderName))
                 Directory.CreateDirectory(FolderName);
+        }
+
+        public static byte[] Compress(byte[] FileName)
+        {
+            using (var OutputStream = new MemoryStream())
+            {
+                using (var Deflate = new DeflaterOutputStream(
+                    OutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, false)))
+                {
+                    Deflate.Write(FileName, 0, FileName.Length);
+                    Deflate.Finish();
+                }
+                return OutputStream.ToArray();
+            }
+        }
+
+        public static byte[] Decompress(byte[] FileName)
+        {
+            using (var Stream = new MemoryStream(FileName))
+            using (var Inflate = new InflaterInputStream(Stream, new Inflater(false)))
+            using (var OutputStream = new MemoryStream())
+            {
+                Inflate.CopyTo(OutputStream);
+                return OutputStream.ToArray();
+            }
         }
     }
 }
