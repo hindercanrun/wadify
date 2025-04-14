@@ -107,7 +107,7 @@ namespace Utils
         }
 
         //
-        // writes the entries to the file
+        // writes the entries
         //
         public static void WriteWADEntries(BinaryWriter Writer, List<WADEntry> Entries)
         {
@@ -125,7 +125,7 @@ namespace Utils
         }
 
         //
-        // writes compressed data to the file
+        // writes compressed data
         //
         public static void WriteCompressedData(BinaryWriter Writer, List<WADEntry> Entries)
         {
@@ -134,7 +134,7 @@ namespace Utils
         }
 
         //
-        // writes a padding to the file
+        // writes a 00 padding
         //
         public static void WritePadding(BinaryWriter Writer, int NameLength)
         {
@@ -152,6 +152,9 @@ namespace Utils
                 Directory.CreateDirectory(FolderName);
         }
 
+        //
+        // compresses a file
+        //
         public static byte[] Compress(byte[] FileName)
         {
             using (var OutputStream = new MemoryStream())
@@ -167,6 +170,9 @@ namespace Utils
             }
         }
 
+        //
+        // decompresses a file
+        //
         public static byte[] Decompress(byte[] FileName)
         {
             using (var Stream = new MemoryStream(FileName))
