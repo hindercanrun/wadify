@@ -1,6 +1,17 @@
 # Visual Studio cache/options directory
 .vs/
 
+# Visual Studio Code cache/options directory
+.vscode/
+
+# Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+.vs/
+
 # Build results
 bin
 obj
@@ -8,3 +19,23 @@ obj
 # File types
 *.pdb
 *.xml
+.DS_Store
+*.svclog
+*.pidb
+*.scc
+*.ilk
+*.obj
+*.iobj
+*.ipdb
+*.tlog
+
+# Windows thumbnail/cache
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*~
+*.bak
+
+# Publish folder
+publish/
