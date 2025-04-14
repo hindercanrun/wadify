@@ -96,7 +96,9 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 2)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("USAGE :: --unlink <input.wad>");
+                Console.ResetColor();
                 return;
             }
 
@@ -123,7 +125,9 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 2)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("USAGE :: --link <input folder>");
+                Console.ResetColor();
                 return;
             }
 
@@ -169,7 +173,9 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 1)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("USAGE :: wad.exe <command>");
+                Console.ResetColor();
                 return;
             }
 
