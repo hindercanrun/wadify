@@ -240,11 +240,13 @@ namespace Utils
                 DateTime Time = TimeOffset.UtcDateTime;
 
                 //some misc .wad information
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine($"WAD Information:");
                 Console.WriteLine($"Magic: 0x{Header.magic:X8}");
                 Console.WriteLine($"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
                 Console.WriteLine($"Entries: {Header.numEntries}");
                 Console.WriteLine($"FFOTD Version: {Header.ffotdVersion}");
+                Console.ResetColor();
 
                 Console.WriteLine($"\nExtracting files..\n");
 
