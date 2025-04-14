@@ -1,7 +1,5 @@
 <div align="center">
 
-https://discord.gg/qTYx5StapU
-
 # a linker / unlinker for Treyarch's .wad container files.
 
 ![latest release](https://img.shields.io/github/v/tag/hindercanrun/wad?filter=!v*-pre&style=flat-square&label=Latest%20Release&labelColor=F3F8FF&color=F88379)
