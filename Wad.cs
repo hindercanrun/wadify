@@ -5,7 +5,7 @@
  *
  * it also only support's xbox 360 (ps3 and wii u are untested but should work for them)
  * pc is unsupported however you *can* unlink pc wad's, you just have to swap around the magic's bytes
- * i will need to get my hands on a ps3 and wii u wad to properly confirm... not likely though
+ * i will need to get my hands on a ps3 and wii u wad to properly confirm... this likely won't happen though
  *
 /*/
 
@@ -147,7 +147,7 @@ namespace Wad
         static void About()
         {
             Console.WriteLine("tool information:");
-            Console.WriteLine("wad.exe :: a .wad linker, unlinker and converter tool for Black Ops/Black Ops II");
+            Console.WriteLine("wad.exe :: a linker / unlinker tool for 3arc's .wad file type");
             Console.WriteLine("        :: made by ymes_zzz");
         }
 
@@ -158,7 +158,7 @@ namespace Wad
         static void Main(string[] Parameters)
         {
             // first check if there are any parameters
-            if (Parameters.Length <= 0)
+            if (Parameters.Length < 1)
             {
                 Console.WriteLine("USAGE :: wad.exe <command>");
                 return;
