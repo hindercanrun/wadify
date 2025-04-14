@@ -6,7 +6,6 @@
 ![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20Date&labelColor=F3F8FF&color=F88379)
 ![size](https://img.shields.io/github/languages/code-size/hindercanrun/wad?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
 ![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
-![stars](https://img.shields.io/github/downloads/hindercanrun/wad/wad.svg?style=flat-square&label=Total%20Stars&labelColor=F3F8FF&color=F88379)
 </div>
 
 ---
