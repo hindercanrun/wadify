@@ -23,6 +23,7 @@ magic
 string: T3w« hex: 54 33 77 AB (big endian)
 string: «w3T hex: AB 77 33 54 (little endian)
 ```
+
 ![image](https://github.com/user-attachments/assets/e6ba742c-3890-4cb9-8331-43519243a32c)
 
 now, we have the timestamp.
@@ -33,9 +34,19 @@ in my instance, it was this.
 
 ![image](https://github.com/user-attachments/assets/0d0a247d-8a8a-4bc5-b3bd-0c05610d7f21)
 
+```
+timestamp
+string: 15/11/2011 6:31:35 AM hex: 4E C2 07 47 (big endian)
+```
+
 now we have the number of entries.
 
 ![image](https://github.com/user-attachments/assets/a1cb9920-208b-4d0e-87f1-dd0a2627dbb9)
+
+```
+number of entries
+int: 3 hex: 00 00 00 03 (big endian)
+```
 
 which was three from this wad. remember each wad can have a different timestamp and number of entries.
 
@@ -46,6 +57,11 @@ after the number of entries is the ffotd version. this is always 0 for pre-relea
 This screenshot is from `rfazio/t6/wads/online_tu15_mp_english.wad`, as you can see it has ffotd version set to 1. `rfazio build` version is from `2013`, so post release. `T6_greenlight_mp` has ffotd version of `0`. this ffotd version is completely seperate from the one the game uses.
 
 ![image](https://github.com/user-attachments/assets/04da48b9-1700-4b67-b338-b76457bc729d)
+
+```
+ffotd version
+int: 0 hex: 00 00 00 00 (big endian)
+```
 
 now, we have the entries themselves. remember this can be different depending on your game mode's and game version's wad.
 
