@@ -164,10 +164,6 @@ namespace Wad
             Console.WriteLine("        :: made by ymes_zzz");
         }
 
-        /*/
-         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        /*/
-
         static void Main(string[] Parameters)
         {
             // first check if there are any parameters
