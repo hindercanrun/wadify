@@ -115,7 +115,7 @@ namespace Utils
                 Writer.Write(Encoding.ASCII.GetBytes(Entry.name));
                 WritePadding(Writer, Entry.name.Length);
 
-                //write the compressed size, size and offset
+                //write the compressed size, entry size and offset
                 Writer.Write(ReverseEndianUInt32(Entry.compressedSize));
                 Writer.Write(ReverseEndianUInt32(Entry.size));
                 Writer.Write(ReverseEndianUInt32(Entry.offset));

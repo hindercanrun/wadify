@@ -209,7 +209,7 @@ namespace Utils
                 Console.WriteLine($"WAD Information:");
                 Console.WriteLine($"Magic: 0x{Header.magic:X8}");
                 Console.WriteLine($"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
-                Console.WriteLine($"Entries Number: {Header.numEntries}");
+                Console.WriteLine($"Entries: {Header.numEntries}");
                 Console.WriteLine($"FFOTD Version: {Header.ffotdVersion}");
 
                 Console.WriteLine($"\nExtracting files..\n");
@@ -224,7 +224,7 @@ namespace Utils
         }
 
         //
-        // reads the .wad header
+        // reads the header
         //
         public static WADHeader ReadWADHeader()
         {
@@ -249,15 +249,15 @@ namespace Utils
             byte[] Data = new byte[EntryDataSize];
             Array.Copy(Bytes, 16 + (EntryDataSize * Index), Data, 0, Data.Length);
 
-            using (MemoryStream _Stream = new MemoryStream(Data))
-            using (BinaryReader _Reader = new BinaryReader(_Stream))
+            using (var Stream = new MemoryStream(Data))
+            using (var Reader = new BinaryReader(Stream))
             {
                 WADEntry Entry = new WADEntry
                 {
-                    name = ReadEntryName(_Reader),
-                    compressedSize = ReverseEndianUInt32(_Reader.ReadUInt32()),
-                    size = ReverseEndianUInt32(_Reader.ReadUInt32()),
-                    offset = ReverseEndianUInt32(_Reader.ReadUInt32())
+                    name = ReadEntryName(Reader),
+                    compressedSize = ReverseEndianUInt32(Reader.ReadUInt32()),
+                    size = ReverseEndianUInt32(Reader.ReadUInt32()),
+                    offset = ReverseEndianUInt32(Reader.ReadUInt32())
                 };
 
                 Entry.compressedBuf = new byte[Entry.compressedSize];
