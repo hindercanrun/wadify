@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 
+/*/
+ *
+ * just a notice:
+ *  these structs were taken from retail T6
+ *  due to there being no public CoDMP.pdb in T6_greenlight_mp
+ *  and i can't be bothered to fully reverse them
+ *  it doesn't matter anyways, because the structs are 1:1
+ *  the only new addition is compressedBuf in WADEntry
+ *
+/*/
+
 namespace Utils
 {
     class Structs
     {
-        // these structs were taken from retail T6 due to no structs in T6_greenlight_mp
-        //
-
         public struct WADHeader
         {
             public UInt32 magic;
@@ -22,7 +30,7 @@ namespace Utils
             public UInt32 compressedSize;
             public UInt32 size;
             public UInt32 offset;
-            public byte[] compressedBuf;//nonexistant in T5 - it may also not exist in pre-release T6
+            public byte[] compressedBuf;//missing in T5
         }
 
         public struct WAD
