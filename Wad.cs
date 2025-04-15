@@ -31,8 +31,8 @@ namespace Wad
     {
         static void UnlinkWAD(string FileName)
         {
-            // tell the user what .wad we are unlinking
-            Console.WriteLine($"Unlinking: {FileName}..\n");
+            // tell the user what we are unlinking
+            Utils.Print.WriteMessage($"Unlinking: {FileName}..\n");
 
             try
             {
@@ -40,29 +40,28 @@ namespace Wad
                 if (Entries != null)
                 {
                     string OutputDirectory = Path.Combine(
-                        ".", Path.GetFileNameWithoutExtension(GetFilename(FileName)));
-                    // check if the output directory exists
-                    CreateOutputDirectory(OutputDirectory);
+                        ".",
+                        Path.GetFileNameWithoutExtension(GetFilename(FileName)));
 
+                    CreateOutputDirectory(OutputDirectory);
                     UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
 
-                    Console.WriteLine("\nDone!");
+                    Utils.Print.WriteMessage("\nDone!");
                 }
             }
-            catch (Exception MSG)
+            catch (Exception Message)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"ERROR  :: Failed to unlink: {FileName}!");
-                Console.WriteLine($"REASON :: {MSG.Message}");
-                Console.ResetColor();
+                Utils.Print.WriteExceptionError(
+                    $"Failed to unlink: {FileName}!",
+                    Message.Message);
                 return;
             }
         }
 
         static void LinkWAD(string FolderName)
         {
-            // tell the user what .wad we are linking
-            Console.WriteLine($"Linking: {FolderName}..\n");
+            // tell the user what we are linking
+            Utils.Print.WriteMessage($"Linking: {FolderName}..\n");
 
             try
             {
@@ -76,17 +75,17 @@ namespace Wad
 
                     // okay let's save the file now
                     File.WriteAllBytes(
-                        Path.GetFileName(FolderName) + ".wad", Stream.ToArray());
+                        Path.GetFileName(FolderName) + ".wad",
+                        Stream.ToArray());
 
-                    Console.WriteLine("\nDone!");
+                    Utils.Print.WriteMessage("\nDone!");
                 }
             }
-            catch (Exception MSG)
+            catch (Exception Message)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"ERROR  :: Failed to link: {FolderName}!");
-                Console.WriteLine($"REASON :: {MSG.Message}");
-                Console.ResetColor();
+                Utils.Print.WriteExceptionError(
+                    $"Failed to link: {FolderName}!",
+                    Message.Message);
                 return;
             }
         }
@@ -96,23 +95,19 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 2)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"USAGE :: {Parameters[0]} <input.wad>");
-                Console.ResetColor();
+                Utils.Print.WriteUsageWarning($"{Parameters[0]} <input.wad>");
                 return;
             }
 
             // small check to see if it's actually a .wad file
             if (!Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(
+                Utils.Print.WriteWarning(
                     "WARNING :: tried to unlink a non .wad file!");
-                Console.WriteLine(
+                Utils.Print.WriteWarning(
                     "        :: you might be trying to unlink an already unlinked .wad.");
-                Console.WriteLine(
+                Utils.Print.WriteWarning(
                     "        :: if not, add .wad extension to your command or check your file name.");
-                Console.ResetColor();
                 return;
             }
 
@@ -125,20 +120,16 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 2)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"USAGE :: {Parameters[0]} <input folder>");
-                Console.ResetColor();
+                Utils.Print.WriteUsageWarning($"{Parameters[0]} <input folder>");
                 return;
             }
 
             if (Parameters[1].EndsWith(".wad", StringComparison.OrdinalIgnoreCase))
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(
+                Utils.Print.WriteWarning(
                     "WARNING :: trying to link an already linked .wad file!");
-                Console.WriteLine(
+                Utils.Print.WriteWarning(
                     "        :: if not, remove the .wad extension from your command or check your file name.");
-                Console.ResetColor();
                 return;
             }
 
@@ -150,22 +141,31 @@ namespace Wad
         {
             // just general help for the tool
 
-            Console.WriteLine("command usages:");
-            Console.WriteLine("--unlink   <input .wad>   ::  unlinks the inputted .wad file.");
-            Console.WriteLine("  shortcut                :: -u");
-            Console.WriteLine("--link     <input folder> ::  links the inputted folder into a .wad file.");
-            Console.WriteLine("  shortcut                :: -l");
-            Console.WriteLine("--help                    ::  displays help for various commands.");
-            Console.WriteLine("  shortcut                :: -h");
-            Console.WriteLine("--about                   ::  displays information about this tool.");
-            Console.WriteLine("  shortcut                :: -a");
+            Utils.Print.WriteMessage(
+                "command usages:");
+            Utils.Print.WriteMessage(
+                "--unlink   <input .wad>   ::  unlinks the inputted .wad file.");
+            Utils.Print.WriteMessage(
+                "  shortcut                :: -u");
+            Utils.Print.WriteMessage(
+                "--link     <input folder> ::  links the inputted folder into a .wad file.");
+            Utils.Print.WriteMessage(
+                "  shortcut                :: -l");
+            Utils.Print.WriteMessage(
+                "--help                    ::  displays help for various commands.");
+            Utils.Print.WriteMessage(
+                "  shortcut                :: -h");
+            Utils.Print.WriteMessage(
+                "--about                   ::  displays information about this tool.");
+            Utils.Print.WriteMessage(
+                "  shortcut                :: -a");
         }
 
         static void About()
         {
-            Console.WriteLine("tool information:");
-            Console.WriteLine("wad.exe :: a linker / unlinker tool for 3arc's .wad file type");
-            Console.WriteLine("        :: made by ymes_zzz");
+            Utils.Print.WriteMessage("tool information:");
+            Utils.Print.WriteMessage("wad.exe :: a linker / unlinker tool for 3arc's .wad file type");
+            Utils.Print.WriteMessage("        :: made by ymes_zzz");
         }
 
         static void Main(string[] Parameters)
@@ -173,9 +173,7 @@ namespace Wad
             // first check if there are any parameters
             if (Parameters.Length < 1)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("USAGE :: wad.exe <command>");
-                Console.ResetColor();
+                Utils.Print.WriteUsageWarning("wad.exe <command>");
                 return;
             }
 
@@ -200,9 +198,7 @@ namespace Wad
                     About();
                     break;
                 default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR :: unknown command: {Parameters[0]}!");
-                    Console.ResetColor();
+                    Utils.Print.WriteError($"unknown command: {Parameters[0]}!");
                     return;
             }
         }

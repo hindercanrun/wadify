@@ -20,7 +20,7 @@ namespace Utils
             foreach (WADEntry Entry in Entries)
             {
                 // tell the user what we are extracting..
-                Console.WriteLine($"Extracting: {Entry.name}..");
+                Utils.Print.WriteMessage($"Extracting: {Entry.name}..");
 
                 try
                 {
@@ -31,12 +31,11 @@ namespace Utils
                     File.WriteAllBytes(
                         Path.Combine(OutputDirectory, Entry.name), DecompressedData);
                 }
-                catch (Exception MSG)
+                catch (Exception Message)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR  :: Failed to extract: {Entry.name}!");
-                    Console.WriteLine($"REASON :: {MSG.Message}");
-                    Console.ResetColor();
+                    Utils.Print.WriteExceptionError(
+                        $"Failed to unlink: {Entry.name}!",
+                        Message.Message);
                     return;
                 }
             }
@@ -62,7 +61,7 @@ namespace Utils
             foreach (string Name in FileNames)
             {
                 string FileName = Path.GetFileName(Name);
-                Console.WriteLine($"Compressing {FileName}..");
+                Utils.Print.WriteMessage($"Compressing {FileName}..");
 
                 WADEntry Entry = CreateWADEntry(Name, FileName, Offset);
                 Entries.Add(Entry);

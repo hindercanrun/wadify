@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\Print.cs" />
     <Compile Include="Utils\Structs.cs" />
     <Compile Include="Wad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

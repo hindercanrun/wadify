@@ -226,34 +226,52 @@ namespace Utils
                 // check the magic
                 if (Header.magic != 0x543377AB) // T3w«
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(
+                    Utils.Print.WriteError(
                         $"WAD has incorrect magic! Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
-                    Console.ResetColor();
                     return null;
                 }
-
-                // your .wad is good if you get here
 
                 //convert the timestamp to a readable format
                 DateTimeOffset TimeOffset = DateTimeOffset.FromUnixTimeSeconds(Header.timestamp);
                 DateTime Time = TimeOffset.UtcDateTime;
 
                 //some misc .wad information
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine($"WAD Information:");
-                Console.WriteLine($"Magic: 0x{Header.magic:X8}");
-                Console.WriteLine($"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
-                Console.WriteLine($"Entries: {Header.numEntries}");
-                Console.WriteLine($"FFOTD Version: {Header.ffotdVersion}");
-                Console.ResetColor();
+                Utils.Print.WriteMiscMessage(
+                    $"WAD Information:");
+                Utils.Print.WriteMiscMessage(
+                    $"Magic: 0x{Header.magic:X8}");
+                Utils.Print.WriteMiscMessage(
+                    $"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
+                Utils.Print.WriteMiscMessage(
+                    $"Entries: {Header.numEntries}");
+                Utils.Print.WriteMiscMessage(
+                    $"FFOTD Version: {Header.ffotdVersion}");
 
-                Console.WriteLine($"\nExtracting files..\n");
+                Utils.Print.WriteMessage($"\nExtracting files..\n");
 
                 //time to read the entries
                 List<WADEntry> Entries = new List<WADEntry>();
                 for (int Index = 0; Index < Header.numEntries; Index++)
+                {
                     Entries.Add(ReadWADEntry(Bytes, Index));
+#if DEBUG
+                    Utils.Print.WriteDebugMessage("WAD Entry Information:");
+
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry Index: {Index}");
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry: {Entries[Index].name}");
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry Compressed Size: 0x{Entries[Index].compressedSize:X8}");
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry Size: 0x{Entries[Index].size:X8}");
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry Offset: {Entries[Index].offset}");
+                    Utils.Print.WriteDebugMessage(
+                        $"Entry Compressed Buffer:" +
+                        $"{BitConverter.ToString(Entries[Index].compressedBuf)}");
+#endif
+                }
 
                 return Entries;
             }
