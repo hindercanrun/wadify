@@ -105,9 +105,7 @@ namespace Wad
                 Utils.Print.WriteWarning(
                     "WARNING :: tried to unlink a non .wad file!");
                 Utils.Print.WriteWarning(
-                    "        :: you might be trying to unlink an already unlinked .wad.");
-                Utils.Print.WriteWarning(
-                    "        :: if not, add .wad extension to your command or check your file name.");
+                    "        :: add .wad extension to your command or check your file name.");
                 return;
             }
 
@@ -129,7 +127,7 @@ namespace Wad
                 Utils.Print.WriteWarning(
                     "WARNING :: trying to link an already linked .wad file!");
                 Utils.Print.WriteWarning(
-                    "        :: if not, remove the .wad extension from your command or check your file name.");
+                    "        :: remove the .wad extension from your command or check your file name.");
                 return;
             }
 
@@ -189,6 +187,7 @@ namespace Wad
                 case "--link":
                     Link(Parameters);
                     break;
+                case "?":
                 case "-h":
                 case "--help":
                     Help();
