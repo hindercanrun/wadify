@@ -46,7 +46,7 @@ namespace Wad
                     CreateOutputDirectory(OutputDirectory);
                     UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
 
-                    Utils.Print.WriteMessage("\nDone!");
+                    Utils.Print.WriteGreenMessage("\nDone !");
                 }
             }
             catch (Exception Message)
@@ -78,7 +78,7 @@ namespace Wad
                         Path.GetFileName(FolderName) + ".wad",
                         Stream.ToArray());
 
-                    Utils.Print.WriteMessage("\nDone!");
+                    Utils.Print.WriteGreenMessage("\nDone !");
                 }
             }
             catch (Exception Message)
@@ -187,7 +187,7 @@ namespace Wad
                 case "--link":
                     Link(Parameters);
                     break;
-                case "?":
+                case "-?":
                 case "-h":
                 case "--help":
                     Help();

@@ -28,9 +28,8 @@ namespace Utils
                     Array.Copy(Bytes, Entry.offset, CompressedData, 0, Entry.compressedSize);
 
                     byte[] DecompressedData = DecompressFile(CompressedData);
-                    File.WriteAllBytes(
-                        Path.Combine(OutputDirectory, Entry.name),
-                        DecompressedData);
+                    string outputPath = Path.Combine(OutputDirectory, Entry.name);
+                    File.WriteAllBytes(outputPath, DecompressedData);
                 }
                 catch (Exception Message)
                 {
@@ -47,7 +46,6 @@ namespace Utils
         //
         public static WAD WriteOnlineWAD(string[] FileNames)
         {
-            // TODO: maybe make this another function
             WADHeader Header = new WADHeader
             {
                 magic = 0x543377AB,
@@ -80,9 +78,9 @@ namespace Utils
         //
         // creates a WAD entry
         //
-        public static WADEntry CreateWADEntry(string Path, string FileNameOnly, uint Offset)
+        public static WADEntry CreateWADEntry(string FilePath, string FileNameOnly, uint Offset)
         {
-            byte[] DecompressedBuf = File.ReadAllBytes(Path);
+            byte[] DecompressedBuf = File.ReadAllBytes(FilePath);
             byte[] CompressedBuf = CompressFile(DecompressedBuf);
 
             return new WADEntry

@@ -37,6 +37,16 @@ namespace Utils
 #endif
 
         //
+        // writes a regular message with the colour green to the console
+        //
+        public static void WriteGreenMessage(string Message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(Message);
+            Console.ResetColor();
+        }
+
+        //
         // writes a warning message to the console
         //
         public static void WriteWarning(string Message)
