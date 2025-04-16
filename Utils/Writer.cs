@@ -27,9 +27,10 @@ namespace Utils
                     byte[] CompressedData = new byte[Entry.compressedSize];
                     Array.Copy(Bytes, Entry.offset, CompressedData, 0, Entry.compressedSize);
 
-                    byte[] DecompressedData = Decompress(CompressedData);
+                    byte[] DecompressedData = DecompressFile(CompressedData);
                     File.WriteAllBytes(
-                        Path.Combine(OutputDirectory, Entry.name), DecompressedData);
+                        Path.Combine(OutputDirectory, Entry.name),
+                        DecompressedData);
                 }
                 catch (Exception Message)
                 {
@@ -82,7 +83,7 @@ namespace Utils
         public static WADEntry CreateWADEntry(string Path, string FileNameOnly, uint Offset)
         {
             byte[] DecompressedBuf = File.ReadAllBytes(Path);
-            byte[] CompressedBuf = Compress(DecompressedBuf);
+            byte[] CompressedBuf = CompressFile(DecompressedBuf);
 
             return new WADEntry
             {
@@ -133,7 +134,7 @@ namespace Utils
         }
 
         //
-        // writes a 00 padding
+        // appends a 00 (zero zero) padding
         //
         public static void WritePadding(BinaryWriter Writer, int NameLength)
         {
@@ -152,14 +153,15 @@ namespace Utils
         }
 
         //
-        // compresses a file
+        // compresses the inputted file
         //
-        public static byte[] Compress(byte[] FileName)
+        public static byte[] CompressFile(byte[] FileName)
         {
             using (var OutputStream = new MemoryStream())
             {
-                using (var Deflate = new DeflaterOutputStream(
-                    OutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, false)))
+                using (
+                    var Deflate = new DeflaterOutputStream(
+                        OutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, false)))
                 {
                     Deflate.Write(FileName, 0, FileName.Length);
                     Deflate.Finish();
@@ -170,9 +172,9 @@ namespace Utils
         }
 
         //
-        // decompresses a file
+        // decompresses the inputted file
         //
-        public static byte[] Decompress(byte[] FileName)
+        public static byte[] DecompressFile(byte[] FileName)
         {
             using (var Stream = new MemoryStream(FileName))
             using (var Inflate = new InflaterInputStream(Stream, new Inflater(false)))

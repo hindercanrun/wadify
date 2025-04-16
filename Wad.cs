@@ -32,7 +32,7 @@ namespace Wad
         static void UnlinkWAD(string FileName)
         {
             // tell the user what we are unlinking
-            Utils.Print.WriteMessage($"Unlinking: {FileName}..\n");
+            Utils.Print.WriteMessage($"\nUnlinking: {FileName}..\n");
 
             try
             {
@@ -61,7 +61,7 @@ namespace Wad
         static void LinkWAD(string FolderName)
         {
             // tell the user what we are linking
-            Utils.Print.WriteMessage($"Linking: {FolderName}..\n");
+            Utils.Print.WriteMessage($"\nLinking: {FolderName}..\n");
 
             try
             {
