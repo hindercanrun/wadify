@@ -28,7 +28,7 @@
   - Unlink the inputted wad file.
 - ```--link```, ```-l```
   - Link the inputted folder into a wad file.
-- ```--help```, ```-h```
+- ```--help```, ```-h```, ```-?```
   - Print help for the commands and this tool.
 - ```--about```, ```-a```
   - Print various information about this tool.
