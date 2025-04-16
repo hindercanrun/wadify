@@ -9,7 +9,9 @@ namespace Utils
         //
         public static void WriteMessage(string Message)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(Message);
+            Console.ResetColor();
         }
 
         //
