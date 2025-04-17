@@ -51,7 +51,9 @@ namespace Utils
                 magic = 0x543377AB,
                 timestamp = (uint)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 numEntries = (uint)FileNames.Length,
-                ffotdVersion = 0 // it's like always 0 (pre-release atleast, only goes to 1 in post-release)
+                ffotdVersion = 0 // it's like always 0 or 1
+                                 // pre-release: 0
+                                 // post-release: 1
             };
 
             List<WADEntry> Entries = new List<WADEntry>();
@@ -138,7 +140,7 @@ namespace Utils
         {
             int PaddingLength = 32 - NameLength;
             for (int Index = 0; Index < PaddingLength; Index++)
-                Writer.Write((byte)0);
+                Writer.Write((byte)0);// 00
         }
 
         //
