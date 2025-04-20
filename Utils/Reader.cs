@@ -16,7 +16,7 @@ namespace Utils
 			Big,
 		}
 
-		private Endianness _Endianness = Endianness.Little;
+		private Endianness _Endianness = Endianness.Big;
 
 		public EndiannessReader(
 			Stream Input)
