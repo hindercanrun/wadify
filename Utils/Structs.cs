@@ -14,29 +14,29 @@ using System.Collections.Generic;
 
 namespace Utils
 {
-    class Structs
-    {
-        public struct WADHeader
-        {
-            public UInt32 magic;
-            public UInt32 timestamp;
-            public UInt32 numEntries;
-            public UInt32 ffotdVersion;
-        }
+	class Structs
+	{
+		public struct WADHeader
+		{
+			public UInt32 magic;
+			public UInt32 timestamp;
+			public UInt32 numEntries;
+			public UInt32 ffotdVersion;
+		}
 
-        public struct WADEntry
-        {
-            public string name;
-            public UInt32 compressedSize;
-            public UInt32 size;
-            public UInt32 offset;
-            public byte[] compressedBuf;//missing in T5
-        }
+		public struct WADEntry
+		{
+			public string name;
+			public UInt32 compressedSize;
+			public UInt32 size;
+			public UInt32 offset;
+			public byte[] compressedBuf;//missing in T5
+		}
 
-        public struct WAD
-        {
-            public WADHeader header;
-            public List<WADEntry> entries;
-        }
-    }
+		public struct WAD
+		{
+			public WADHeader header;
+			public List<WADEntry> entries;
+		}
+	}
 }
