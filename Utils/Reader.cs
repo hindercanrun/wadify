@@ -226,7 +226,7 @@ namespace Utils
 				// check the magic
 				if (Header.magic != 0x543377AB) // T3w«
 				{
-					Utils.Print.WriteError(
+					Print.WriteError(
 						$"WAD has incorrect magic! Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
 					return null;
 				}
@@ -236,18 +236,18 @@ namespace Utils
 				DateTime Time = TimeOffset.UtcDateTime;
 
 				//some misc .wad information
-				Utils.Print.WriteMiscMessage(
+				Print.WriteMiscMessage(
 					$"WAD Information:");
-				Utils.Print.WriteMiscMessage(
+				Print.WriteMiscMessage(
 					$"Magic: 0x{Header.magic:X8}");
-				Utils.Print.WriteMiscMessage(
+				Print.WriteMiscMessage(
 					$"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
-				Utils.Print.WriteMiscMessage(
+				Print.WriteMiscMessage(
 					$"Entries: {Header.numEntries}");
-				Utils.Print.WriteMiscMessage(
+				Print.WriteMiscMessage(
 					$"FFOTD Version: {Header.ffotdVersion}");
 
-				Utils.Print.WriteMessage($"\nExtracting files..\n");
+				Print.WriteMessage($"\nExtracting files..\n");
 
 				//time to read the entries
 				List<WADEntry> Entries = new List<WADEntry>();
@@ -255,19 +255,19 @@ namespace Utils
 				{
 					Entries.Add(ReadWADEntry(Bytes, Index));
 #if DEBUG
-					Utils.Print.WriteDebugMessage("WAD Entry Information:");
+					Print.WriteDebugMessage("WAD Entry Information:");
 
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry Index: {Index}");
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry: {Entries[Index].name}");
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry Compressed Size: 0x{Entries[Index].compressedSize:X8}");
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry Size: 0x{Entries[Index].size:X8}");
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry Offset: {Entries[Index].offset}");
-					Utils.Print.WriteDebugMessage(
+					Print.WriteDebugMessage(
 						$"Entry Compressed Buffer:" +
 						$"{BitConverter.ToString(Entries[Index].compressedBuf)}");
 #endif

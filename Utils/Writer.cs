@@ -20,7 +20,7 @@ namespace Utils
 			foreach (WADEntry Entry in Entries)
 			{
 				// tell the user what we are extracting..
-				Utils.Print.WriteMessage($"Extracting: {Entry.name}..");
+				Print.WriteMessage($"Extracting: {Entry.name}..");
 
 				try
 				{
@@ -33,7 +33,7 @@ namespace Utils
 				}
 				catch (Exception Message)
 				{
-					Utils.Print.WriteExceptionError(
+					Print.WriteExceptionError(
 						$"Failed to unlink: {Entry.name}!",
 						Message.Message);
 					return;
@@ -62,7 +62,7 @@ namespace Utils
 			foreach (string Name in FileNames)
 			{
 				string FileName = Path.GetFileName(Name);
-				Utils.Print.WriteMessage($"Compressing {FileName}..");
+				Print.WriteMessage($"Compressing {FileName}..");
 
 				WADEntry Entry = CreateWADEntry(Name, FileName, Offset);
 				Entries.Add(Entry);
@@ -134,13 +134,13 @@ namespace Utils
 		}
 
 		//
-		// appends a 00 (zero zero) padding
+		// appends a padding containing 00
 		//
 		public static void WritePadding(BinaryWriter Writer, int NameLength)
 		{
 			int PaddingLength = 32 - NameLength;
 			for (int Index = 0; Index < PaddingLength; Index++)
-				Writer.Write((byte)0);// 00
+				Writer.Write((byte)0);
 		}
 
 		//
