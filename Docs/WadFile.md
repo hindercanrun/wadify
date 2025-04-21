@@ -82,8 +82,6 @@ and just like that, you've learnt pretty much this entire format, atleast the ba
 things to note:
 - endianness impacts the file (not a shocker).
 - 3arc used a linker that pulled from a zone_source type folder to link together the assets.
-- if your wad is at all invalid, then you cannot play online at all. you can experience this by making the game read from local storage instead of publisher storage.
-
-side note: if anybody happened to have a ps3/wii u .wad file, please send it over so I could confirm this tool works with it, it would help in the long run.
+- if your wad is at all invalid, then you cannot play online at all. you can experience this by making the game read from local storage instead of publisher storage because the game struggles to read from local storage for whatever reason.
 
 the end!
