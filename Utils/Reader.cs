@@ -220,7 +220,7 @@ namespace Utils
 		public static List<WADEntry> ProcessOnlineWAD(byte[] Bytes)
 		{
 			using (var Stream = new MemoryStream(Bytes))
-			using (_Reader = new EndiannessReader(Stream, Endianness.Big))
+			using (_Reader = new EndiannessReader(Stream))
 			{
 				WADHeader Header = ReadWADHeader();
 				// check the magic
@@ -255,21 +255,17 @@ namespace Utils
 				{
 					Entries.Add(ReadWADEntry(Bytes, Index));
 #if DEBUG
+					// print some debug information
 					Print.WriteDebugMessage("WAD Entry Information:");
 
 					Print.WriteDebugMessage(
-						$"Entry Index: {Index}");
+						$"Name: {Entries[Index].name}");
 					Print.WriteDebugMessage(
-						$"Entry: {Entries[Index].name}");
+						$"Compressed Size: 0x{Entries[Index].compressedSize:X2}");
 					Print.WriteDebugMessage(
-						$"Entry Compressed Size: 0x{Entries[Index].compressedSize:X8}");
+						$"Size: 0x{Entries[Index].size:X2}");
 					Print.WriteDebugMessage(
-						$"Entry Size: 0x{Entries[Index].size:X8}");
-					Print.WriteDebugMessage(
-						$"Entry Offset: {Entries[Index].offset}");
-					Print.WriteDebugMessage(
-						$"Entry Compressed Buffer:" +
-						$"{BitConverter.ToString(Entries[Index].compressedBuf)}");
+						$"Offset: 0x{Entries[Index].offset:X2}\n");
 #endif
 				}
 
