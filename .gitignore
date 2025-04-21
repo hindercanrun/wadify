@@ -1,9 +1,6 @@
 # Visual Studio cache/options directory
 .vs/
 
-# Visual Studio Code cache/options directory
-.vscode/
-
 # Visual Studio
 *.user
 *.suo
@@ -11,6 +8,9 @@
 *.sln.docstates
 *.VC.db
 .vs/
+
+# Visual Studio Code cache/options directory
+.vscode/
 
 # Build results
 bin/
