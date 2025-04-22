@@ -8,9 +8,9 @@ using static Utils.EndiannessReader;
 
 namespace Utils
 {
-	class EndiannessReader : BinaryReader
+	internal class EndiannessReader : BinaryReader
 	{
-		public enum Endianness
+		internal enum Endianness
 		{
 			Little,
 			Big,
@@ -18,26 +18,26 @@ namespace Utils
 
 		private Endianness _Endianness = Endianness.Big;
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input)
 			: base(Input)
 		{
 		}
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input, Encoding Encoding)
 			: base(Input, Encoding)
 		{
 		}
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input, Encoding Encoding,
 			bool LeaveOpen)
 			: base(Input, Encoding, LeaveOpen)
 		{
 		}
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input,
 			Endianness Endianness)
 			: base(Input)
@@ -45,7 +45,7 @@ namespace Utils
 			_Endianness = Endianness;
 		}
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input, Encoding Encoding,
 			Endianness Endianness)
 			: base(Input, Encoding)
@@ -53,7 +53,7 @@ namespace Utils
 			_Endianness = Endianness;
 		}
 
-		public EndiannessReader(
+		internal EndiannessReader(
 			Stream Input, Encoding Encoding, bool LeaveOpen,
 			Endianness Endianness)
 			: base(Input, Encoding, LeaveOpen)
@@ -61,7 +61,7 @@ namespace Utils
 			_Endianness = Endianness;
 		}
 
-		public void SetEndianness(Endianness Endianness)
+		internal void SetEndianness(Endianness Endianness)
 		{
 			_Endianness = Endianness;
 		}
@@ -210,14 +210,14 @@ namespace Utils
 		}
 	}
 
-	class Reader
+	internal class Reader
 	{
 		private static EndiannessReader _Reader;
 
 		//
 		// processes the inputted .wad file
 		//
-		public static List<WADEntry> ProcessOnlineWAD(byte[] Bytes)
+		internal static List<WADEntry> ProcessOnlineWAD(byte[] Bytes)
 		{
 			using (var Stream = new MemoryStream(Bytes))
 			using (_Reader = new EndiannessReader(Stream))
@@ -278,7 +278,7 @@ namespace Utils
 		//
 		// reads the header
 		//
-		public static WADHeader ReadWADHeader()
+		internal static WADHeader ReadWADHeader()
 		{
 			WADHeader Header = new WADHeader
 			{
@@ -294,7 +294,7 @@ namespace Utils
 		//
 		// reads the .wad entries
 		//
-		public static WADEntry ReadWADEntry(byte[] Bytes, int Index)
+		internal static WADEntry ReadWADEntry(byte[] Bytes, int Index)
 		{
 			const int EntryDataSize = 44;// WADEntry struct size
 
@@ -320,7 +320,7 @@ namespace Utils
 		//
 		// reads a 32-bit integer from the reader
 		//
-		public static string ReadEntryName(BinaryReader Reader)
+		internal static string ReadEntryName(BinaryReader Reader)
 		{
 			return Encoding.ASCII.GetString(Reader.ReadBytes(32)).Trim('\0');
 		}
@@ -328,7 +328,7 @@ namespace Utils
 		//
 		// grabs the specified file name
 		//
-		public static string GetFilename(string FileName)
+		internal static string GetFilename(string FileName)
 		{
 			return Path.GetFileName(FileName);
 		}

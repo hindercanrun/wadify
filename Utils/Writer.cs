@@ -10,12 +10,12 @@ using static Utils.EndiannessReader;
 
 namespace Utils
 {
-	class Writer
+	internal class Writer
 	{
 		//
 		// unlinks the entries inside a .wad file
 		//
-		public static void UnlinkEntries(List<WADEntry> Entries, byte[] Bytes, string OutputDirectory)
+		internal static void UnlinkEntries(List<WADEntry> Entries, byte[] Bytes, string OutputDirectory)
 		{
 			foreach (WADEntry Entry in Entries)
 			{
@@ -44,7 +44,7 @@ namespace Utils
 		//
 		// Writes a WAD file
 		//
-		public static WAD WriteOnlineWAD(string[] FileNames)
+		internal static WAD WriteOnlineWAD(string[] FileNames)
 		{
 			WADHeader Header = new WADHeader
 			{
@@ -80,7 +80,7 @@ namespace Utils
 		//
 		// creates a WAD entry
 		//
-		public static WADEntry CreateWADEntry(string FilePath, string FileNameOnly, uint Offset)
+		internal static WADEntry CreateWADEntry(string FilePath, string FileNameOnly, uint Offset)
 		{
 			byte[] DecompressedBuf = File.ReadAllBytes(FilePath);
 			byte[] CompressedBuf = CompressFile(DecompressedBuf);
@@ -98,7 +98,7 @@ namespace Utils
 		//
 		// writes the full header
 		//
-		public static void WriteWADHeader(BinaryWriter Writer, WADHeader Header)
+		internal static void WriteWADHeader(BinaryWriter Writer, WADHeader Header)
 		{
 			Writer.Write(ReverseEndianUInt32(Header.magic));
 			Writer.Write(ReverseEndianUInt32(Header.timestamp));
@@ -109,7 +109,7 @@ namespace Utils
 		//
 		// writes the entries
 		//
-		public static void WriteWADEntries(BinaryWriter Writer, List<WADEntry> Entries)
+		internal static void WriteWADEntries(BinaryWriter Writer, List<WADEntry> Entries)
 		{
 			foreach (WADEntry Entry in Entries)
 			{
@@ -127,7 +127,7 @@ namespace Utils
 		//
 		// writes compressed data
 		//
-		public static void WriteCompressedData(BinaryWriter Writer, List<WADEntry> Entries)
+		internal static void WriteCompressedData(BinaryWriter Writer, List<WADEntry> Entries)
 		{
 			foreach (WADEntry Entry in Entries)
 				Writer.Write(Entry.compressedBuf);
@@ -136,7 +136,7 @@ namespace Utils
 		//
 		// appends a padding containing 00
 		//
-		public static void WritePadding(BinaryWriter Writer, int NameLength)
+		internal static void WritePadding(BinaryWriter Writer, int NameLength)
 		{
 			int PaddingLength = 32 - NameLength;
 			for (int Index = 0; Index < PaddingLength; Index++)
@@ -144,18 +144,30 @@ namespace Utils
 		}
 
 		//
-		// checks if a directory exists, if not it creates it
+		// Checks if the input directory exists and creates it if it doesn't exist.
 		//
-		public static void CreateOutputDirectory(string FolderName)
+		// Usage:
+		//  CreateOutputDirectory(<Folder>);
+		//
+		// Example:
+		//  CreateOutputDirectory("online_tu0_mp_english");
+		//
+		internal static void CreateOutputDirectory(string FolderName)
 		{
 			if (!Directory.Exists(FolderName))
 				Directory.CreateDirectory(FolderName);
 		}
 
 		//
-		// compresses the inputted file
+		// Compresses the input file.
 		//
-		public static byte[] CompressFile(byte[] FileName)
+		// Usage:
+		//  CompressFile(<File>);
+		//
+		// Example:
+		//  CompressFile("online_tu0_mp_english");
+		//
+		internal static byte[] CompressFile(byte[] FileName)
 		{
 			using (var OutputStream = new MemoryStream())
 			{
@@ -172,9 +184,15 @@ namespace Utils
 		}
 
 		//
-		// decompresses the inputted file
+		// Decompresses the input file.
 		//
-		public static byte[] DecompressFile(byte[] FileName)
+		// Usage:
+		//  DecompressFile(<File>);
+		//
+		// Example:
+		//  DecompressFile("online_tu0_mp_english.wad");
+		//
+		internal static byte[] DecompressFile(byte[] FileName)
 		{
 			using (var Stream = new MemoryStream(FileName))
 			using (var Inflate = new InflaterInputStream(Stream, new Inflater(false)))
@@ -186,4 +204,3 @@ namespace Utils
 		}
 	}
 }
-
