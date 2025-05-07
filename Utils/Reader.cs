@@ -224,7 +224,7 @@ namespace Utils
 				Print.WriteError(
 					$"WAD has incorrect magic!");
 				Print.WriteError(
-					$"Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
+					$"Expecting: 0x543377AB, got: 0x{Header.magic:X8}");
 				return null;
 			}
 
@@ -251,19 +251,6 @@ namespace Utils
 			for (int Index = 0; Index < Header.numEntries; Index++)
 			{
 				Entries.Add(ReadWADEntry(Bytes, Index));
-#if DEBUG
-				// print some debug information
-				Print.WriteDebugMessage("WAD Entry Information:");
-
-				Print.WriteDebugMessage(
-					$"Name: {Entries[Index].name}");
-				Print.WriteDebugMessage(
-					$"Compressed Size: 0x{Entries[Index].compressedSize:X2}");
-				Print.WriteDebugMessage(
-					$"Size: 0x{Entries[Index].size:X2}");
-				Print.WriteDebugMessage(
-					$"Offset: 0x{Entries[Index].offset:X2}\n");
-#endif
 			}
 
 			return Entries;
