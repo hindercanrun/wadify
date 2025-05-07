@@ -228,8 +228,9 @@ namespace Utils
 					&& Header.magic != 0xAB773354) // T3w« / «wT3
 				{
 					Print.WriteError(
-						$"WAD has incorrect magic!" +
-						" Expecting: 0x543377AB or 0xAB773354, got: 0x{Header.magic:X8}!");
+						$"WAD has incorrect magic!");
+					Print.WriteError(
+						$"Expecting: 0x543377AB or 0xAB773354, got: 0x{Header.magic:X8}!");
 					return null;
 				}
 
