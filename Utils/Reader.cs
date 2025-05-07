@@ -212,84 +212,81 @@ namespace Utils
 
 	internal class Reader
 	{
-		private static EndiannessReader _Reader;
-
 		//
 		// processes the inputted .wad file
 		//
 		internal static List<WADEntry> ProcessOnlineWAD(byte[] Bytes)
 		{
-			using (var Stream = new MemoryStream(Bytes))
-			using (_Reader = new EndiannessReader(Stream))
+			WADHeader Header = ReadWADHeader(Bytes);
+			// check the wad magic
+			if (Header.magic != 0x543377AB) // T3w«
 			{
-				WADHeader Header = ReadWADHeader();
-				// check the magic and check the endianness
-				if (Header.magic != 0x543377AB
-					&& Header.magic != 0xAB773354) // T3w« / «wT3
-				{
-					Print.WriteError(
-						$"WAD has incorrect magic!");
-					Print.WriteError(
-						$"Expecting: 0x543377AB or 0xAB773354, got: 0x{Header.magic:X8}!");
-					return null;
-				}
-
-				//convert the timestamp to a readable format
-				DateTimeOffset TimeOffset = DateTimeOffset.FromUnixTimeSeconds(Header.timestamp);
-				DateTime Time = TimeOffset.UtcDateTime;
-
-				//some misc .wad information
-				Print.WriteMiscMessage(
-					$"WAD Information:");
-				Print.WriteMiscMessage(
-					$"Magic: 0x{Header.magic:X8}");
-				Print.WriteMiscMessage(
-					$"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
-				Print.WriteMiscMessage(
-					$"Entries: {Header.numEntries}");
-				Print.WriteMiscMessage(
-					$"FFOTD Version: {Header.ffotdVersion}");
-
-				Print.WriteMessage($"\nExtracting files..\n");
-
-				//time to read the entries
-				List<WADEntry> Entries = new List<WADEntry>();
-				for (int Index = 0; Index < Header.numEntries; Index++)
-				{
-					Entries.Add(ReadWADEntry(Bytes, Index));
-#if DEBUG
-					// print some debug information
-					Print.WriteDebugMessage("WAD Entry Information:");
-
-					Print.WriteDebugMessage(
-						$"Name: {Entries[Index].name}");
-					Print.WriteDebugMessage(
-						$"Compressed Size: 0x{Entries[Index].compressedSize:X2}");
-					Print.WriteDebugMessage(
-						$"Size: 0x{Entries[Index].size:X2}");
-					Print.WriteDebugMessage(
-						$"Offset: 0x{Entries[Index].offset:X2}\n");
-#endif
-				}
-
-				return Entries;
+				Print.WriteError(
+					$"WAD has incorrect magic!");
+				Print.WriteError(
+					$"Expecting: 0x543377AB, got: 0x{Header.magic:X8}!");
+				return null;
 			}
+
+			//convert the timestamp to a readable format
+			DateTimeOffset TimeOffset = DateTimeOffset.FromUnixTimeSeconds(Header.timestamp);
+			DateTime Time = TimeOffset.UtcDateTime;
+
+			//some misc .wad information
+			Print.WriteMiscMessage(
+				$"WAD Information:");
+			Print.WriteMiscMessage(
+				$"Magic: 0x{Header.magic:X8}");
+			Print.WriteMiscMessage(
+				$"Timestamp: {Time:HH:mm:ss, dd/MM/yyyy} ({Header.timestamp:X8})");
+			Print.WriteMiscMessage(
+				$"Entries: {Header.numEntries}");
+			Print.WriteMiscMessage(
+				$"FFOTD Version: {Header.ffotdVersion}");
+
+			Print.WriteMessage($"\nExtracting files..\n");
+
+			//time to read the entries
+			List<WADEntry> Entries = new List<WADEntry>();
+			for (int Index = 0; Index < Header.numEntries; Index++)
+			{
+				Entries.Add(ReadWADEntry(Bytes, Index));
+#if DEBUG
+				// print some debug information
+				Print.WriteDebugMessage("WAD Entry Information:");
+
+				Print.WriteDebugMessage(
+					$"Name: {Entries[Index].name}");
+				Print.WriteDebugMessage(
+					$"Compressed Size: 0x{Entries[Index].compressedSize:X2}");
+				Print.WriteDebugMessage(
+					$"Size: 0x{Entries[Index].size:X2}");
+				Print.WriteDebugMessage(
+					$"Offset: 0x{Entries[Index].offset:X2}\n");
+#endif
+			}
+
+			return Entries;
 		}
 
 		//
 		// reads the header
 		//
-		internal static WADHeader ReadWADHeader()
+		internal static WADHeader ReadWADHeader(byte[] Bytes)
 		{
-			WADHeader Header = new WADHeader
+			using (var Stream = new MemoryStream(Bytes))
+			using (var Reader = new EndiannessReader(Stream))
 			{
-				magic = _Reader.ReadUInt32(),
-				timestamp = _Reader.ReadUInt32(),
-				numEntries = _Reader.ReadUInt32(),
-				ffotdVersion = _Reader.ReadUInt32()
-			};
+				WADHeader Header = new WADHeader
+				{
+					magic = Reader.ReadUInt32(),
+					timestamp = Reader.ReadUInt32(),
+					numEntries = Reader.ReadUInt32(),
+					ffotdVersion = Reader.ReadUInt32()
+				};
 
-			return Header;
+				return Header;
+			}
 		}
 
 		//
