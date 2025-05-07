@@ -196,7 +196,7 @@ namespace Wad
 					break;
 				default:
 					Utils.Print.WriteError($"unknown command: {Parameters[0]}!");
-					return;
+					break;
 			}
 		}
 	}

@@ -242,7 +242,7 @@ namespace Utils
 			Print.WriteMiscMessage(
 				$"Entries: {Header.numEntries}");
 			Print.WriteMiscMessage(
-				$"FFOTD Version: {Header.ffotdVersion}");
+				$"FFOTD: {Header.ffotdVersion}");
 
 			Print.WriteMessage($"\nExtracting files..\n");
 
