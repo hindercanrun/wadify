@@ -5,7 +5,7 @@ i will likely be going after ipak's next, i am not sure if i will release that o
 anyways enough sidetracking.
 
 wad information:
-- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data".
+- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data". not even all online data too, most online data is hosted on DemonWare server's.
 - description/usage: a wad is bascially a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc.
 
 now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's basically all in the "`root/main`", in other words there *are* directories before it gets linked, but not after it gets linked, they are all put into the "`root`" folder. i am not sure how 3arc linked them, but it might've been similar to `zone`'s, which has a `zone_source`, for wad's maybe `wad_source`?. to back this up, in my tool when you link a wad, the entries list is done in "alphabetical order"/the order that you are shown in `File Explorer`, 3arc's wad's on the other hand are not in "alphabetical order" which really can only mean they had the assets in a `.csv` then linked each asset like that, similar to zone's.
@@ -20,8 +20,7 @@ anyways time to get into the actual file information..
 
 ```
 magic
-string: T3w« hex: 54 33 77 AB (big endian)
-string: «w3T hex: AB 77 33 54 (little endian)
+string: T3w« hex: 54 33 77 AB
 ```
 
 ![image](https://github.com/user-attachments/assets/e6ba742c-3890-4cb9-8331-43519243a32c)
@@ -36,7 +35,7 @@ in my instance, it was this.
 
 ```
 timestamp
-string: 15/11/2011 6:31:35 AM hex: 4E C2 07 47 (big endian)
+string: 15/11/2011 6:31:35 AM hex: 4E C2 07 47
 ```
 
 now we have the number of entries.
@@ -45,7 +44,7 @@ now we have the number of entries.
 
 ```
 number of entries
-int: 3 hex: 00 00 00 03 (big endian)
+int: 3 hex: 00 00 00 03
 ```
 
 which was three from this wad. remember each wad can have a different timestamp and number of entries.
@@ -60,7 +59,7 @@ This screenshot is from `rfazio/t6/wads/online_tu15_mp_english.wad`, as you can 
 
 ```
 ffotd version
-int: 0 hex: 00 00 00 00 (big endian)
+int: 0 hex: 00 00 00 00
 ```
 
 now, we have the entries themselves. remember this can be different depending on your game mode's and game version's wad.
@@ -81,7 +80,9 @@ and just like that, you've learnt pretty much this entire format, atleast the ba
 
 things to note:
 - endianness impacts the file (not a shocker).
+- all wad's by 3arc are in big endian (except for PC server's for some reason, maybe local build? is auto set to little endian)
+- expanding on the above point: the game can also load big endian wad's, it'll just convert it to little endian during run time.
 - 3arc used a linker that pulled from a zone_source type folder to link together the assets.
-- if your wad is at all invalid, then you cannot play online at all. you can experience this by making the game read from local storage instead of publisher storage because the game struggles to read from local storage for whatever reason.
+- if your wad is at all invalid, then you cannot play online at all.
 
 the end!
