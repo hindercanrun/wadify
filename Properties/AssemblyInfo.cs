@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 	"wad"
 )]
 [assembly: AssemblyCopyright(
-	"ymes_zzz Copyright © 2025"
+	"hindercanrun Copyright © 2025"
 )]
 [assembly: AssemblyTrademark(
 	""

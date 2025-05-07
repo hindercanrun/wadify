@@ -163,7 +163,7 @@ namespace Wad
 		{
 			Utils.Print.WriteMessage("tool information:");
 			Utils.Print.WriteMessage("wad.exe :: a linker / unlinker tool for 3arc's .wad file type");
-			Utils.Print.WriteMessage("        :: made by ymes_zzz");
+			Utils.Print.WriteMessage("        :: made by hindercanrun");
 		}
 
 		static void Main(string[] Parameters)
