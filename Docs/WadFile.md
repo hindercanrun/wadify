@@ -79,8 +79,8 @@ the rest is pointless to go through as it's just compressed with basic zlib, not
 and just like that, you've learnt pretty much this entire format, atleast the basics of it.
 
 things to note:
-- endianness impacts the file (not a shocker)
-- all wad's by 3arc are in big endian (except for PC server's for some reason, maybe locally built is auto set to little endian)
+- endianness impacts the file (not a shocker).
+- all wad's by 3arc are in big endian (except for PC server's for some reason, maybe local build? is auto set to little endian)
 - expanding on the above point: the game can also load big endian wad's, it'll just convert it to little endian during run time.
 - 3arc used a linker that pulled from a zone_source type folder to link together the assets.
 - if your wad is at all invalid, then you cannot play online at all.
