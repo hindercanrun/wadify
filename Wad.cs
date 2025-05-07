@@ -3,17 +3,15 @@
  * this tool was made for T6_greenlight_mp
  * it also supports all versions of T6
  * it *should* support all versions of T5 too, however it's very untested
- * --keyword: should
+ *  keyword: should
  *
- * it also only support's xbox 360 (ps3 and wii u are untested but should work for them)
- * pc is unsupported however you *can* unlink pc wad's, you just have to swap around the magic's bytes
- * you cannot link wad's for pc, you could maybe switch around the bytes but that probably won't work
- * i am not entirely sure if the game can load big endian wad's, maybe it can but i'm not sure
+ * this tool also only support's xbox 360 (ps3, wii u and pc are untested but should work for them)
  * 
- * for wii u and ps3:
- *  i will need to get my hands on a ps3 and wii u wad to properly confirm...
+ * for ps3, wii u and pc:
+ *  i will need to get my hands on a wad for these platforms to properly confirm...
  *  however this likely won't happen
- *  the ones in the dedicated server are little endian/pc one's
+ *  interestingly the ones in the dedicated server files are little endian
+ *  however this is probably because those server's are run on PC
  *
 /*/
 
