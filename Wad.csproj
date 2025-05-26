@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Wad</RootNamespace>
     <AssemblyName>wad</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>

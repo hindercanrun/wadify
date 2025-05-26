@@ -35,17 +35,19 @@ namespace Wad
 			try
 			{
 				List<WADEntry> Entries = ProcessOnlineWAD(File.ReadAllBytes(FileName));
-				if (Entries != null)
+				if (Entries == null)
 				{
-					string OutputDirectory = Path.Combine(
-						".",
-						Path.GetFileNameWithoutExtension(GetFilename(FileName)));
-
-					CreateOutputDirectory(OutputDirectory);
-					UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
-
-					Utils.Print.WriteGreenMessage("\nDone !");
+					Utils.Print.WriteError($"{FileName}'s entry's were NULL!");
+					return;
 				}
+
+				string OutputDirectory = Path.GetFullPath(
+					Path.GetFileNameWithoutExtension(GetFilename(FileName)));
+
+				CreateOutputDirectory(OutputDirectory);
+				UnlinkEntries(Entries, File.ReadAllBytes(FileName), OutputDirectory);
+
+				Utils.Print.WriteGreenMessage("\nDone !");
 			}
 			catch (Exception Message)
 			{
