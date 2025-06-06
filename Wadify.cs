@@ -23,9 +23,9 @@ using static Utils.Structs;
 using static Utils.Reader;
 using static Utils.Writer;
 
-namespace Wad
+namespace Wadify
 {
-	class Wad
+	class Wadify
 	{
 		static void UnlinkWAD(string FileName)
 		{
@@ -162,8 +162,8 @@ namespace Wad
 		static void About()
 		{
 			Utils.Print.WriteMessage("tool information:");
-			Utils.Print.WriteMessage("wad.exe :: a linker / unlinker tool for 3arc's .wad file type");
-			Utils.Print.WriteMessage("        :: made by hindercanrun");
+			Utils.Print.WriteMessage("wadify.exe :: a linker / unlinker tool for 3arc's .wad file type");
+			Utils.Print.WriteMessage("           :: made by hindercanrun");
 		}
 
 		static void Main(string[] Parameters)
@@ -171,7 +171,7 @@ namespace Wad
 			// first check if there are any parameters
 			if (Parameters.Length < 1)
 			{
-				Utils.Print.WriteUsageWarning("wad.exe <command>");
+				Utils.Print.WriteUsageWarning("wadify.exe <command>");
 				return;
 			}
 
