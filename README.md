@@ -1,22 +1,22 @@
 <div align="center">
 
-# a linker / unlinker for Treyarch's .wad container files.
+# a decompresser/compresser for Treyarch's .wad container files.
 
-![latest release](https://img.shields.io/github/v/tag/hindercanrun/wad?filter=!v*-pre&style=flat-square&label=Latest%20Release&labelColor=F3F8FF&color=F88379)
-![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wad?style=flat-square&label=Release%20Date&labelColor=F3F8FF&color=F88379)
-![size](https://img.shields.io/github/languages/code-size/hindercanrun/wad?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
-![downloads](https://img.shields.io/github/downloads/hindercanrun/wad/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
+![latest release](https://img.shields.io/github/v/tag/hindercanrun/wadify?filter=!v*-pre&style=flat-square&label=Latest%20Release&labelColor=F3F8FF&color=F88379)
+![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wadify?style=flat-square&label=Release%20Date&labelColor=F3F8FF&color=F88379)
+![size](https://img.shields.io/github/languages/code-size/hindercanrun/wadify?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
+![downloads](https://img.shields.io/github/downloads/hindercanrun/wadify/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
 </div>
 
 ---
 
 ## Installation & Usage
-1. Download the [latest version](https://github.com/hindercanrun/wad/releases/latest/download/wad.exe).
+1. Download the [latest version](https://github.com/hindercanrun/wadify/releases/latest/download/wadify.exe).
 2. Drag and drop it to your folder of choice.
 3. Open up Command Prompt and type in `cd <your folder of choice>`.
-4. Type `wad` and now your command of choice.
-   - `--unlink <wad>` if you want to unlink a wad.
-   - `--link <folder>` if you want to link a wad.
+4. Type `wadify` and now your command of choice.
+   - `--decompress <wad>` if you want to decompress a wad.
+   - `--compress <folder>` if you want to compress a folder.
    - If you need any help, type `--help` for all the commands.
 5. Done.
 
@@ -24,18 +24,18 @@
 
 ## Command line arguments
 
-- ```--unlink```, ```-u```
-  - Unlink the inputted wad file.
-- ```--link```, ```-l```
-  - Link the inputted folder into a wad file.
+- ```--decompress```, ```-d```
+  - Decompresses the input .wad.
+- ```--compress```, ```-c```
+  - Compresses the input folder into a .wad.
 - ```--help```, ```-h```, ```-?```
-  - Print help for the commands and this tool.
+  - Displays help for various commands.
 - ```--about```, ```-a```
-  - Print various information about this tool.
+  - Displays about information.
 
 ##### Example
 ```cmd
-wad.exe --unlink online_tu0_mp_english.wad
+wadify.exe --decompress online_tu0_mp_english.wad
 ```
 
 ---
@@ -43,12 +43,6 @@ wad.exe --unlink online_tu0_mp_english.wad
 ## Documentation:
 
 For anyone interested in learning about the file type, I have put some documentation [here](https://github.com/hindercanrun/wad/blob/main/Docs/WadFile.md) about it.
-
----
-
-> [!NOTE]
-> ### Contributing:
-> It doesn't matter, just send me stuff and I'll probably look into it.
 
 ---
 
