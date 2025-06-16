@@ -268,7 +268,9 @@ void compress_folder(const std::string& folder_name) {
     wad_header header{};
     header.magic = 0x543377AB;
     header.timestamp = static_cast<std::uint32_t>(std::time(nullptr));
-    header.ffotd_version = 0; // or whatever you want
+    // since post release is 1
+    // let's just set it to 1
+    header.ffotd_version = 1; // it probably doesn't matter
 
     std::vector<wad_entry> entries;
     std::vector<std::vector<std::uint8_t>> compressed_datas;
