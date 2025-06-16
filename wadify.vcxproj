@@ -174,14 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dependencies\zlib\zlib.h" />
-    <ClInclude Include="src\resource.hpp" />
     <ClInclude Include="src\utils.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="src\icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

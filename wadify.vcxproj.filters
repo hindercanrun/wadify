@@ -29,7 +29,6 @@
     <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\resource.hpp" />
     <ClInclude Include="src\dependencies\zlib\zlib.h">
       <Filter>dependencies\zlib</Filter>
     </ClInclude>
@@ -42,11 +41,5 @@
     <Filter Include="dependencies\zlib">
       <UniqueIdentifier>{99001de1-0a19-4c58-9723-0c0218834e8e}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="src\icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
 </Project>
