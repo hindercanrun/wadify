@@ -39,10 +39,11 @@ struct wad {
 namespace fs = std::filesystem;
 
 static
-std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>&
+std::vector<std::uint8_t> decompress_file(const
+                                          std::vector<std::uint8_t>&
                                           compressed_data) {
   if (compressed_data.empty()) {
-    throw std::invalid_argument("data is empty");
+    throw std::invalid_argument("data empty");
   }
 
   z_stream strm{};
@@ -82,7 +83,7 @@ void unlink_entries(const std::vector<wad_entry>& entries,
     try {
       if (static_cast<std::size_t>(entry.offset) +
           static_cast<std::size_t>(entry.compressed_size) > data.size()) {
-        throw std::runtime_error("data is out of bounds");
+        throw std::runtime_error("data out of bounds");
       }
 
       std::vector<std::uint8_t>
@@ -94,14 +95,14 @@ void unlink_entries(const std::vector<wad_entry>& entries,
       fs::path output_path = output_dir / entry.name;
       std::ofstream out(output_path, std::ios::binary);
       if (!out) {
-        throw std::runtime_error("failed to open output file");
+        throw std::runtime_error("failed to open file");
       }
       out.write(reinterpret_cast<const char*>(decompressed_data.data()),
         decompressed_data.size());
       // tell the user what we decompressed
       std::cout << "decompressed: " << entry.name << "...\n";
     } catch (const std::exception& e) {
-        std::cerr << "failed to unlink: " << entry.name << " :: " << e.what() << "!\n";
+        std::cerr << e.what() << "\n";
         return;
     }
   }
@@ -194,8 +195,9 @@ void decompress_wad(const std::string& file_name) {
   try {
     auto data = read_file(file_name);
     auto entries = process_online_wad(data);
+    // check if theres entries
     if (entries.empty()) {
-      std::cerr << file_name << " has no valid entries!\n";
+      std::cerr << file_name << " has no valid entries\n";
       return;
     }
 
@@ -204,7 +206,7 @@ void decompress_wad(const std::string& file_name) {
     unlink_entries(entries, data, output_dir);
     std::cout << "\ndone!\n";
   } catch (const std::exception& e) {
-      std::cerr << "failed to decompress: " << file_name << " -> " << e.what() << "!\n";
+      std::cerr << e.what() << "\n";
   }
 }
 
@@ -284,18 +286,16 @@ void compress_folder(const std::string& folder_name) {
       if (!entry.is_regular_file()) {
         continue;
       }
-
       // do not nest a wad
       const auto& path = entry.path();
       if (path.extension() == ".wad") {
-        std::cout << "skipping nested .wad file: " << path << "\n";
+        std::cout << "skipping nested .wad: " << path << "\n";
         continue;
       }
-
       auto& file_path = entry.path();
       auto file_name = file_path.filename().string();
       if (file_name.size() > 42) {
-        throw std::runtime_error("file name is too long: \n" + file_name);
+        throw std::runtime_error("name too long: \n" + file_name);
       }
 
       auto file_data = read_file(file_path);
@@ -309,7 +309,6 @@ void compress_folder(const std::string& folder_name) {
 
       // let the user know what we compressed
       std::cout << "compressed " << file_name.c_str() << "..\n";
-
       current_offset += we.compressed_size;
       entries.push_back(we);
       compressed_datas.push_back(std::move(compressed_data));
@@ -318,7 +317,6 @@ void compress_folder(const std::string& folder_name) {
     // convert timestamp
     std::time_t t = header.timestamp;
     std::tm gmt = {};
-
     char time_buf[64]{};
     bool has_valid_time = (gmtime_s(&gmt, &t) == 0);
     if (has_valid_time) {
@@ -339,7 +337,6 @@ void compress_folder(const std::string& folder_name) {
 
     // build final wad_data
     std::vector<std::uint8_t> wad_data;
-
     // write header
     auto write_u32_be = [&](std::uint32_t value) {
       wad_data.push_back((value >> 24) & 0xFF);
@@ -374,7 +371,7 @@ void compress_folder(const std::string& folder_name) {
     write_file(out_file, wad_data);
     std::cout << "\ndone!\n";
   } catch (const std::exception& e) {
-      std::cerr << "failed to compress: " << folder_name << " -> " << e.what() << "!\n";
+      std::cerr << e.what() << "\n";
   }
 }
 
