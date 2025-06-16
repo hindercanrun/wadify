@@ -161,28 +161,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dependencies\zlib\adler32.c" />
-    <ClCompile Include="dependencies\zlib\crc32.c" />
-    <ClCompile Include="dependencies\zlib\deflate.c" />
-    <ClCompile Include="dependencies\zlib\inffast.c" />
-    <ClCompile Include="dependencies\zlib\inflate.c" />
-    <ClCompile Include="dependencies\zlib\inftrees.c" />
-    <ClCompile Include="dependencies\zlib\trees.c" />
-    <ClCompile Include="dependencies\zlib\zutil.c" />
+    <ClCompile Include="src\dependencies\zlib\adler32.c" />
+    <ClCompile Include="src\dependencies\zlib\crc32.c" />
+    <ClCompile Include="src\dependencies\zlib\deflate.c" />
+    <ClCompile Include="src\dependencies\zlib\inffast.c" />
+    <ClCompile Include="src\dependencies\zlib\inflate.c" />
+    <ClCompile Include="src\dependencies\zlib\inftrees.c" />
+    <ClCompile Include="src\dependencies\zlib\trees.c" />
+    <ClCompile Include="src\dependencies\zlib\zutil.c" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dependencies\zlib\crc32.h" />
-    <ClInclude Include="dependencies\zlib\deflate.h" />
-    <ClInclude Include="dependencies\zlib\gzguts.h" />
-    <ClInclude Include="dependencies\zlib\inffast.h" />
-    <ClInclude Include="dependencies\zlib\inffixed.h" />
-    <ClInclude Include="dependencies\zlib\inflate.h" />
-    <ClInclude Include="dependencies\zlib\inftrees.h" />
-    <ClInclude Include="dependencies\zlib\trees.h" />
-    <ClInclude Include="dependencies\zlib\zconf.h" />
-    <ClInclude Include="dependencies\zlib\zlib.h" />
-    <ClInclude Include="dependencies\zlib\zutil.h" />
+    <ClInclude Include="src\dependencies\zlib\zlib.h" />
     <ClInclude Include="src\resource.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
  *
 /*/
 
-#include "../dependencies/zlib/zutil.h"
+#include "dependencies/zlib/zlib.h"
 
 #include <fstream>
 #include <iostream>
