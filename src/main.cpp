@@ -197,6 +197,27 @@ void compress_folder(const std::string& folder_name) {
       if (file_name.size() > 42) {
         throw std::runtime_error("name too long: \n" + file_name);
       }
+      // skip hidden files
+      if (file_name.starts_with(".")) {
+          std::cout << "skipping potentially hidden/system file: " << file_name << "\n";
+          continue;
+      }
+      // check for bad characters
+      // explorer already does this
+      // so windows users shouldn't
+      // ever encounter this problem
+      for (char c : file_name) {
+        if (c == '\\' ||
+            c == '/' ||
+            c == ':' ||
+            c == '*' ||
+            c == '?' ||
+            c == '<' ||
+            c == '>' ||
+            c == '|') {
+          throw std::runtime_error(file_name + " has atleast one bad character");
+        }
+      }
 
       auto file_data = utils::read_file(file_path);
       auto compressed_data = utils::compress_file(file_data);
@@ -267,7 +288,7 @@ void compress_folder(const std::string& folder_name) {
     utils::write_file(out_file, wad_data);
     std::cout << "\ndone\n";
   } catch (const std::exception& e) {
-      std::cerr << e.what() << "\n";
+    std::cerr << e.what() << "\n";
   }
 }
 
@@ -309,6 +330,7 @@ int main(int argc, char* argv[]) {
     std::string file = utils::add_wad_ext(argv[2]);
     // all good
     decompress_wad(file);
+    return 0;
   }
   else if (cmd == "--compress" ||
            cmd == "-c") {
@@ -319,11 +341,13 @@ int main(int argc, char* argv[]) {
     std::string dir = utils::remove_wad_ext(argv[2]);
     // all good
     compress_folder(dir);
+    return 0;
   }
   else if (cmd == "--help" ||
            cmd == "-h" ||
            cmd == "-?") {
     help();
+    return 0;
   }
   else if (cmd == "--about" ||
            cmd == "-a") {
