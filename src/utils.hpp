@@ -14,6 +14,29 @@
 namespace fs = std::filesystem;
 
 namespace utils {
+constexpr auto red = "\033[31m";
+constexpr auto yellow = "\033[33m";
+constexpr auto clear = "\033[0m";
+
+template <typename... Args>
+void print(Args&&... args) {
+  (std::cout << ... << args);
+}
+
+template <typename... Args>
+void print_warning(Args&&... args) {
+  std::cout << yellow;
+  (std::cout << ... << args);
+  std::cout << clear;
+}
+
+template <typename... Args>
+void print_error(Args&&... args) {
+  std::cout << yellow;
+  (std::cout << ... << args);
+  std::cout << clear;
+}
+
 std::string add_wad_ext(const std::string& file);
 std::string remove_wad_ext(const std::string& file);
 std::optional<std::string> format_timestamp(std::uint32_t timestamp);

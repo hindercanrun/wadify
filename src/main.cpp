@@ -38,6 +38,10 @@ struct wad {
 
 namespace fs = std::filesystem;
 
+constexpr auto red = "\033[31m";
+constexpr auto yellow = "\033[33m";
+constexpr auto clear = "\033[0m";
+
 static
 wad_header read_wad_header(const std::vector<std::uint8_t>& data) {
   wad_header header;
@@ -63,44 +67,46 @@ wad_entry read_wad_entry(const std::vector<std::uint8_t>& data,
 
 static
 bool decompress_wad(const std::string& file_name) {
-  std::cout << "decompressing: " << file_name << "..\n\n";
+  utils::print("decompressing: " + file_name + "..\n\n");
   try {
     auto data = utils::read_file(file_name);
-
     wad_header header = read_wad_header(data);
     if (header.magic != 0x543377AB) {
-      std::cerr << "WAD has incorrect magic!\n";
-      std::cerr << "Expecting: 0x543377AB, got: 0x"
-                << std::hex
-                << std::setw(8)
-                << std::setfill('0')
-                << header.magic
-                << "\n";
+      utils::print_error("WAD has incorrect magic!\n");
+      utils::print(
+        "Expecting: 0x543377AB, got: 0x",
+          std::uppercase,
+          std::hex,
+          std::setw(8),
+          std::setfill('0'),
+          header.magic);
       return false;
     }
 
-    std::cout << "wad information:\n";
-    std::cout << "magic: 0x"
-              << std::uppercase
-              << std::hex
-              << std::setw(8)
-              << std::setfill('0')
-              << header.magic
-              << "\n";
+    utils::print("wad information:\n");
+    utils::print(
+      "magic: 0x",
+        std::uppercase,
+        std::hex,
+        std::setw(8),
+        std::setfill('0'),
+        header.magic,
+        "\n");
     auto time = utils::format_timestamp(header.timestamp);
     if (time.has_value()) {
-      std::cout << "timestamp: "
-                << time.value()
-                << " (0x"
-                << std::uppercase
-                << std::hex
-                << header.timestamp
-                << ")\n";
+      utils::print(
+        "timestamp: ",
+          time.value(),
+          " (0x",
+          std::uppercase,
+          std::hex,
+          header.timestamp,
+          ")\n");
     } else {
-      std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
+      utils::print("timestamp: N/A\n"); // nice 'N/A' string instead of garbage
     }
-    std::cout << "entries: " << std::dec << header.num_entries << "\n";
-    std::cout << "ffotd: " << header.ffotd_version << "\n\n";
+    utils::print("entries: ", std::dec, header.num_entries, "\n");
+    utils::print("ffotd: ", header.ffotd_version, "\n\n");
 
     std::vector<wad_entry> entries;
     for (std::uint32_t i = 0; i < header.num_entries; ++i) {
@@ -108,7 +114,7 @@ bool decompress_wad(const std::string& file_name) {
     }
     // check if theres entries
     if (entries.empty()) {
-      std::cerr << file_name << " has no valid entries\n";
+      utils::print_warning(file_name + " has no valid entries\n");
       return false;
     }
 
@@ -135,18 +141,17 @@ bool decompress_wad(const std::string& file_name) {
         auto decompressed_data = utils::decompress_file(compressed_data);
         out.write(reinterpret_cast<const char*>(decompressed_data.data()),
           decompressed_data.size());
-
-        std::cout << "decompressed: " << entry.name << "...\n";
+        utils::print("decompressed: " + entry.name + "..");
         return true;
       } catch (const std::exception& e) {
-        std::cerr << e.what() << "\n";
+        utils::print_error(e.what());
         return false;
       }
     }
-    std::cout << "\ndone\n";
+    utils::print("\ndone");
     return true;
   } catch (const std::exception& e) {
-    std::cerr << e.what() << "\n";
+    utils::print_error(e.what());
     return false;
   }
 }
@@ -161,13 +166,13 @@ bool decompress_wad(const std::string& file_name) {
 // so i manually put it as 0
 static
 bool compress_folder(const std::string& folder_name) {
-  std::cout << "compressing: " << folder_name << "..\n\n";
+  utils::print("compressing: ", folder_name, "..\n\n");
   try {
     wad_header header{};
     header.magic = 0x543377AB;
     header.timestamp = static_cast<std::uint32_t>(std::time(nullptr));
     // since post release is 1
-    // let's just set it to 1
+    // so let's just set it to 1
     header.ffotd_version = 1; // it probably doesn't matter
 
     std::vector<wad_entry> entries;
@@ -185,7 +190,7 @@ bool compress_folder(const std::string& folder_name) {
       // do not nest a wad
       const auto& path = entry.path();
       if (path.extension() == ".wad") {
-        std::cout << "skipping nested .wad: " << path << "\n";
+        utils::print_warning("skipping nested .wad: ", path, "\n");
         continue;
       }
       auto& file_path = entry.path();
@@ -195,8 +200,8 @@ bool compress_folder(const std::string& folder_name) {
       }
       // skip hidden files
       if (file_name.starts_with(".")) {
-          std::cout << "skipping potentially hidden/system file: " << file_name << "\n";
-          continue;
+        utils::print_warning("skipping potentially hidden/system file: ", file_name, "\n");
+        continue;
       }
       // check for bad characters
       // explorer already does this
@@ -225,35 +230,37 @@ bool compress_folder(const std::string& folder_name) {
       we.offset = current_offset;
 
       // let the user know what we compressed
-      std::cout << "compressed " << file_name.c_str() << "..\n";
+      utils::print("compressed ", file_name.c_str(), "..\n");
       current_offset += we.compressed_size;
       entries.push_back(we);
       compressed_datas.push_back(std::move(compressed_data));
     }
 
-    std::cout << "\nwad information:\n";
-    std::cout << "magic: 0x"
-              << std::uppercase
-              << std::hex
-              << std::setw(8)
-              << std::setfill('0')
-              << header.magic
-              << "\n";
+    utils::print("\nwad information:\n");
+    utils::print(
+      "magic: 0x",
+        std::uppercase,
+        std::hex,
+        std::setw(8),
+        std::setfill('0'),
+        header.magic,
+        "\n");
     auto time = utils::format_timestamp(header.timestamp);
     if (time.has_value()) {
-      std::cout << "timestamp: "
-                << time.value()
-                << " (0x"
-                << std::uppercase
-                << std::hex
-                << header.timestamp
-                << ")\n";
+      utils::print(
+        "timestamp: ",
+          time.value(),
+          " (0x",
+          std::uppercase,
+          std::hex,
+          header.timestamp,
+          ")\n");
     } else {
-      std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
+      utils::print("timestamp: N/A\n"); // nice 'N/A' string instead of garbage
     }
     header.num_entries = static_cast<std::uint32_t>(entries.size());
-    std::cout << "entries: " << std::dec << header.num_entries << "\n";
-    std::cout << "ffotd: " << header.ffotd_version << "\n";
+    utils::print("entries: ", std::dec, header.num_entries, "\n");
+    utils::print("ffotd: ", header.ffotd_version, "\n");
 
     // build final wad_data
     std::vector<std::uint8_t> wad_data;
@@ -282,10 +289,10 @@ bool compress_folder(const std::string& folder_name) {
 
     auto out_file = fs::path(folder_name).filename().string() + ".wad";
     utils::write_file(out_file, wad_data);
-    std::cout << "\ndone\n";
+    utils::print("\ndone");
     return true;
   } catch (const std::exception& e) {
-    std::cerr << e.what() << "\n";
+    utils::print_error(e.what());
     return false;
   }
 }
@@ -293,27 +300,27 @@ bool compress_folder(const std::string& folder_name) {
 static
 void help() {
   // just general help for the tool
-  std::cout << "command usages:\n\n";
-  std::cout << "--decompress   <input>   //  decompresses the input\n";
-  std::cout << "  shortcut               // -d\n";
-  std::cout << "--compress     <input>   //  compresses the input into a .wad\n";
-  std::cout << "  shortcut               // -c\n";
-  std::cout << "--help                   //  displays help for various commands\n";
-  std::cout << "  shortcut               // -h, -?\n";
-  std::cout << "--about                  //  displays about information\n";
-  std::cout << "  shortcut               // -a\n";
+  utils::print("command usages:\n\n");
+  utils::print("--decompress <input>  //  decompresses the input\n");
+  utils::print("  shortcut            // -d\n");
+  utils::print("--compress   <input>  //  compresses the input into a .wad\n");
+  utils::print("  shortcut            // -c\n");
+  utils::print("--help                //  displays help for various commands\n");
+  utils::print("  shortcut            // -h, -?\n");
+  utils::print("--about               //  displays about information\n");
+  utils::print("  shortcut            // -a\n");
 }
 
 static
 void about() {
-  std::cout << "tool information:\n\n";
-  std::cout << "wadify.exe // a compresser/decompresser tool for 3arc's .wad type\n";
-  std::cout << "           // made by hindercanrun\n";
+  utils::print("tool information:\n\n");
+  utils::print("wadify.exe // a compresser/decompresser tool for 3arc's .wad type\n");
+  utils::print("           // made by hindercanrun\n");
 }
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    std::cerr << "usage: wadify.exe <cmd>\n";
+    utils::print_warning("usage: wadify.exe <cmd>");
     return 1;
   }
 
@@ -322,7 +329,7 @@ int main(int argc, char* argv[]) {
   if (cmd == "--decompress" ||
       cmd == "-d") {
     if (argc < 3) {
-      std::cerr << "usage: wadify.exe --decompress <input>\n";
+      utils::print_warning("usage: wadify.exe --decompress <input>");
       return 1;
     }
     std::string file = utils::add_wad_ext(argv[2]);
@@ -334,7 +341,7 @@ int main(int argc, char* argv[]) {
   else if (cmd == "--compress" ||
            cmd == "-c") {
     if (argc < 3) {
-      std::cerr << "usage: wadify.exe --compress <input>\n";
+      utils::print_warning("usage: wadify.exe --compress <input>");
       return 1;
     }
     std::string dir = utils::remove_wad_ext(argv[2]);
@@ -355,7 +362,7 @@ int main(int argc, char* argv[]) {
     return 0;
   }
   else {
-    std::cerr << "unknown cmd '" << cmd << "'\n";
+    utils::print_warning("unknown cmd '", cmd, "'");
     return 1;
   }
   return 0;
