@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="dependencies\zlib\adler32.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\crc32.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\deflate.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\inffast.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\inflate.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\inftrees.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\trees.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\zlib\zutil.c">
+      <Filter>dependencies\zlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dependencies\zlib\crc32.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\deflate.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\gzguts.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\inffast.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\inffixed.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\inflate.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\inftrees.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\trees.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\zconf.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\zlib.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\zlib\zutil.h">
+      <Filter>dependencies\zlib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="wadify.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{6282fc36-11dc-40f6-9fd5-e5f926b47913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\zlib">
+      <UniqueIdentifier>{99001de1-0a19-4c58-9723-0c0218834e8e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
