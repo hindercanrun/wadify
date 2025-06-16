@@ -1,5 +1,6 @@
-# Visual Studio cache
+# Visual Studio
 .vs/
+*.aps
 
 # build results
-build/
+build
