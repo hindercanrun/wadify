@@ -72,23 +72,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)build\obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\bin\debug_x64\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\debug_x64\</IntDir>
     <TargetName>wadify</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)build\obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\bin\release_x64\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\release_x64)\</IntDir>
     <TargetName>wadify</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>wadify</TargetName>
-    <OutDir>$(SolutionDir)build\bin\x86\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)build\obj\x86\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\bin\debug_x86\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\debug_x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)build\bin\x86\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)build\obj\x86\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)build\bin\release_x86\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\release_x86\</IntDir>
     <TargetName>wadify</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
