@@ -141,19 +141,19 @@ bool decompress_wad(const std::string& file_name) {
         auto decompressed_data = utils::decompress_file(compressed_data);
         out.write(reinterpret_cast<const char*>(decompressed_data.data()),
           decompressed_data.size());
-        utils::print("decompressed: " + entry.name + "..");
-        return true;
+        utils::print("decompressed: " + entry.name + "..\n");
       } catch (const std::exception& e) {
         utils::print_error(e.what());
         return false;
       }
     }
-    utils::print("\ndone");
-    return true;
   } catch (const std::exception& e) {
     utils::print_error(e.what());
     return false;
   }
+
+  utils::print("\ndone");
+  return true;
 }
 
 // important info:
@@ -289,12 +289,13 @@ bool compress_folder(const std::string& folder_name) {
 
     auto out_file = fs::path(folder_name).filename().string() + ".wad";
     utils::write_file(out_file, wad_data);
-    utils::print("\ndone");
-    return true;
   } catch (const std::exception& e) {
     utils::print_error(e.what());
     return false;
   }
+
+  utils::print("\ndone");
+  return true;
 }
 
 static
