@@ -185,7 +185,7 @@
     <ClInclude Include="dependencies\zlib\zutil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="wadify.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

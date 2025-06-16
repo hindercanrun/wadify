@@ -39,7 +39,8 @@ struct wad {
 namespace fs = std::filesystem;
 
 static
-std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>& compressed_data) {
+std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>&
+                                          compressed_data) {
   if (compressed_data.empty()) {
     throw std::invalid_argument("data is empty");
   }
@@ -124,7 +125,8 @@ wad_header read_wad_header(const std::vector<std::uint8_t>& data) {
 }
 
 static
-wad_entry read_wad_entry(const std::vector<std::uint8_t>& data, std::size_t index) {
+wad_entry read_wad_entry(const std::vector<std::uint8_t>& data,
+                         std::size_t index) {
   std::size_t base = 16 + index * 44;
   std::string name(reinterpret_cast<const char*>(&data[base]), 32);
   name = name.c_str(); // null-terminated cleanup
@@ -137,7 +139,8 @@ wad_entry read_wad_entry(const std::vector<std::uint8_t>& data, std::size_t inde
 }
 
 static
-std::vector<wad_entry> process_online_wad(const std::vector<std::uint8_t>& bytes) {
+std::vector<wad_entry> process_online_wad(const std::vector<std::uint8_t>&
+                                          bytes) {
   wad_header header = read_wad_header(bytes);
   if (header.magic != 0x543377AB) {
     std::cerr << "WAD has incorrect magic!\n";
@@ -207,12 +210,12 @@ void decompress_wad(const std::string& file_name) {
 
 static
 void write_file(const fs::path& path,
-    const std::vector<std::uint8_t>& data) {
-    std::ofstream file(path, std::ios::binary);
-    if (!file) {
-        throw std::runtime_error("failed to write file");
-    }
-    file.write(reinterpret_cast<const char*>(data.data()), data.size());
+                const std::vector<std::uint8_t>& data) {
+  std::ofstream file(path, std::ios::binary);
+  if (!file) {
+    throw std::runtime_error("failed to write file");
+  }
+  file.write(reinterpret_cast<const char*>(data.data()), data.size());
 }
 
 static
@@ -250,6 +253,14 @@ std::vector<std::uint8_t> compress_file(const std::vector<std::uint8_t>& input_d
   return result;
 }
 
+// important info:
+// magic HAS to be 0x543377AB
+// 0x543377AB = T3w«
+// timestamp is auto set
+// num_entries is auto set
+// you can manually define ffotd_version
+// the game only sets it to 0 or 1
+// so i manually put it as 0
 static
 void compress_folder(const std::string& folder_name) {
   std::cout << "compressing: " << folder_name << "..\n\n";
@@ -269,6 +280,13 @@ void compress_folder(const std::string& folder_name) {
 
     for (const auto& entry : fs::directory_iterator(folder_name)) {
       if (!entry.is_regular_file()) {
+        continue;
+      }
+
+      // do not nest a wad
+      const auto& path = entry.path();
+      if (path.extension() == ".wad") {
+        std::cout << "skipping nested .wad file: " << path << "\n";
         continue;
       }
 
@@ -425,7 +443,7 @@ int main(int argc, char* argv[]) {
     about();
   }
   else {
-    std::cerr << "unknown command '" << cmd << "'\n";
+    std::cerr << "unknown cmd '" << cmd << "'\n";
     return 1;
   }
   return 0;
