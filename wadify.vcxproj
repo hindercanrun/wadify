@@ -170,10 +170,12 @@
     <ClCompile Include="src\dependencies\zlib\trees.c" />
     <ClCompile Include="src\dependencies\zlib\zutil.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\dependencies\zlib\zlib.h" />
     <ClInclude Include="src\resource.hpp" />
+    <ClInclude Include="src\utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="src\icon.ico" />

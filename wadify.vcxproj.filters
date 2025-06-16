@@ -26,12 +26,14 @@
     <ClCompile Include="src\dependencies\zlib\zutil.c">
       <Filter>dependencies\zlib</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\resource.hpp" />
     <ClInclude Include="src\dependencies\zlib\zlib.h">
       <Filter>dependencies\zlib</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dependencies">
