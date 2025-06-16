@@ -18,6 +18,21 @@ std::string remove_wad_ext(const std::string& file) {
   return file;
 }
 
+std::optional<std::string> format_timestamp(std::uint32_t timestamp) {
+  std::time_t t = timestamp;
+  std::tm local = {};
+  char buf[64]{};
+
+  if (localtime_s(&local, &t) == 0) {
+    std::strftime(buf, sizeof(buf), "%I:%M:%S %p, %d/%m/%Y", &local);
+    std::string res = buf;
+    std::transform(res.begin(), res.end(), res.begin(),
+      [](unsigned char c) { return std::toupper(c); });
+    return res;
+  }
+  return std::nullopt; // fail
+}
+
 std::vector<std::uint8_t> read_file(const fs::path& path) {
   std::ifstream file(path, std::ios::binary);
   if (!file) {

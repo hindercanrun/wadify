@@ -16,6 +16,7 @@ namespace fs = std::filesystem;
 namespace utils {
 std::string add_wad_ext(const std::string& file);
 std::string remove_wad_ext(const std::string& file);
+std::optional<std::string> format_timestamp(std::uint32_t timestamp);
 
 std::vector<std::uint8_t> read_file(const fs::path& path);
 void write_file(const fs::path& path,

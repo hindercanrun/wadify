@@ -87,11 +87,23 @@ void decompress_wad(const std::string& file_name) {
     }
 
     std::cout << "wad information:\n";
-    std::cout << "magic: 0x" << std::hex << std::setw(8) << std::setfill('0') << header.magic << "\n";
-    if (has_valid_time) {
-      std::cout << "timestamp: " << time_buf << " (0x" << std::hex << header.timestamp << ")\n";
-    }
-    else {
+    std::cout << "magic: 0x"
+              << std::uppercase
+              << std::hex
+              << std::setw(8)
+              << std::setfill('0')
+              << header.magic
+              << "\n";
+    auto time = utils::format_timestamp(header.timestamp);
+    if (time.has_value()) {
+      std::cout << "timestamp: "
+                << time.value()
+                << " (0x"
+                << std::uppercase
+                << std::hex
+                << header.timestamp
+                << ")\n";
+    } else {
       std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
     }
     std::cout << "entries: " << std::dec << header.num_entries << "\n";
@@ -202,22 +214,24 @@ void compress_folder(const std::string& folder_name) {
       compressed_datas.push_back(std::move(compressed_data));
     }
 
-    // convert timestamp
-    std::time_t t = header.timestamp;
-    std::tm gmt = {};
-
-    char time_buf[64]{};
-    bool has_valid_time = (gmtime_s(&gmt, &t) == 0);
-    if (has_valid_time) {
-      std::strftime(time_buf, sizeof(time_buf), "%H:%M:%S, %d/%m/%Y", &gmt);
-    }
-
     std::cout << "\nwad information:\n";
-    std::cout << "magic: 0x" << std::hex << std::setw(8) << std::setfill('0') << header.magic << "\n";
-    if (has_valid_time) {
-      std::cout << "timestamp: " << time_buf << " (0x" << std::hex << header.timestamp << ")\n";
-    }
-    else {
+    std::cout << "magic: 0x"
+              << std::uppercase
+              << std::hex
+              << std::setw(8)
+              << std::setfill('0')
+              << header.magic
+              << "\n";
+    auto time = utils::format_timestamp(header.timestamp);
+    if (time.has_value()) {
+      std::cout << "timestamp: "
+                << time.value()
+                << " (0x"
+                << std::uppercase
+                << std::hex
+                << header.timestamp
+                << ")\n";
+    } else {
       std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
     }
     header.num_entries = static_cast<std::uint32_t>(entries.size());
