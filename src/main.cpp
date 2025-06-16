@@ -62,7 +62,7 @@ wad_entry read_wad_entry(const std::vector<std::uint8_t>& data,
 }
 
 static
-void decompress_wad(const std::string& file_name) {
+bool decompress_wad(const std::string& file_name) {
   std::cout << "decompressing: " << file_name << "..\n\n";
   try {
     auto data = utils::read_file(file_name);
@@ -71,19 +71,12 @@ void decompress_wad(const std::string& file_name) {
     if (header.magic != 0x543377AB) {
       std::cerr << "WAD has incorrect magic!\n";
       std::cerr << "Expecting: 0x543377AB, got: 0x"
-                << std::hex << std::setw(8) << std::setfill('0')
-                << header.magic << "\n";
-      return;
-    }
-
-    // convert timestamp
-    std::time_t t = header.timestamp;
-    std::tm gmt = {};
-
-    char time_buf[64]{};
-    bool has_valid_time = (gmtime_s(&gmt, &t) == 0);
-    if (has_valid_time) {
-      std::strftime(time_buf, sizeof(time_buf), "%H:%M:%S, %d/%m/%Y", &gmt);
+                << std::hex
+                << std::setw(8)
+                << std::setfill('0')
+                << header.magic
+                << "\n";
+      return false;
     }
 
     std::cout << "wad information:\n";
@@ -116,7 +109,7 @@ void decompress_wad(const std::string& file_name) {
     // check if theres entries
     if (entries.empty()) {
       std::cerr << file_name << " has no valid entries\n";
-      return;
+      return false;
     }
 
     fs::path output_dir = fs::absolute(fs::path(file_name).stem());
@@ -144,14 +137,17 @@ void decompress_wad(const std::string& file_name) {
           decompressed_data.size());
 
         std::cout << "decompressed: " << entry.name << "...\n";
+        return true;
       } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
-        return;
+        return false;
       }
     }
     std::cout << "\ndone\n";
+    return true;
   } catch (const std::exception& e) {
     std::cerr << e.what() << "\n";
+    return false;
   }
 }
 
@@ -164,7 +160,7 @@ void decompress_wad(const std::string& file_name) {
 // the game only sets it to 0 or 1
 // so i manually put it as 0
 static
-void compress_folder(const std::string& folder_name) {
+bool compress_folder(const std::string& folder_name) {
   std::cout << "compressing: " << folder_name << "..\n\n";
   try {
     wad_header header{};
@@ -287,8 +283,10 @@ void compress_folder(const std::string& folder_name) {
     auto out_file = fs::path(folder_name).filename().string() + ".wad";
     utils::write_file(out_file, wad_data);
     std::cout << "\ndone\n";
+    return true;
   } catch (const std::exception& e) {
     std::cerr << e.what() << "\n";
+    return false;
   }
 }
 
@@ -296,21 +294,21 @@ static
 void help() {
   // just general help for the tool
   std::cout << "command usages:\n\n";
-  std::cout << "--decompress   <input>   ::  decompresses the input\n";
-  std::cout << "  shortcut               :: -d\n";
-  std::cout << "--compress     <input>   ::  compresses the input into a .wad\n";
-  std::cout << "  shortcut               :: -c\n";
-  std::cout << "--help                   ::  displays help for various commands\n";
-  std::cout << "  shortcut               :: -h, -?\n";
-  std::cout << "--about                  ::  displays about information\n";
-  std::cout << "  shortcut               :: -a\n";
+  std::cout << "--decompress   <input>   //  decompresses the input\n";
+  std::cout << "  shortcut               // -d\n";
+  std::cout << "--compress     <input>   //  compresses the input into a .wad\n";
+  std::cout << "  shortcut               // -c\n";
+  std::cout << "--help                   //  displays help for various commands\n";
+  std::cout << "  shortcut               // -h, -?\n";
+  std::cout << "--about                  //  displays about information\n";
+  std::cout << "  shortcut               // -a\n";
 }
 
 static
 void about() {
   std::cout << "tool information:\n\n";
-  std::cout << "wadify.exe :: a compresser/decompresser tool for 3arc's .wad type\n";
-  std::cout << "           :: made by hindercanrun\n";
+  std::cout << "wadify.exe // a compresser/decompresser tool for 3arc's .wad type\n";
+  std::cout << "           // made by hindercanrun\n";
 }
 
 int main(int argc, char* argv[]) {
@@ -328,8 +326,9 @@ int main(int argc, char* argv[]) {
       return 1;
     }
     std::string file = utils::add_wad_ext(argv[2]);
-    // all good
-    decompress_wad(file);
+    if (!decompress_wad(file)) {
+      return 1;
+    }
     return 0;
   }
   else if (cmd == "--compress" ||
@@ -339,8 +338,9 @@ int main(int argc, char* argv[]) {
       return 1;
     }
     std::string dir = utils::remove_wad_ext(argv[2]);
-    // all good
-    compress_folder(dir);
+    if (!compress_folder(dir)) {
+        return 1;
+    }
     return 0;
   }
   else if (cmd == "--help" ||
@@ -352,6 +352,7 @@ int main(int argc, char* argv[]) {
   else if (cmd == "--about" ||
            cmd == "-a") {
     about();
+    return 0;
   }
   else {
     std::cerr << "unknown cmd '" << cmd << "'\n";
