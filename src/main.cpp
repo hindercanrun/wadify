@@ -6,7 +6,7 @@
  *
 /*/
 
-#include "dependencies/zlib/zlib.h"
+#include "../dependencies/zlib/zutil.h"
 
 #include <fstream>
 #include <iostream>
@@ -37,6 +37,18 @@ struct wad {
 };
 
 namespace fs = std::filesystem;
+
+static
+std::string ensure_wad_extension(const std::string& file) {
+  std::string lower_file = file;
+  std::transform(lower_file.begin(), lower_file.end(),
+                 lower_file.begin(), ::tolower);
+  if (lower_file.size() < 4 ||
+      lower_file.substr(lower_file.size() - 4) != ".wad") {
+    return file + ".wad";
+  }
+  return file;
+}
 
 static
 std::vector<std::uint8_t> decompress_file(const
@@ -398,7 +410,7 @@ void about() {
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    std::cerr << "usage: wadify.exe <command>\n";
+    std::cerr << "usage: wadify.exe <cmd>\n";
     return 1;
   }
 
@@ -410,11 +422,7 @@ int main(int argc, char* argv[]) {
       std::cerr << "usage: wadify.exe --decompress <input.wad>\n";
       return 1;
     }
-    std::string file = argv[2];
-    if (!file.ends_with(".wad")) {
-      std::cerr << "tried to unlink a non .wad file\n";
-      return 1;
-    }
+    std::string file = ensure_wad_extension(argv[2]);
     // all good
     decompress_wad(file);
   }

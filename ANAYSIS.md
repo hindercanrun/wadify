@@ -1,7 +1,7 @@
 i have spent the last month reversing and researching this file type, i originally wasn't going to publicize this but i changed my mind because why not, better to be out there.
 anyways maybe you'll learn something from this, because i sure did. don't confuse yourself with doom wad's, they are completely different to cod wad's.
 
-i will likely be going after ipak's next, i am not sure if i will release that one like i did with this one however, only time will tell i guess.
+i will likely be going after ff/ipak's next, i am not sure if i will release that one like i did with this one however, only time will tell i guess.
 anyways enough sidetracking.
 
 wad information:

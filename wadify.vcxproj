@@ -169,7 +169,7 @@
     <ClCompile Include="dependencies\zlib\inftrees.c" />
     <ClCompile Include="dependencies\zlib\trees.c" />
     <ClCompile Include="dependencies\zlib\zutil.c" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\zlib\crc32.h" />
@@ -183,13 +183,13 @@
     <ClInclude Include="dependencies\zlib\zconf.h" />
     <ClInclude Include="dependencies\zlib\zlib.h" />
     <ClInclude Include="dependencies\zlib\zutil.h" />
-    <ClInclude Include="resource.hpp" />
+    <ClInclude Include="src\resource.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
+    <Image Include="src\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icon.ico" />
+    <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

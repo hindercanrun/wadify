@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="dependencies\zlib\adler32.c">
       <Filter>dependencies\zlib</Filter>
     </ClCompile>
@@ -26,6 +25,7 @@
     <ClCompile Include="dependencies\zlib\zutil.c">
       <Filter>dependencies\zlib</Filter>
     </ClCompile>
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\zlib\crc32.h">
@@ -61,9 +61,7 @@
     <ClInclude Include="dependencies\zlib\zutil.h">
       <Filter>dependencies\zlib</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
+    <ClInclude Include="src\resource.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dependencies">
@@ -72,5 +70,11 @@
     <Filter Include="dependencies\zlib">
       <UniqueIdentifier>{99001de1-0a19-4c58-9723-0c0218834e8e}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\resource.rc" />
   </ItemGroup>
 </Project>
