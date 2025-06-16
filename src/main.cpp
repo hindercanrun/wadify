@@ -67,46 +67,31 @@ wad_entry read_wad_entry(const std::vector<std::uint8_t>& data,
 
 static
 bool decompress_wad(const std::string& file_name) {
-  utils::print("decompressing: " + file_name + "..\n\n");
+  std::cout << std::format("decompressing: {}..\n", file_name);
   try {
     auto data = utils::read_file(file_name);
     wad_header header = read_wad_header(data);
     if (header.magic != 0x543377AB) {
       utils::print_error("WAD has incorrect magic!\n");
-      utils::print(
-        "Expecting: 0x543377AB, got: 0x",
-          std::uppercase,
-          std::hex,
-          std::setw(8),
-          std::setfill('0'),
+      std::cout << std::format(
+        "Expecting: 0x543377AB, got: 0x{:08X}",
           header.magic);
       return false;
     }
 
-    utils::print("wad information:\n");
-    utils::print(
-      "magic: 0x",
-        std::uppercase,
-        std::hex,
-        std::setw(8),
-        std::setfill('0'),
-        header.magic,
-        "\n");
+    std::cout << "\nwad information:\n";
+    std::cout << std::format("magic: 0x{:08X}\n", header.magic);
     auto time = utils::format_timestamp(header.timestamp);
     if (time.has_value()) {
-      utils::print(
-        "timestamp: ",
+      std::cout << std::format(
+        "timestamp: {} (0x{:08X})\n",
           time.value(),
-          " (0x",
-          std::uppercase,
-          std::hex,
-          header.timestamp,
-          ")\n");
+          header.timestamp);
     } else {
-      utils::print("timestamp: N/A\n"); // nice 'N/A' string instead of garbage
+      std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
     }
-    utils::print("entries: ", std::dec, header.num_entries, "\n");
-    utils::print("ffotd: ", header.ffotd_version, "\n\n");
+    std::cout << std::format("entries: {}\n", header.num_entries);
+    std::cout << std::format("ffotd: {}\n\n", header.ffotd_version);
 
     std::vector<wad_entry> entries;
     for (std::uint32_t i = 0; i < header.num_entries; ++i) {
@@ -139,9 +124,11 @@ bool decompress_wad(const std::string& file_name) {
         }
 
         auto decompressed_data = utils::decompress_file(compressed_data);
-        out.write(reinterpret_cast<const char*>(decompressed_data.data()),
-          decompressed_data.size());
-        utils::print("decompressed: " + entry.name + "..\n");
+        out.write(
+          reinterpret_cast<const char*>(
+            decompressed_data.data()),
+            decompressed_data.size());
+        std::cout << std::format("decompressed: {}\n", entry.name);
       } catch (const std::exception& e) {
         utils::print_error(e.what());
         return false;
@@ -152,7 +139,7 @@ bool decompress_wad(const std::string& file_name) {
     return false;
   }
 
-  utils::print("\ndone");
+  std::cout << "\ndone";
   return true;
 }
 
@@ -166,7 +153,7 @@ bool decompress_wad(const std::string& file_name) {
 // so i manually put it as 0
 static
 bool compress_folder(const std::string& folder_name) {
-  utils::print("compressing: ", folder_name, "..\n\n");
+  std::cout << std::format("compressing: {}..\n\n", folder_name);
   try {
     wad_header header{};
     header.magic = 0x543377AB;
@@ -216,7 +203,10 @@ bool compress_folder(const std::string& folder_name) {
             c == '<' ||
             c == '>' ||
             c == '|') {
-          throw std::runtime_error(file_name + " has atleast one bad character");
+          throw std::runtime_error(
+            std::format(
+              "{} has atleast one bad character",
+                file_name));
         }
       }
 
@@ -230,37 +220,26 @@ bool compress_folder(const std::string& folder_name) {
       we.offset = current_offset;
 
       // let the user know what we compressed
-      utils::print("compressed ", file_name.c_str(), "..\n");
+      std::cout << std::format("compressed {}..\n", file_name);
       current_offset += we.compressed_size;
       entries.push_back(we);
       compressed_datas.push_back(std::move(compressed_data));
     }
 
-    utils::print("\nwad information:\n");
-    utils::print(
-      "magic: 0x",
-        std::uppercase,
-        std::hex,
-        std::setw(8),
-        std::setfill('0'),
-        header.magic,
-        "\n");
+    std::cout << "\nwad information:\n";
+    std::cout << std::format("magic: 0x{:08X}\n", header.magic);
     auto time = utils::format_timestamp(header.timestamp);
     if (time.has_value()) {
-      utils::print(
-        "timestamp: ",
+      std::cout << std::format(
+        "timestamp: {} (0x{:08X})\n",
           time.value(),
-          " (0x",
-          std::uppercase,
-          std::hex,
-          header.timestamp,
-          ")\n");
+          header.timestamp);
     } else {
-      utils::print("timestamp: N/A\n"); // nice 'N/A' string instead of garbage
+      std::cout << "timestamp: N/A\n"; // nice 'N/A' string instead of garbage
     }
     header.num_entries = static_cast<std::uint32_t>(entries.size());
-    utils::print("entries: ", std::dec, header.num_entries, "\n");
-    utils::print("ffotd: ", header.ffotd_version, "\n");
+    std::cout << std::format("entries: {}\n", header.num_entries);
+    std::cout << std::format("ffotd: {}\n\n", header.ffotd_version);
 
     // build final wad_data
     std::vector<std::uint8_t> wad_data;
@@ -294,29 +273,29 @@ bool compress_folder(const std::string& folder_name) {
     return false;
   }
 
-  utils::print("\ndone");
+  std::cout << "done";
   return true;
 }
 
 static
 void help() {
   // just general help for the tool
-  utils::print("command usages:\n\n");
-  utils::print("--decompress <input>  //  decompresses the input\n");
-  utils::print("  shortcut            // -d\n");
-  utils::print("--compress   <input>  //  compresses the input into a .wad\n");
-  utils::print("  shortcut            // -c\n");
-  utils::print("--help                //  displays help for various commands\n");
-  utils::print("  shortcut            // -h, -?\n");
-  utils::print("--about               //  displays about information\n");
-  utils::print("  shortcut            // -a\n");
+  std::cout << "command usages:\n\n";
+  std::cout << "--decompress <input>  //  decompresses the input\n";
+  std::cout << "  shortcut            // -d\n";
+  std::cout << "--compress   <input>  //  compresses the input into a .wad\n";
+  std::cout << "  shortcut            // -c\n";
+  std::cout << "--help                //  displays help for various commands\n";
+  std::cout << "  shortcut            // -h, -?\n";
+  std::cout << "--about               //  displays about information\n";
+  std::cout << "  shortcut            // -a\n";
 }
 
 static
 void about() {
-  utils::print("tool information:\n\n");
-  utils::print("wadify.exe // a compresser/decompresser tool for 3arc's .wad type\n");
-  utils::print("           // made by hindercanrun\n");
+  std::cout << "tool information:\n\n";
+  std::cout << "wadify.exe // a compresser/decompresser tool for 3arc's .wad type\n";
+  std::cout << "           // made by hindercanrun\n";
 }
 
 int main(int argc, char* argv[]) {
