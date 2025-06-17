@@ -8,7 +8,7 @@
 ![downloads](https://img.shields.io/github/downloads/hindercanrun/wadify/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
 </div>
 
-![image](https://github.com/user-attachments/assets/a15ce583-73e6-46ae-a570-6b253c27e67c)
+![Demo](https://s4.ezgif.com/tmp/ezgif-432f32662e2135.gif)
 
 ---
 
