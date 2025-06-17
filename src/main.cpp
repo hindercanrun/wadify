@@ -274,10 +274,10 @@ static
 void help() {
   // just general help for the tool
   std::cout << "Usage:\n"
-    << "--decompress <input>  or  -d <input>\n"
-    << "--compress <input>    or  -c <input>\n"
-    << "--help                or  -h, -?\n"
-    << "--about               or  -a\n";
+    << "--decompress, -d <input>\n"
+    << "--compress, -c <input>\n"
+    << "--help, -h, ?\n"
+    << "--about, -a\n";
 }
 
 static
@@ -330,6 +330,6 @@ int main(int argc, char* argv[]) {
   }
 
   std::cerr << yellow
-    << std::format("Unknown command: {}\n", cmd) << clear;
+    << std::format("unknown cmd: {}\n", cmd) << clear;
   return 1;
 }
