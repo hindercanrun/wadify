@@ -3,10 +3,15 @@
 
 namespace utils {
 std::string add_wad_ext(const std::string& file) {
-  if (!std::ranges::ends_with(file, ".wad")) {
-    return file + ".wad";
+  using namespace std::string_view_literals;
+
+  const auto sv = std::string_view(file);
+  if (sv.size() >= 4 && 
+      std::equal(sv.end() - 4, sv.end(), ".wad"sv.begin(), 
+        [](char a, char b) { return std::tolower(a) == std::tolower(b); })) {
+    return file;
   }
-  return file;
+  return file + ".wad";
 }
 
 std::string remove_wad_ext(const std::string& file) {
@@ -14,15 +19,6 @@ std::string remove_wad_ext(const std::string& file) {
     return file.substr(0, file.size() - 4);
   }
   return file;
-}
-
-std::optional<std::string> get_out_folder(int argc, char* argv[]) {
-  for (int i = 1; i < argc - 1; ++i) {
-        if (std::string_view(argv[i]) == "--out") {
-            return std::string(argv[i + 1]);
-        }
-    }
-    return std::nullopt;
 }
 
 std::optional<std::string> format_timestamp(std::uint32_t timestamp) {

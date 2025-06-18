@@ -108,18 +108,20 @@ bool decompress_wad(const std::string& file_name,
       return false;
     }
 
-    // create a folder if one doesnt exist
     fs::path output_dir = output_folder
-        ? fs::absolute(*output_folder)
-        : fs::absolute(fs::path(file_name).stem());
-    fs::create_directories(output_dir);
+      ? fs::absolute(*output_folder)
+      : fs::absolute(fs::path(file_name).stem());
+    // create a folder if one doesnt exist
+    if (!fs::exists(output_dir)) {
+      fs::create_directories(output_dir);
+    }
 
     for (const auto& entry : entries) {
       try {
-          if (static_cast<std::size_t>(entry.offset) +
-            entry.compressed_size > data.size()) {
-            throw std::runtime_error("entry data out of bounds");
-          }
+        if (static_cast<std::size_t>(entry.offset) +
+          entry.compressed_size > data.size()) {
+          throw std::runtime_error("entry data out of bounds");
+        }
 
         std::vector compressed_data(
           data.begin() + entry.offset,
@@ -133,7 +135,7 @@ bool decompress_wad(const std::string& file_name,
         }
 
         out.write(reinterpret_cast<const char*>(decompressed_data.data()),
-            decompressed_data.size());
+          decompressed_data.size());
         out.close();
         // set file time stamps
         auto file_time = std::chrono::system_clock::from_time_t(header.timestamp);
@@ -151,7 +153,6 @@ bool decompress_wad(const std::string& file_name,
     std::cerr << red << "error: " << e.what() << clear;
     return false;
   }
-
   std::cout << "\ndone\n";
   return true;
 }
@@ -297,7 +298,7 @@ void about() {
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    std::cerr << yellow << "usage: wadify.exe <cmd>\n" << clear;
+    std::cerr << yellow << "usage: wadify.exe <cmd>" << clear;
     return 1;
   }
   // now check what the user wants to do
@@ -306,15 +307,21 @@ int main(int argc, char* argv[]) {
       cmd == "-d") {
     if (argc < 3) {
       std::cerr << yellow
-        << "usage: wadify.exe --decompress <input>\n" << clear;
+        << "usage: wadify.exe --decompress <input>" << clear;
       return 1;
     }
     std::string input_file = utils::add_wad_ext(argv[2]);
     std::optional<std::string> output_folder;
     for (auto i = 3; i < argc; ++i) {
-      if (std::string_view(argv[i]) == "--output-folder" && i + 1 < argc) {
-        output_folder = argv[i + 1];
-        ++i; // skip next
+      if (std::string_view(argv[i]) == "--output-folder") {
+        if (i + 1 < argc) {
+          output_folder = argv[i + 1];
+          ++i; // skip next
+        } else {
+          std::cerr << yellow
+            << "usage: wadify.exe --output-folder <input>" << clear;
+          return 1;
+        }
       }
     }
     return decompress_wad(input_file, output_folder) ? 0 : 1;
@@ -324,12 +331,10 @@ int main(int argc, char* argv[]) {
       cmd == "-c") {
     if (argc < 3) {
       std::cerr << yellow
-        << "usage: wadify.exe --compress <input>\n" << clear;
+        << "usage: wadify.exe --compress <input>" << clear;
       return 0;
     }
-    return compress_folder(utils::remove_wad_ext(argv[2]))
-      ? 0
-      : 1;
+    return compress_folder(utils::remove_wad_ext(argv[2])) ? 0 : 1;
   }
   
   if (cmd == "--help" ||
@@ -346,6 +351,6 @@ int main(int argc, char* argv[]) {
   }
 
   std::cerr << yellow
-    << std::format("unknown cmd: {}\n", cmd) << clear;
+    << std::format("unknown cmd: {}", cmd) << clear;
   return 1;
 }
