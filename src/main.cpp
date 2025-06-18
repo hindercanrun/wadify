@@ -312,11 +312,14 @@ int main(int argc, char* argv[]) {
     }
     std::string input_file = utils::add_wad_ext(argv[2]);
     std::optional<std::string> output_folder;
-    for (auto i = 3; i < argc; ++i) {
-      if (std::string_view(argv[i]) == "--output-folder") {
+    // i could probably
+    // do this better
+    for (int i = 3; i < argc; ++i) {
+      std::string_view arg = argv[i];
+      if ((arg == "--output-folder" ||
+           arg == "-o")) {
         if (i + 1 < argc) {
-          output_folder = argv[i + 1];
-          ++i; // skip next
+          output_folder = argv[++i]; // skip next
         } else {
           std::cerr << yellow
             << "usage: wadify.exe --output-folder <input>" << clear;
@@ -326,7 +329,7 @@ int main(int argc, char* argv[]) {
     }
     return decompress_wad(input_file, output_folder) ? 0 : 1;
   }
-  
+
   if (cmd == "--compress" ||
       cmd == "-c") {
     if (argc < 3) {
@@ -336,20 +339,19 @@ int main(int argc, char* argv[]) {
     }
     return compress_folder(utils::remove_wad_ext(argv[2])) ? 0 : 1;
   }
-  
+
   if (cmd == "--help" ||
       cmd == "-h" ||
       cmd == "-?") {
     help();
     return 0;
   }
-  
+
   if (cmd == "--about" ||
       cmd == "-a") {
     about();
     return 0;
   }
-
   std::cerr << yellow
     << std::format("unknown cmd: {}", cmd) << clear;
   return 1;
