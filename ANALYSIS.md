@@ -79,6 +79,13 @@ the rest is pointless to go through as it's just compressed with basic zlib, not
 
 and just like that, you've learnt pretty much this entire format, atleast the basics of it.
 
+one thing to note is: wad's do not store the time-stamp of each file, so when dumping them if you want the "original time", you'll have to use the wad's time-stamp.
+sadly you can't get the original date, but at-least you can get some-where close.
+
+here is how i do it.
+
+![image](https://github.com/user-attachments/assets/9b81f887-176b-4666-b2e9-ae9824425dcd)
+
 things to note:
 - on pc, the game can load big endian wad's, it'll just convert it to little endian during run time.
 - 3arc used a linker that pulled from a zone_source type folder to link together the assets.
