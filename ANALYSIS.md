@@ -14,8 +14,8 @@ i have used `online_tu0_mp_english.wad` from `T6_greenlight_mp` build for this d
 
 to start of, we have the header magic.
 
-i am not entirely sure what `T3w«` stands for, `w` likely stands for `wad` so `T3wad`. `T3` might stand for `Treyarch3` and we know that `Treyarch3` is `Call of Duty: 3`, if this is true then they must've used wad's in CoD3. last but not least, there's `«` which i have no clue what could be for other than maybe an identifier? but i'm not sure.
-so maybe, `T3(CoD3)w(wad)«(maybe garbage)`.
+i am not entirely sure what `T3w«` stands for, `w` likely stands for `wad` so `T3wad`. `T3` might stand for `Treyarch3` and we know that `Treyarch3` is `Call of Duty: 3`, if this is true then they must've used wad's in CoD3. last but not least, there's `«`, I think this might just be classic garbage, so the actual magic identifier is `T3w `.
+so maybe, `T3(CoD3)w(wad) `.
 
 anyways time to get into the actual file information..
 
