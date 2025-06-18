@@ -20,6 +20,7 @@
 #include <ranges>
 #include <vector>
 
+namespace {
 struct wad_header {
   std::uint32_t magic{};
   std::uint32_t timestamp{};
@@ -33,13 +34,7 @@ struct wad_entry {
   std::uint32_t size{};
   std::uint32_t offset{};
 };
-
-struct wad {
-  wad_header header;
-  std::vector<wad_entry> entries;
-};
-
-namespace fs = std::filesystem;
+} // namespace
 
 static
 wad_header read_wad_header(std::span<const std::uint8_t> data) {
@@ -71,6 +66,8 @@ wad_entry read_wad_entry(std::span<const std::uint8_t> data,
 constexpr auto red = "\033[31m";
 constexpr auto yellow = "\033[33m";
 constexpr auto clear = "\033[0m";
+
+namespace fs = std::filesystem;
 
 static
 bool decompress_wad(const std::string& file_name,
