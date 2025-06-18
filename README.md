@@ -16,7 +16,7 @@
 1. Download the [latest version](https://github.com/hindercanrun/wadify/releases/latest/download/wadify.exe).
 2. Drag and drop it to your folder of choice.
 3. Open up Command Prompt and type in `cd <your folder of choice>`.
-4. Type `wadify` and now your command of choice.
+4. Type `wadify` and now your command of choice. Here are a few examples.
    - `--decompress <wad>` if you want to decompress a wad.
    - `--compress <folder>` if you want to compress a folder.
    - If you need any help, type `--help` for all the commands.
@@ -38,6 +38,8 @@
   - Compresses the input folder into a .wad.
 - ```--output-folder```, ```-o```
   - Specifies the output folder.
+- ```--verbose```, ```-v```
+  - Outputs way more messages.
 - ```--help```, ```-h```, ```-?```
   - Displays help for various commands.
 - ```--about```, ```-a```
