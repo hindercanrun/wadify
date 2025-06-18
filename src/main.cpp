@@ -129,9 +129,15 @@ bool decompress_wad(const std::string& file_name) {
           throw std::runtime_error("failed to create file");
         }
 
-        out.write(reinterpret_cast<const char*>(
-          decompressed_data.data()),
-          decompressed_data.size());
+        out.write(reinterpret_cast<const char*>(decompressed_data.data()),
+            decompressed_data.size());
+        out.close();
+        // set file time stamps
+        auto file_time = std::chrono::system_clock::from_time_t(header.timestamp);
+        fs::last_write_time(output_path,
+          fs::file_time_type::clock::now() +
+          (file_time - std::chrono::system_clock::now()));
+        // tell the user what we decompressed
         std::cout << std::format("decompressed: {}\n", entry.name);
       } catch (const std::exception& e) {
         std::cerr << red << "error: " << e.what() << clear;
