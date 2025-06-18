@@ -68,6 +68,9 @@ constexpr auto yellow = "\033[33m";
 constexpr auto clear = "\033[0m";
 
 namespace fs = std::filesystem;
+using Clock = std::chrono::steady_clock;
+
+bool verbose = false;
 
 static
 bool decompress_wad(const std::string& file_name,
@@ -112,7 +115,8 @@ bool decompress_wad(const std::string& file_name,
     if (!fs::exists(output_dir)) {
       fs::create_directories(output_dir);
     }
-
+    // start the timer
+    const auto start = Clock::now();
     for (const auto& entry : entries) {
       try {
         if (static_cast<std::size_t>(entry.offset) +
@@ -139,8 +143,18 @@ bool decompress_wad(const std::string& file_name,
         fs::last_write_time(output_path,
           fs::file_time_type::clock::now() +
           (file_time - std::chrono::system_clock::now()));
+        // end the timer
+        const auto end = Clock::now();
+        const auto ms =
+          std::chrono::duration_cast<
+          std::chrono::milliseconds
+          >(end - start).count();
         // tell the user what we decompressed
-        std::cout << std::format("decompressed: {}\n", entry.name);
+        if (verbose) {
+          std::cout << std::format("decompressed: {} (time: {} ms)\n", entry.name, ms);
+        } else {
+          std::cout << std::format("decompressed: {}\n", entry.name);
+        }
       } catch (const std::exception& e) {
         std::cerr << red << "error: " << e.what() << clear;
         return false;
@@ -150,7 +164,7 @@ bool decompress_wad(const std::string& file_name,
     std::cerr << red << "error: " << e.what() << clear;
     return false;
   }
-  std::cout << "\ndone\n";
+  std::cout << "\ndone";
   return true;
 }
 
@@ -211,8 +225,16 @@ bool compress_folder(const std::string& folder_name) {
         }
       }
 
-      auto file_data = utils::read_file(path);
+      // start the timer
+      const auto start = Clock::now();
+      const auto file_data = utils::read_file(path);
       auto compressed_data = utils::compress_file(file_data);
+      // end the timer
+      const auto end = Clock::now();
+      const auto ms =
+        std::chrono::duration_cast<
+        std::chrono::milliseconds
+        >(end - start).count();
 
       entries.push_back({
         .name = file_name,
@@ -224,14 +246,17 @@ bool compress_folder(const std::string& folder_name) {
       current_offset += static_cast<std::uint32_t>(compressed_data.size());
       compressed_datas.push_back(std::move(compressed_data));
       // let the user know what we compressed
-      std::cout << std::format("compressed: {}\n", file_name);
+      if (verbose) {
+        std::cout << std::format("compressed: {} (time: {} ms)\n", file_name, ms);
+      } else {
+        std::cout << std::format("compressed: {}\n", file_name);
+      }
     }
-
     header.num_entries = static_cast<std::uint32_t>(entries.size());
 
     std::cout << "\nfile info:\n";
     std::cout << std::format("magic: 0x{:08X}\n", header.magic);
-    auto time = utils::format_timestamp(header.timestamp);
+    const auto time = utils::format_timestamp(header.timestamp);
     if (time) {
       std::cout << std::format(
         "timestamp: {} (0x{:08X})\n",
@@ -284,6 +309,7 @@ void help() {
     << "--decompress, -d <input>\n"
     << "--compress, -c <input>\n"
     << "--output-folder, -o <path>\n"
+    << "--verbose, -0\n"
     << "--help, -h, ?\n"
     << "--about, -a\n";
 }
@@ -298,8 +324,19 @@ int main(int argc, char* argv[]) {
     std::cerr << yellow << "usage: wadify.exe <cmd>" << clear;
     return 1;
   }
+
   // now check what the user wants to do
   std::string_view cmd = argv[1];
+  // first lets check if user wants verbose
+  for (auto i = 1; i < argc; ++i) {
+    std::string_view arg = argv[i];
+    if (arg == "--verbose" ||
+        arg == "-v") {
+      verbose = true;
+      break;
+    }
+  }
+
   if (cmd == "--decompress" ||
       cmd == "-d") {
     if (argc < 3) {

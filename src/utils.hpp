@@ -9,7 +9,6 @@
 #include <array>
 #include <string>
 #include <format>
-#include <chrono>
 
 namespace fs = std::filesystem;
 
