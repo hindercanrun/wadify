@@ -73,7 +73,8 @@ constexpr auto yellow = "\033[33m";
 constexpr auto clear = "\033[0m";
 
 static
-bool decompress_wad(const std::string& file_name) {
+bool decompress_wad(const std::string& file_name,
+                    const std::optional<std::string>& output_folder) {
   std::cout << std::format("decompressing: {}...\n", file_name);
   try {
     const auto data = utils::read_file(file_name);
@@ -108,7 +109,9 @@ bool decompress_wad(const std::string& file_name) {
     }
 
     // create a folder if one doesnt exist
-    fs::path output_dir = fs::absolute(fs::path(file_name).stem());
+    fs::path output_dir = output_folder
+        ? fs::absolute(*output_folder)
+        : fs::absolute(fs::path(file_name).stem());
     fs::create_directories(output_dir);
 
     for (const auto& entry : entries) {
@@ -282,6 +285,7 @@ void help() {
   std::cout << "Usage:\n"
     << "--decompress, -d <input>\n"
     << "--compress, -c <input>\n"
+    << "--output-folder, -o <path>\n"
     << "--help, -h, ?\n"
     << "--about, -a\n";
 }
@@ -305,9 +309,15 @@ int main(int argc, char* argv[]) {
         << "usage: wadify.exe --decompress <input>\n" << clear;
       return 1;
     }
-    return decompress_wad(utils::add_wad_ext(argv[2]))
-      ? 0
-      : 1;
+    std::string input_file = utils::add_wad_ext(argv[2]);
+    std::optional<std::string> output_folder;
+    for (auto i = 3; i < argc; ++i) {
+      if (std::string_view(argv[i]) == "--output-folder" && i + 1 < argc) {
+        output_folder = argv[i + 1];
+        ++i; // skip next
+      }
+    }
+    return decompress_wad(input_file, output_folder) ? 0 : 1;
   }
   
   if (cmd == "--compress" ||

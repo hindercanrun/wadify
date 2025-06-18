@@ -16,6 +16,15 @@ std::string remove_wad_ext(const std::string& file) {
   return file;
 }
 
+std::optional<std::string> get_out_folder(int argc, char* argv[]) {
+  for (int i = 1; i < argc - 1; ++i) {
+        if (std::string_view(argv[i]) == "--out") {
+            return std::string(argv[i + 1]);
+        }
+    }
+    return std::nullopt;
+}
+
 std::optional<std::string> format_timestamp(std::uint32_t timestamp) {
   std::time_t t = timestamp;
   std::tm local{};
