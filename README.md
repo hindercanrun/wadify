@@ -38,6 +38,8 @@
   - Compresses the input folder into a .wad.
 - ```--output-folder```, ```-o```
   - Specifies the output folder.
+- ```--verbose```, ```-v```
+  - Outputs way more messages.
 - ```--help```, ```-h```, ```-?```
   - Displays help for various commands.
 - ```--about```, ```-a```
