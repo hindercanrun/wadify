@@ -36,6 +36,8 @@
   - Decompresses the input .wad.
 - ```--compress```, ```-c```
   - Compresses the input folder into a .wad.
+- ```--output-folder```, ```-o```
+  - Specifies the output folder.
 - ```--help```, ```-h```, ```-?```
   - Displays help for various commands.
 - ```--about```, ```-a```
