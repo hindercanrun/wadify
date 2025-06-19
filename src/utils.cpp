@@ -118,18 +118,4 @@ std::vector<std::uint8_t> compress_file(const std::vector<std::uint8_t>& input_d
   return res;
 }
 
-std::uint32_t read_u32_be(const std::uint8_t* ptr) {
-  return (static_cast<std::uint32_t>(ptr[0]) << 24) |
-         (static_cast<std::uint32_t>(ptr[1]) << 16) |
-         (static_cast<std::uint32_t>(ptr[2]) << 8)  |
-          static_cast<std::uint32_t>(ptr[3]);
-}
-
-void write_u32_be(std::vector<std::uint8_t>& buf,
-                  std::uint32_t value) {
-  buf.push_back((value >> 24) & 0xFF);
-  buf.push_back((value >> 16) & 0xFF);
-  buf.push_back((value >> 8)  & 0xFF);
-  buf.push_back(value         & 0xFF);
-}
 } // namespace utils

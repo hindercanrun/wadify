@@ -42,10 +42,10 @@ struct wad_entry {
 static
 wad_header read_wad_header(std::span<const std::uint8_t> data) {
   return {
-    .magic = utils::read_u32_be(&data[0]),
-    .timestamp = utils::read_u32_be(&data[4]),
-    .num_entries = utils::read_u32_be(&data[8]),
-    .ffotd_version = utils::read_u32_be(&data[12])
+    .magic = utils::read_be_u32(&data[0]),
+    .timestamp = utils::read_be_u32(&data[4]),
+    .num_entries = utils::read_be_u32(&data[8]),
+    .ffotd_version = utils::read_be_u32(&data[12])
   };
 }
 
@@ -59,9 +59,9 @@ wad_entry read_wad_entry(std::span<const std::uint8_t> data,
 
     return {
       .name = name,
-      .compressed_size = utils::read_u32_be(&data[base + 32]),
-      .size = utils::read_u32_be(&data[base + 36]),
-      .offset = utils::read_u32_be(&data[base + 40])
+      .compressed_size = utils::read_be_u32(&data[base + 32]),
+      .size = utils::read_be_u32(&data[base + 36]),
+      .offset = utils::read_be_u32(&data[base + 40])
     };
 }
 
@@ -263,10 +263,10 @@ bool compress_folder(const std::string& folder_name) {
     // build final wad_data
     std::vector<std::uint8_t> wad_data;
     // write header
-    utils::write_u32_be(wad_data, header.magic);
-    utils::write_u32_be(wad_data, header.timestamp);
-    utils::write_u32_be(wad_data, header.num_entries);
-    utils::write_u32_be(wad_data, header.ffotd_version);
+    utils::write_be_u32(wad_data, header.magic);
+    utils::write_be_u32(wad_data, header.timestamp);
+    utils::write_be_u32(wad_data, header.num_entries);
+    utils::write_be_u32(wad_data, header.ffotd_version);
 
     // write entries
     for (const auto& e : entries) {
@@ -275,9 +275,9 @@ bool compress_folder(const std::string& folder_name) {
       wad_data.insert(wad_data.end(),
         reinterpret_cast<std::uint8_t*>(name_buf.data()),
         reinterpret_cast<std::uint8_t*>(name_buf.data()) + 32);
-      utils::write_u32_be(wad_data, e.compressed_size);
-      utils::write_u32_be(wad_data, e.size);
-      utils::write_u32_be(wad_data, e.offset);
+      utils::write_be_u32(wad_data, e.compressed_size);
+      utils::write_be_u32(wad_data, e.size);
+      utils::write_be_u32(wad_data, e.offset);
     }
     // write compressed data blocks
     for (const auto& c : compressed_datas) {

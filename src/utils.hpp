@@ -27,7 +27,22 @@ std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>&
 std::vector<std::uint8_t> compress_file(const std::vector<std::uint8_t>& input_data,
                                         int compression_level = Z_BEST_COMPRESSION);
 
-std::uint32_t read_u32_be(const std::uint8_t* ptr);
-void write_u32_be(std::vector<std::uint8_t>& buf,
-                  std::uint32_t value);
+inline std::uint32_t read_be_u32(const void* data) noexcept {
+  std::uint32_t value;
+  std::memcpy(&value, data, sizeof(value));
+  if constexpr (std::endian::native == std::endian::little) {
+    return std::byteswap(value);
+  }
+  return value;
+}
+
+
+inline void write_be_u32(std::vector<std::uint8_t>& out, std::uint32_t value) {
+  if constexpr (std::endian::native == std::endian::little) {
+    value = std::byteswap(value);
+  }
+
+  auto* ptr = reinterpret_cast<std::uint8_t*>(&value);
+  out.insert(out.end(), ptr, ptr + sizeof(value));
+}
 } // namespace utils
