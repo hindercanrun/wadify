@@ -1,10 +1,8 @@
-/*/
- *
- * tool to compress/decompress wad's
- * this was originally made for T6_greenlight_mp
- * however it also supports all versions of T6 and T5
- *
-/*/
+/**
+ ************************************************************
+ * wadify : wad compresser/decompresser                     *
+ ************************************************************
+**/
 
 #include "utils.hpp"
 
@@ -184,9 +182,7 @@ bool compress_folder(const std::string& folder_name) {
     wad_header header{
       .magic = 0x543377AB,
       .timestamp = static_cast<std::uint32_t>(std::time(nullptr)),
-      // since post release is 1
-      // so let's just set it to 1
-      .ffotd_version = 1 // it probably doesn't matter
+      .ffotd_version = 1 // what retail bo2 set's it to
     };
 
     std::vector<wad_entry> entries;
