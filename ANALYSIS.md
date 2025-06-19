@@ -19,6 +19,17 @@ so maybe, `T3(CoD3)w(wad) `.
 
 anyways time to get into the actual file information..
 
+```cpp
+struct wad_header {
+  std::uint32_t magic{};
+  std::uint32_t timestamp{};
+  std::uint32_t num_entries{};
+  std::uint32_t ffotd_version{};
+};
+```
+
+actual data:
+
 ```
 magic
 string: T3w« hex: 54 33 77 AB
@@ -61,6 +72,15 @@ This screenshot is from `rfazio/t6/wads/online_tu15_mp_english.wad`, as you can 
 ```
 ffotd version
 int: 0 hex: 00 00 00 00
+```
+
+```cpp
+struct wad_entry {
+  std::string name;
+  std::uint32_t compressed_size{};
+  std::uint32_t size{};
+  std::uint32_t offset{};
+};
 ```
 
 now, we have the entries themselves. remember this can be different depending on your game mode's and game version's wad.
