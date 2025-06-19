@@ -8,17 +8,22 @@
 
 #include "utils.hpp"
 
-#include <fstream>
-#include <iostream>
-#include <filesystem>
-#include <cstdint>
 #include <array>
+#include <chrono>
+#include <cstdint>
+#include <cstring>
+#include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <optional>
+#include <span>
 #include <string>
 #include <string_view>
-#include <format>
-#include <chrono>
-#include <ranges>
+#include <unordered_map>
 #include <vector>
+#include <format>
 
 namespace {
 struct wad_header {
@@ -70,7 +75,7 @@ constexpr auto clear = "\033[0m";
 namespace fs = std::filesystem;
 using Clock = std::chrono::steady_clock;
 
-bool verbose = false;
+bool verbose_mode = false;
 
 static
 bool decompress_wad(const std::string& file_name,
@@ -150,7 +155,7 @@ bool decompress_wad(const std::string& file_name,
           std::chrono::milliseconds
           >(end - start).count();
         // tell the user what we decompressed
-        if (verbose) {
+        if (verbose_mode) {
           std::cout << std::format("decompressed: {} (time: {} ms)\n", entry.name, ms);
         } else {
           std::cout << std::format("decompressed: {}\n", entry.name);
@@ -246,7 +251,7 @@ bool compress_folder(const std::string& folder_name) {
       current_offset += static_cast<std::uint32_t>(compressed_data.size());
       compressed_datas.push_back(std::move(compressed_data));
       // let the user know what we compressed
-      if (verbose) {
+      if (verbose_mode) {
         std::cout << std::format("compressed: {} (time: {} ms)\n", file_name, ms);
       } else {
         std::cout << std::format("compressed: {}\n", file_name);
@@ -303,7 +308,41 @@ bool compress_folder(const std::string& folder_name) {
 }
 
 static
-void help() {
+bool decompress_cmd(int argc, char* argv[]) {
+  if (argc < 3) {
+    std::cerr << yellow << "usage: wadify.exe --decompress <input>" << clear;
+    return false;
+  }
+
+  std::basic_string input_file = utils::add_wad_ext(argv[2]);
+  std::optional<std::string> output_folder;
+
+  for (int i = 3; i < argc; ++i) {
+    std::string arg = argv[i];
+    if (arg == "--output-folder" ||
+        arg == "-o") {
+      if (i + 1 < argc) {
+        output_folder = argv[++i];
+      } else {
+        std::cerr << yellow << "usage: wadify.exe --output-folder <input>" << clear;
+        return false;
+      }
+    }
+  }
+  return decompress_wad(input_file, output_folder);
+}
+
+static
+bool compress_cmd(int argc, char* argv[]) {
+  if (argc < 3) {
+    std::cerr << yellow << "usage: wadify.exe --compress <input>" << clear;
+    return false;
+  }
+  return compress_folder(utils::remove_wad_ext(argv[2]));
+}
+
+static
+bool help_cmd(int /*argc*/, char** /*argv*/) {
   // just general help for the tool
   std::cout << "Usage:\n"
     << "--decompress, -d <input>\n"
@@ -312,11 +351,13 @@ void help() {
     << "--verbose, -0\n"
     << "--help, -h, ?\n"
     << "--about, -a\n";
+  return true;
 }
 
 static
-void about() {
+bool about_cmd(int /*argc*/, char** /*argv*/) {
   std::cout << "wadify.exe: 3arc wad tool by indoorhinge\n";
+  return true;
 }
 
 int main(int argc, char* argv[]) {
@@ -324,69 +365,36 @@ int main(int argc, char* argv[]) {
     std::cerr << yellow << "usage: wadify.exe <cmd>" << clear;
     return 1;
   }
-
-  // now check what the user wants to do
-  std::string_view cmd = argv[1];
-  // first lets check if user wants verbose
-  for (auto i = 1; i < argc; ++i) {
-    std::string_view arg = argv[i];
+  for (int i = 1; i < argc; ++i) {
+    std::string arg(argv[i]);
+    // check if user wants verbose
     if (arg == "--verbose" ||
         arg == "-v") {
-      verbose = true;
+      verbose_mode = true;
       break;
     }
   }
 
-  if (cmd == "--decompress" ||
-      cmd == "-d") {
-    if (argc < 3) {
-      std::cerr << yellow
-        << "usage: wadify.exe --decompress <input>" << clear;
-      return 1;
-    }
-    std::string input_file = utils::add_wad_ext(argv[2]);
-    std::optional<std::string> output_folder;
-    // i could probably
-    // do this better
-    for (int i = 3; i < argc; ++i) {
-      std::string_view arg = argv[i];
-      if ((arg == "--output-folder" ||
-           arg == "-o")) {
-        if (i + 1 < argc) {
-          output_folder = argv[++i]; // skip next
-        } else {
-          std::cerr << yellow
-            << "usage: wadify.exe --output-folder <input>" << clear;
-          return 1;
-        }
-      }
-    }
-    return decompress_wad(input_file, output_folder) ? 0 : 1;
+  // now check what the user wants to do
+  const std::string cmd = argv[1];
+  const std::unordered_map<std::string_view,
+    std::function<bool(int, char**)>> cmd_list = {
+    {"--decompress", decompress_cmd},
+    {"-d",           decompress_cmd},
+    {"--compress",   compress_cmd},
+    {"-c",           compress_cmd},
+    {"--help",       help_cmd},
+    {"-h",           help_cmd},
+    {"-?",           help_cmd},
+    {"--about",      about_cmd},
+    {"-a",           about_cmd},
+  };
+
+  auto it = cmd_list.find(cmd);
+  if (it != cmd_list.end()) {
+    return it->second(argc, argv) ? 0 : 1;
   }
 
-  if (cmd == "--compress" ||
-      cmd == "-c") {
-    if (argc < 3) {
-      std::cerr << yellow
-        << "usage: wadify.exe --compress <input>" << clear;
-      return 0;
-    }
-    return compress_folder(utils::remove_wad_ext(argv[2])) ? 0 : 1;
-  }
-
-  if (cmd == "--help" ||
-      cmd == "-h" ||
-      cmd == "-?") {
-    help();
-    return 0;
-  }
-
-  if (cmd == "--about" ||
-      cmd == "-a") {
-    about();
-    return 0;
-  }
-  std::cerr << yellow
-    << std::format("unknown cmd: {}", cmd) << clear;
+  std::cerr << yellow << std::format("unknown cmd: '{}'", cmd) << clear;
   return 1;
 }

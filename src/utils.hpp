@@ -2,13 +2,14 @@
 
 #include "dependencies/zlib/zlib.h"
 
-#include <fstream>
-#include <iostream>
-#include <filesystem>
-#include <cstdint>
 #include <array>
-#include <string>
+#include <cstdint>
+#include <filesystem>
+#include <fstream>
 #include <format>
+#include <optional>
+#include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 
