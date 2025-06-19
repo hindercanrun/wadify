@@ -75,8 +75,6 @@ constexpr auto clear = "\033[0m";
 namespace fs = std::filesystem;
 using Clock = std::chrono::steady_clock;
 
-bool verbose_mode = false;
-
 static
 bool decompress_wad(const std::string& file_name,
                     const std::optional<std::string>& output_folder) {
@@ -155,11 +153,7 @@ bool decompress_wad(const std::string& file_name,
           std::chrono::milliseconds
           >(end - start).count();
         // tell the user what we decompressed
-        if (verbose_mode) {
-          std::cout << std::format("decompressed: {} (time: {} ms)\n", entry.name, ms);
-        } else {
-          std::cout << std::format("decompressed: {}\n", entry.name);
-        }
+        std::cout << std::format("decompressed: {}\n", entry.name);
       } catch (const std::exception& e) {
         std::cerr << red << "error: " << e.what() << clear;
         return false;
@@ -251,11 +245,7 @@ bool compress_folder(const std::string& folder_name) {
       current_offset += static_cast<std::uint32_t>(compressed_data.size());
       compressed_datas.push_back(std::move(compressed_data));
       // let the user know what we compressed
-      if (verbose_mode) {
-        std::cout << std::format("compressed: {} (time: {} ms)\n", file_name, ms);
-      } else {
-        std::cout << std::format("compressed: {}\n", file_name);
-      }
+      std::cout << std::format("compressed: {}\n", file_name);
     }
     header.num_entries = static_cast<std::uint32_t>(entries.size());
 
@@ -348,7 +338,6 @@ bool help_cmd(int /*argc*/, char** /*argv*/) {
     << "--decompress, -d <input>\n"
     << "--compress, -c <input>\n"
     << "--output-folder, -o <path>\n"
-    << "--verbose, -0\n"
     << "--help, -h, ?\n"
     << "--about, -a\n";
   return true;
@@ -365,16 +354,6 @@ int main(int argc, char* argv[]) {
     std::cerr << yellow << "usage: wadify.exe <cmd>" << clear;
     return 1;
   }
-  for (int i = 1; i < argc; ++i) {
-    std::string arg(argv[i]);
-    // check if user wants verbose
-    if (arg == "--verbose" ||
-        arg == "-v") {
-      verbose_mode = true;
-      break;
-    }
-  }
-
   // now check what the user wants to do
   const std::string cmd = argv[1];
   const std::unordered_map<std::string_view,
