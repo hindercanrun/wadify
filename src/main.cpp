@@ -179,6 +179,11 @@ static
 bool compress_folder(const std::string& folder_name) {
   std::cout << std::format("compressing: {}...\n\n", folder_name);
   try {
+    fs::path path(folder_name);
+    auto folder_name = path.extension() == ".wad"
+      ? path.stem().string()
+      : path.string();
+
     wad_header header{
       .magic = 0x543377AB,
       .timestamp = static_cast<std::uint32_t>(std::time(nullptr)),
@@ -191,7 +196,6 @@ bool compress_folder(const std::string& folder_name) {
     std::uint32_t current_offset = 16 + 44 *
       static_cast<std::uint32_t>(
         std::distance(fs::directory_iterator(folder_name), {}));
-
     for (const auto& entry : fs::directory_iterator(folder_name)) {
       if (!entry.is_regular_file()) {
         continue;
@@ -326,7 +330,7 @@ bool compress_cmd(int argc, char* argv[]) {
     std::cerr << yellow << "usage: wadify.exe --compress <input>" << clear;
     return false;
   }
-  return compress_folder(utils::remove_wad_ext(argv[2]));
+  return compress_folder(argv[2]);
 }
 
 static

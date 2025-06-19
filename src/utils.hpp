@@ -15,7 +15,6 @@ namespace fs = std::filesystem;
 
 namespace utils {
 std::string add_wad_ext(const std::string& file);
-std::string remove_wad_ext(const std::string& file);
 std::optional<std::string> format_timestamp(std::uint32_t timestamp);
 
 std::vector<std::uint8_t> read_file(const fs::path& path);
@@ -36,12 +35,10 @@ inline std::uint32_t read_be_u32(const void* data) noexcept {
   return value;
 }
 
-
 inline void write_be_u32(std::vector<std::uint8_t>& out, std::uint32_t value) {
   if constexpr (std::endian::native == std::endian::little) {
     value = std::byteswap(value);
   }
-
   auto* ptr = reinterpret_cast<std::uint8_t*>(&value);
   out.insert(out.end(), ptr, ptr + sizeof(value));
 }

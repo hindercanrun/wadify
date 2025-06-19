@@ -14,13 +14,6 @@ std::string add_wad_ext(const std::string& file) {
   return file + ".wad";
 }
 
-std::string remove_wad_ext(const std::string& file) {
-  if (std::ranges::ends_with(file, ".wad")) {
-    return file.substr(0, file.size() - 4);
-  }
-  return file;
-}
-
 std::optional<std::string> format_timestamp(std::uint32_t timestamp) {
   std::time_t t = timestamp;
   std::tm local{};
