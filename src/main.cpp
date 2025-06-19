@@ -90,7 +90,7 @@ bool decompress_wad(const std::string& file_name,
 
     std::cout << "\nfile info:\n";
     std::cout << std::format("magic: 0x{:08X}\n", header.magic);
-    auto time = utils::format_timestamp(header.timestamp);
+    const auto time = utils::format_timestamp(header.timestamp);
     if (time) {
       std::cout << std::format(
         "timestamp: {} (0x{:08X})\n",
@@ -107,7 +107,9 @@ bool decompress_wad(const std::string& file_name,
     }
     // check if theres entries
     if (entries.empty()) {
-      std::cerr << yellow << std::format("warning: {} has no valid entries.", file_name) << clear;
+      std::cerr << yellow
+        << std::format("warning: {} has no valid entries.", file_name)
+        << clear;
       return false;
     }
 
