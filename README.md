@@ -2,10 +2,10 @@
 
 # a compresser/decompresser for Treyarch's .wad type.
 
+![downloads](https://img.shields.io/github/downloads/hindercanrun/wadify/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
 ![latest release](https://img.shields.io/github/v/tag/hindercanrun/wadify?filter=!v*-pre&style=flat-square&label=Latest%20Release&labelColor=F3F8FF&color=F88379)
 ![release date](https://img.shields.io/github/release-date-pre/hindercanrun/wadify?style=flat-square&label=Release%20Date&labelColor=F3F8FF&color=F88379)
-![size](https://img.shields.io/github/languages/code-size/hindercanrun/wadify?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
-![downloads](https://img.shields.io/github/downloads/hindercanrun/wadify/total?style=flat-square&label=Total%20Downloads&labelColor=F3F8FF&color=F88379)
+![code size](https://img.shields.io/github/languages/code-size/hindercanrun/wadify?style=flat-square&label=Code%20Size&labelColor=F3F8FF&color=F88379)
 </div>
 
 ![title_image](https://github.com/user-attachments/assets/2e975015-e4c3-47b2-ab86-994ba699aaab)
@@ -38,8 +38,6 @@
   - Compresses the input folder into a .wad.
 - ```--output-folder```, ```-o```
   - Specifies the output folder.
-- ```--verbose```, ```-v```
-  - Outputs way more messages.
 - ```--help```, ```-h```, ```-?```
   - Displays help for various commands.
 - ```--about```, ```-a```
