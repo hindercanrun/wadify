@@ -19,7 +19,7 @@ std::string add_wad_ext(const std::string& file);
 std::optional<std::string> format_timestamp(std::uint32_t timestamp);
 
 std::vector<std::uint8_t> read_file(const fs::path& path);
-void write_file(const fs::path& path,
+bool write_file(const fs::path& path,
                 const std::vector<std::uint8_t>& data);
 
 std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>&

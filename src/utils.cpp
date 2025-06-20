@@ -37,13 +37,19 @@ std::vector<std::uint8_t> read_file(const fs::path& path) {
   return { std::istreambuf_iterator<char>(file), {} };
 }
 
-void write_file(const fs::path& path,
+bool write_file(const fs::path& path,
                 const std::vector<std::uint8_t>& data) {
   std::ofstream file(path, std::ios::binary);
-  if (!file) {
-    throw std::runtime_error("failed to write file");
+  if (!file.is_open()) {
+    print_err("failed to open: '{}'", path.string());
+    return false;
   }
   file.write(reinterpret_cast<const char*>(data.data()), data.size());
+  if (!file) {
+    print_err("failed to write: '{}'", path.string());
+    return false;
+  }
+  return true;
 }
 
 std::vector<std::uint8_t> decompress_file(const std::vector<std::uint8_t>& compressed_data) {

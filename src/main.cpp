@@ -273,10 +273,11 @@ bool compress_folder(const std::string& folder_name) {
   for (const auto& blocks : compressed_datas) {
     wad_data.insert(wad_data.end(), blocks.begin(), blocks.end());
   }
-
-  auto out_file = fs::path(folder_base).filename().string() + ".wad";
-  utils::write_file(out_file, wad_data);
-
+  const auto out_file = fs::path(folder_base).filename().string() + ".wad";
+  if (!utils::write_file(out_file, wad_data)) {
+    utils::print_err("failed to write output file: '{}'", out_file);
+    return false;
+  }
   std::cout << "done\n";
   return true;
 }
