@@ -38,7 +38,7 @@
   - Compresses the input folder into a .wad.
 - ```--output-folder```, ```-o```
   - Specifies the output folder.
-- ```--help```, ```-h```, ```-?```
+- ```--help```, ```-h```, ```?```
   - Displays help for various commands.
 - ```--about```, ```-a```
   - Displays about information.
