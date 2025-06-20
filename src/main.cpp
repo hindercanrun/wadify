@@ -72,83 +72,85 @@ namespace fs = std::filesystem;
 bool decompress_wad(const std::string& file_name,
                     const std::optional<std::string>& output_folder) {
   std::cout << std::format("decompressing: {}...\n", file_name);
-  try {
-    const auto data = utils::read_file(file_name);
-    const auto header = read_wad_header(data);
-    if (header.magic != 0x543377AB) {
-      std::cerr << red << "Error: Invalid WAD magic! Expected 0x543377AB, got 0x" 
-                << std::format("{:08X}", header.magic) << clear << "\n";
-      return false;
-    }
 
-    std::cout << "\nfile info:\n";
-    std::cout << std::format("magic: 0x{:08X}\n", header.magic);
-    const auto time = utils::format_timestamp(header.timestamp);
-    if (time) {
-      std::cout << std::format(
-        "timestamp: {} (0x{:08X})\n",
-        *time, header.timestamp);
-    } else {
-      std::cout << "timestamp: N/A\n"; // clean string instead of garbage
-    }
-    std::cout << std::format("entries: {}\n", header.num_entries);
-    std::cout << std::format("ffotd version: {}\n\n", header.ffotd_version);
-
-    std::vector<wad_entry> entries;
-    for (std::uint32_t i = 0; i < header.num_entries; ++i) {
-      entries.push_back(read_wad_entry(data, i));
-    }
-    // check if theres entries
-    if (entries.empty()) {
-      std::cerr << yellow
-        << std::format("warning: {} has no valid entries.", file_name)
-        << clear;
-      return false;
-    }
-
-    fs::path output_dir = output_folder
-      ? fs::absolute(*output_folder)
-      : fs::absolute(fs::path(file_name).stem());
-    // create a folder if one doesnt exist
-    if (!fs::exists(output_dir)) {
-      fs::create_directories(output_dir);
-    }
-    for (const auto& entry : entries) {
-      try {
-        if (static_cast<std::size_t>(entry.offset) +
-          entry.compressed_size > data.size()) {
-          throw std::runtime_error("entry data out of bounds");
-        }
-
-        std::vector compressed_data(
-          data.begin() + entry.offset,
-          data.begin() + entry.offset +
-          entry.compressed_size);
-        auto decompressed_data = utils::decompress_file(compressed_data);
-        auto output_path = output_dir / entry.name;
-        std::ofstream out(output_path, std::ios::binary);
-        if (!out) {
-          throw std::runtime_error("failed to create file");
-        }
-
-        out.write(reinterpret_cast<const char*>(decompressed_data.data()),
-          decompressed_data.size());
-        out.close();
-        // set file time stamps
-        auto file_time = std::chrono::system_clock::from_time_t(header.timestamp);
-        fs::last_write_time(output_path,
-          fs::file_time_type::clock::now() +
-          (file_time - std::chrono::system_clock::now()));
-        // tell the user what we decompressed
-        std::cout << std::format("decompressed: {}\n", entry.name);
-      } catch (const std::exception& e) {
-        std::cerr << red << "error: " << e.what() << clear;
-        return false;
-      }
-    }
-  } catch (const std::exception& e) {
-    std::cerr << red << "error: " << e.what() << clear;
+  const auto data = utils::read_file(file_name);
+  if (data.empty()) {
+    utils::print_err("failed to read '{}'", file_name);
     return false;
+  }
+
+  const auto header = read_wad_header(data);
+  if (header.magic != 0x543377AB) {
+    utils::print_err(
+      "WAD has bad magic! expected 0x543377AB, got 0x{:08X}",
+      header.magic);
+    return false;
+  }
+
+  std::cout << "\nfile info:\n";
+  std::cout << std::format("magic: 0x{:08X}\n", header.magic);
+  const auto time = utils::format_timestamp(header.timestamp);
+  if (time) {
+    std::cout << std::format("timestamp: {} (0x{:08X})\n", *time, header.timestamp);
+  } else {
+    std::cout << "timestamp: N/A\n"; // nice clean string instead of garbage
+  }
+  std::cout << std::format("entries: {}\n", header.num_entries);
+  std::cout << std::format("ffotd version: {}\n\n", header.ffotd_version);
+
+  std::vector<wad_entry> entries;
+  for (std::uint32_t i = 0; i < header.num_entries; ++i) {
+    entries.push_back(read_wad_entry(data, i));
+  }
+  // check if theres entries
+  if (entries.empty()) {
+    utils::print_warn("{} has no entries!?", file_name);
+    return false;
+  }
+
+  fs::path output_dir = output_folder
+    ? fs::absolute(*output_folder)
+    : fs::absolute(fs::path(file_name).stem());
+  // create a folder if one doesnt exist
+  if (!fs::exists(output_dir)) {
+    fs::create_directories(output_dir);
+  }
+
+  for (const auto& entry : entries) {
+    if (static_cast<std::size_t>(entry.offset) +
+        entry.compressed_size > data.size()) {
+      utils::print_err("{} data is out of bounds", entry.name);
+      return false;
+    }
+
+    std::vector compressed_data(
+      data.begin() + entry.offset,
+      data.begin() + entry.offset + entry.compressed_size);
+    auto decompressed_data = utils::decompress_file(compressed_data);
+    if (decompressed_data.empty()) {
+      utils::print_err("failed to decompress entry: {}", entry.name);
+      return false;
+    }
+    auto output_path = output_dir / entry.name;
+    std::ofstream out(output_path, std::ios::binary);
+    if (!out.is_open()) {
+      utils::print_err("failed to write: {}", entry.name);
+      return false;
+    }
+
+    out.write(reinterpret_cast<const char*>(
+      decompressed_data.data()),
+      decompressed_data.size());
+    out.close();
+
+    // set file time stamps
+    auto file_time = std::chrono::system_clock::from_time_t(header.timestamp);
+    fs::last_write_time(output_path,
+      fs::file_time_type::clock::now() +
+      (file_time - std::chrono::system_clock::now()));
+
+    // tell the user what we decompressed
+    std::cout << std::format("decompressed: {}\n", entry.name);
   }
   std::cout << "\ndone";
   return true;
@@ -164,113 +166,116 @@ bool decompress_wad(const std::string& file_name,
 // the game doesn't care if it's 1 or 0
 bool compress_folder(const std::string& folder_name) {
   std::cout << std::format("compressing: {}...\n\n", folder_name);
-  try {
-    fs::path path(folder_name);
-    auto folder_name = path.extension() == ".wad"
-      ? path.stem().string()
-      : path.string();
-
-    wad_header header{
-      .magic = 0x543377AB,
-      .timestamp = static_cast<std::uint32_t>(std::time(nullptr)),
-      .ffotd_version = 1 // what retail bo2 set's it to
-    };
-
-    std::vector<wad_entry> entries;
-    std::vector<std::vector<std::uint8_t>> compressed_datas;
-    // Precalculate offset for data start
-    std::uint32_t current_offset = 16 + 44 *
-      static_cast<std::uint32_t>(
-        std::distance(fs::directory_iterator(folder_name), {}));
-    for (const auto& entry : fs::directory_iterator(folder_name)) {
-      if (!entry.is_regular_file()) {
-        continue;
-      }
-      const auto& path = entry.path();
-      auto file_name = path.filename().string();
-      // skip hidden/system files
-      if (file_name.starts_with(".")) {
-        std::cout << yellow
-          << std::format("skipping hidden/system file: {}\n",
-          file_name) << clear;
-        continue;
-      }
-      // skip nested wads
-      if (path.extension() == ".wad") {
-        std::cout << yellow
-          << std::format("skipping nested wad: {}\n",
-          file_name) << clear;
-        continue;
-      }
-      if (file_name.size() > 42) {
-        throw std::runtime_error("file name too long: " + file_name);
-      }
-      for (char c : file_name) {
-        if (std::string_view(R"(\ /:*?<>|)").contains(c)) {
-          throw std::runtime_error("atleast one bad "
-            "character in file name: " + file_name);
-        }
-      }
-
-      const auto file_data = utils::read_file(path);
-      auto compressed_data = utils::compress_file(file_data);
-      entries.push_back({
-        .name = file_name,
-        .compressed_size = static_cast<std::uint32_t>(compressed_data.size()),
-        .size = static_cast<std::uint32_t>(file_data.size()),
-        .offset = current_offset
-      });
-
-      current_offset += static_cast<std::uint32_t>(compressed_data.size());
-      compressed_datas.push_back(std::move(compressed_data));
-      // let the user know what we compressed
-      std::cout << std::format("compressed: {}\n", file_name);
-    }
-    header.num_entries = static_cast<std::uint32_t>(entries.size());
-
-    std::cout << "\nfile info:\n";
-    std::cout << std::format("magic: 0x{:08X}\n", header.magic);
-    const auto time = utils::format_timestamp(header.timestamp);
-    if (time) {
-      std::cout << std::format(
-        "timestamp: {} (0x{:08X})\n",
-        *time, header.timestamp);
-    } else {
-      std::cout << "timestamp: N/A\n"; // clean string instead of garbage
-    }
-    std::cout << std::format("entries: {}\n", header.num_entries);
-    std::cout << std::format("ffotd version: {}\n\n", header.ffotd_version);
-
-    // build final wad_data
-    std::vector<std::uint8_t> wad_data;
-    // write header
-    utils::write_be_u32(wad_data, header.magic);
-    utils::write_be_u32(wad_data, header.timestamp);
-    utils::write_be_u32(wad_data, header.num_entries);
-    utils::write_be_u32(wad_data, header.ffotd_version);
-
-    // write entries
-    for (const auto& e : entries) {
-      std::array<char, 32> name_buf{};
-      std::memcpy(name_buf.data(), e.name.c_str(), e.name.size());
-      wad_data.insert(wad_data.end(),
-        reinterpret_cast<std::uint8_t*>(name_buf.data()),
-        reinterpret_cast<std::uint8_t*>(name_buf.data()) + 32);
-      utils::write_be_u32(wad_data, e.compressed_size);
-      utils::write_be_u32(wad_data, e.size);
-      utils::write_be_u32(wad_data, e.offset);
-    }
-    // write compressed data blocks
-    for (const auto& c : compressed_datas) {
-      wad_data.insert(wad_data.end(), c.begin(), c.end());
-    }
-
-    auto out_file = fs::path(folder_name).filename().string() + ".wad";
-    utils::write_file(out_file, wad_data);
-  } catch (const std::exception& e) {
-    std::cerr << red << "error: " << e.what() << clear;
+  // if the input has .wad
+  // strip it
+  fs::path path(folder_name);
+  auto folder_base = path.extension() == ".wad"
+    ? path.stem().string()
+    : path.string();
+  if (!fs::exists(path)) {
+    utils::print_err("'{}' does not exist", folder_base);
     return false;
   }
+
+  wad_header header{
+    .magic = 0x543377AB,
+    .timestamp = static_cast<std::uint32_t>(std::time(nullptr)),
+    .ffotd_version = 1 // what retail bo2 set's it to
+  };
+
+  std::vector<wad_entry> entries;
+  std::vector<std::vector<std::uint8_t>> compressed_datas;
+  const auto dir_it = fs::directory_iterator(folder_base);
+  const std::uint32_t entry_count =
+    static_cast<std::uint32_t>(std::distance(dir_it, {}));
+  std::uint32_t current_offset = 16 + (entry_count * 44);
+  for (const auto& entry : fs::directory_iterator(folder_name)) {
+    if (!entry.is_regular_file()) {
+      continue;
+    }
+    const auto& path = entry.path();
+    auto file_name = path.filename().string();
+    // skip hidden/system files
+    if (file_name.starts_with(".")) {
+      utils::print_warn("skipping hidden/system file: {}\n", file_name);
+      continue;
+    }
+    // skip nested wads
+    if (path.extension() == ".wad") {
+      utils::print_warn("skipping nested wad: {}\n", file_name);
+      continue;
+    }
+    if (file_name.size() > 42) {
+      utils::print_err("name too long in: '{}'", file_name);
+      return false;
+    }
+    if (std::string_view(R"(\ /:*?<>|)").find_first_of(file_name) !=
+        std::string_view::npos) {
+      utils::print_err("invalid character in: '{}'", file_name);
+      return false;
+    }
+    const auto file_data = utils::read_file(path);
+    if (file_data.empty()) {
+      utils::print_err("failed to read: '{}'", file_name);
+      return false;
+    }
+    auto compressed_data = utils::compress_file(file_data);
+    if (compressed_data.empty()) {
+      utils::print_err("failed to compress: '{}'", file_name);
+      return false;
+    }
+
+    entries.push_back({
+      .name = file_name,
+      .compressed_size = static_cast<std::uint32_t>(compressed_data.size()),
+      .size = static_cast<std::uint32_t>(file_data.size()),
+      .offset = current_offset
+    });
+
+    current_offset += static_cast<std::uint32_t>(compressed_data.size());
+    compressed_datas.push_back(std::move(compressed_data));
+    // let the user know what we compressed
+    std::cout << std::format("compressed: {}\n", file_name);
+  }
+
+  std::cout << "\nfile info:\n";
+  std::cout << std::format("magic: 0x{:08X}\n", header.magic);
+  const auto time = utils::format_timestamp(header.timestamp);
+  if (time) {
+    std::cout << std::format("timestamp: {} (0x{:08X})\n", *time, header.timestamp);
+  } else {
+    std::cout << "timestamp: N/A\n"; // nice clean string instead of garbage
+  }
+  header.num_entries = static_cast<std::uint32_t>(entries.size());
+  std::cout << std::format("entries: {}\n", header.num_entries);
+  std::cout << std::format("ffotd version: {}\n\n", header.ffotd_version);
+
+  // write header
+  std::vector<std::uint8_t> wad_data;
+  utils::write_be_u32(wad_data, header.magic);
+  utils::write_be_u32(wad_data, header.timestamp);
+  utils::write_be_u32(wad_data, header.num_entries);
+  utils::write_be_u32(wad_data, header.ffotd_version);
+
+  // write entries
+  for (const auto& entry : entries) {
+    std::array<char, 32> name_buf{};
+    std::memcpy(name_buf.data(), entry.name.c_str(), entry.name.size());
+    wad_data.insert(wad_data.end(),
+      reinterpret_cast<std::uint8_t*>(name_buf.data()),
+      reinterpret_cast<std::uint8_t*>(name_buf.data()) + 32);
+
+    utils::write_be_u32(wad_data, entry.compressed_size);
+    utils::write_be_u32(wad_data, entry.size);
+    utils::write_be_u32(wad_data, entry.offset);
+  }
+  // write compressed data blocks
+  for (const auto& blocks : compressed_datas) {
+    wad_data.insert(wad_data.end(), blocks.begin(), blocks.end());
+  }
+
+  auto out_file = fs::path(folder_base).filename().string() + ".wad";
+  utils::write_file(out_file, wad_data);
 
   std::cout << "done\n";
   return true;
