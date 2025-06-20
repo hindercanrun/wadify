@@ -5,7 +5,7 @@ i will likely be going after ff/ipak's next, i am not sure if i will release tha
 anyways enough sidetracking.
 
 wad information:
-- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data". not even all online data too, most online data is hosted on DemonWare server's.
+- name: 'Where's All the Data' - this isn't the offical name, nobody knows what it is so it's just an assumption but knowing 3arc, this is probably what it's called. which is ironic considering this is only online stuff, so not really "all the data". not even all online data too, most online data is hosted on DemonWare's server's.
 - description/usage: a wad is bascially a file container, the point of this file is to hold several online things like contracts, codtv information, playlists, etc.
 
 now, let's dive into the actual file structure. wad's don't really have a file system like directories, it's basically all in the "`root/main`", in other words there *are* directories before it gets compressed together, but not after, they are all put into the "`root`" folder. i am not entirely sure how 3arc compressed them, but it might've been similar to `zone`'s, which has a `zone_source`, for wad's, maybe `wad_source`?. to back this up, in my tool when you link a wad, the entries list is done in "alphabetical order"/the order that you are shown in `File Explorer`, 3arc's wad's on the other hand are not in "alphabetical order" which really can only mean they had the assets in a `.csv` then compressed it into an output file, similar to zone's.
@@ -18,6 +18,8 @@ i am not entirely sure what `T3w«` stands for, `w` likely stands for `wad` so `
 so maybe, `T3(CoD3)w(wad) `.
 
 anyways time to get into the actual file information..
+
+header structs:
 
 ```cpp
 struct wad_header {
@@ -32,7 +34,7 @@ actual data:
 
 ```
 magic
-string: T3w« hex: 54 33 77 AB
+ascii: T3w« hex: 54 33 77 AB
 ```
 
 ![image](https://github.com/user-attachments/assets/e6ba742c-3890-4cb9-8331-43519243a32c)
@@ -47,7 +49,7 @@ in my instance, it was this.
 
 ```
 timestamp
-string: 15/11/2011 6:31:35 AM hex: 4E C2 07 47
+ascii: 15/11/2011 6:31:35 AM hex: 4E C2 07 47
 ```
 
 now we have the number of entries.
@@ -73,6 +75,8 @@ This screenshot is from `rfazio/t6/wads/online_tu15_mp_english.wad`, as you can 
 ffotd version
 int: 0 hex: 00 00 00 00
 ```
+
+entry struct:
 
 ```cpp
 struct wad_entry {
