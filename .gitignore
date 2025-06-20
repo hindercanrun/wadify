@@ -1,6 +1,7 @@
 # Visual Studio
 .vs/
 *.aps
+*.user
 
 # build results
 build
