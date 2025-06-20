@@ -1,7 +1,7 @@
 /**
- ************************************************************
- * wadify : wad compresser/decompresser                     *
- ************************************************************
+ ****************************************
+ * wadify : wad compresser/decompresser *
+ ****************************************
 **/
 
 #include "utils.hpp"
@@ -37,9 +37,7 @@ struct wad_entry {
   std::uint32_t size{};
   std::uint32_t offset{};
 };
-} // namespace
 
-static
 wad_header read_wad_header(std::span<const std::uint8_t> data) {
   return {
     .magic = utils::read_be_u32(&data[0]),
@@ -49,7 +47,6 @@ wad_header read_wad_header(std::span<const std::uint8_t> data) {
   };
 }
 
-static
 wad_entry read_wad_entry(std::span<const std::uint8_t> data,
                          std::size_t index) {
     const auto base = 16 + index * 44;
@@ -71,9 +68,7 @@ constexpr auto yellow = "\033[33m";
 constexpr auto clear = "\033[0m";
 
 namespace fs = std::filesystem;
-using Clock = std::chrono::steady_clock;
 
-static
 bool decompress_wad(const std::string& file_name,
                     const std::optional<std::string>& output_folder) {
   std::cout << std::format("decompressing: {}...\n", file_name);
@@ -118,8 +113,6 @@ bool decompress_wad(const std::string& file_name,
     if (!fs::exists(output_dir)) {
       fs::create_directories(output_dir);
     }
-    // start the timer
-    const auto start = Clock::now();
     for (const auto& entry : entries) {
       try {
         if (static_cast<std::size_t>(entry.offset) +
@@ -146,12 +139,6 @@ bool decompress_wad(const std::string& file_name,
         fs::last_write_time(output_path,
           fs::file_time_type::clock::now() +
           (file_time - std::chrono::system_clock::now()));
-        // end the timer
-        const auto end = Clock::now();
-        const auto ms =
-          std::chrono::duration_cast<
-          std::chrono::milliseconds
-          >(end - start).count();
         // tell the user what we decompressed
         std::cout << std::format("decompressed: {}\n", entry.name);
       } catch (const std::exception& e) {
@@ -172,10 +159,9 @@ bool decompress_wad(const std::string& file_name,
 // 0x543377AB = T3w«
 // timestamp is auto set
 // num_entries is auto set
-// you can manually define ffotd_version
-// the game only sets it to 0 or 1
-// so i manually put it as 0
-static
+// ffotd_version is auto set as 1
+// however you can change this to 0
+// the game doesn't care if it's 1 or 0
 bool compress_folder(const std::string& folder_name) {
   std::cout << std::format("compressing: {}...\n\n", folder_name);
   try {
@@ -226,17 +212,8 @@ bool compress_folder(const std::string& folder_name) {
         }
       }
 
-      // start the timer
-      const auto start = Clock::now();
       const auto file_data = utils::read_file(path);
       auto compressed_data = utils::compress_file(file_data);
-      // end the timer
-      const auto end = Clock::now();
-      const auto ms =
-        std::chrono::duration_cast<
-        std::chrono::milliseconds
-        >(end - start).count();
-
       entries.push_back({
         .name = file_name,
         .compressed_size = static_cast<std::uint32_t>(compressed_data.size()),
@@ -299,7 +276,6 @@ bool compress_folder(const std::string& folder_name) {
   return true;
 }
 
-static
 bool decompress_cmd(int argc, char* argv[]) {
   if (argc < 3) {
     std::cerr << yellow << "usage: wadify.exe --decompress <input>" << clear;
@@ -324,7 +300,6 @@ bool decompress_cmd(int argc, char* argv[]) {
   return decompress_wad(input_file, output_folder);
 }
 
-static
 bool compress_cmd(int argc, char* argv[]) {
   if (argc < 3) {
     std::cerr << yellow << "usage: wadify.exe --compress <input>" << clear;
@@ -333,7 +308,6 @@ bool compress_cmd(int argc, char* argv[]) {
   return compress_folder(argv[2]);
 }
 
-static
 bool help_cmd(int /*argc*/, char** /*argv*/) {
   // just general help for the tool
   std::cout << "Usage:\n"
@@ -345,11 +319,11 @@ bool help_cmd(int /*argc*/, char** /*argv*/) {
   return true;
 }
 
-static
 bool about_cmd(int /*argc*/, char** /*argv*/) {
   std::cout << "wadify.exe: 3arc wad tool by indoorhinge\n";
   return true;
 }
+} // namespace
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
