@@ -209,8 +209,8 @@ bool compress_folder(const std::string& folder_name) {
       utils::print_err("name too long in: '{}'", file_name);
       return false;
     }
-    if (std::string_view(R"(\ /:*?<>|)").find_first_of(file_name) !=
-        std::string_view::npos) {
+    constexpr std::string_view invalid_chars = R"(\ /:*?<>|)";
+    if (invalid_chars.find_first_of(file_name) != std::string_view::npos) {
       utils::print_err("invalid character in: '{}'", file_name);
       return false;
     }
