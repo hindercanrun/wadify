@@ -123,7 +123,7 @@ bool decompress_wad(const std::string& file_name,
       return false;
     }
 
-    std::vector compressed_data(
+    const std::vector compressed_data(
       data.begin() + entry.offset,
       data.begin() + entry.offset + entry.compressed_size);
     auto decompressed_data = utils::decompress_file(compressed_data);
@@ -288,10 +288,10 @@ bool decompress_cmd(int argc, char* argv[]) {
     return false;
   }
 
-  std::basic_string input_file = utils::add_wad_ext(argv[2]);
+  const std::basic_string input_file = utils::add_wad_ext(argv[2]);
   std::optional<std::string> output_folder;
 
-  for (int i = 3; i < argc; ++i) {
+  for (auto i = 3; i < argc; ++i) {
     std::string arg = argv[i];
     if (arg == "--output-folder" ||
         arg == "-o") {
