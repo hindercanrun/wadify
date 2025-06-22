@@ -22,7 +22,7 @@
    - If you need any help, type `--help` for all the commands.
 5. Done.
 
-## Compile From Source Code
+## Building From Source
 1. **Clone** the Git repository or **download** as .ZIP and extract it to your desired location.
 2. **Open** up `wadify.sln` in **Visual Studio** (I use Visual Studio 2022).
    - Your build platform doesn't matter, so either `x64` or `x86` will work.
