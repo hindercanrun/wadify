@@ -50,7 +50,7 @@ wadify.exe --decompress online_tu0_mp_english.wad
 
 ## Documentation:
 
-For anyone interested in learning about this file type, I have put some documentation [here](https://github.com/hindercanrun/wad/blob/main/Docs/WadFile.md) about it.
+For anyone interested in learning about this file type, I have put some documentation [here](https://github.com/hindercanrun/wad/blob/main/ANALYSIS.md) about it.
 
 ---
 
